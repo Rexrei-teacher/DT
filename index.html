@@ -1,230 +1,343 @@
-const quizQuestions = [
-    {
-        "questionNumber": 1,
-        "questions": [
-            "Which of the following best describes the core purpose of Design & Technology?",
-            "What is the main goal of the subject, Design & Technology?",
-            "Design & Technology is fundamentally about what key activity?"
-        ],
-        "answerOptions": [
-            { "text": "To create beautiful works of art.", "rationale": "While aesthetics can be a part of design, the primary purpose of D&T is to solve problems and meet practical needs, not just to create art.", "isCorrect": false },
-            { "text": "To study historical engineering failures.", "rationale": "Studying past failures can be instructive, but it is not the main focus. The field is forward-looking, centered on creating new solutions.", "isCorrect": false },
-            { "text": "To apply creative and practical solutions to solve problems and meet needs.", "rationale": "This option accurately captures the essence of D&T, which is the application of creativity and practical skills to address genuine problems.", "isCorrect": true },
-            { "text": "To memorize and recite engineering formulas.", "rationale": "D&T is about the application of principles, not rote memorization. While some formulas may be used, they are a means to an end, not the primary goal of the subject.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 2,
-        "questions": [
-            "When developing a new product, what is the most important reason for a designer to distinguish between a 'need' and a 'want'?",
-            "Why is it crucial for a product designer to differentiate between a 'need' and a 'want'?",
-            "In product design, what is the primary benefit of knowing the difference between a 'need' and a 'want'?"
-        ],
-        "answerOptions": [
-            { "text": "To ensure the product is profitable.", "rationale": "Profitability is a business consideration, but it is secondary to the primary design principle of solving a genuine problem. Products addressing a true need often have a better chance of success.", "isCorrect": false },
-            { "text": "To address genuine and essential problems for the user.", "rationale": "This distinction is critical to ensure that the designer is focused on creating a product that is truly essential and provides a valuable solution, rather than just a desirable luxury.", "isCorrect": true },
-            { "text": "To make the product more attractive to customers.", "rationale": "While attractive features may create a 'want,' the fundamental purpose of design is to fulfill a 'need,' which is a more critical problem to solve.", "isCorrect": false },
-            { "text": "To reduce the complexity of the design.", "rationale": "Differentiating between needs and wants can sometimes reduce complexity, but this is a secondary effect. The main purpose is to ensure the product is essential and effective.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 3,
-        "questions": [
-            "A team of designers is creating a new backpack for students. They decide to observe how students carry their books and other items throughout the day. What is the primary purpose of this observation?",
-            "For a new backpack design, a team observes students' daily routines. What is the main objective of this observation?",
-            "What is the key reason for a design team to observe how users behave with existing products?"
-        ],
-        "answerOptions": [
-            { "text": "To find a unique material to make the backpack from.", "rationale": "Observing user behavior helps in understanding their needs and pain points, which is a broader goal than simply selecting a material.", "isCorrect": false },
-            { "text": "To communicate with their clients about the project.", "rationale": "While observations are a form of communication, this is not their primary purpose. Their main goal is to gather information about the users' needs.", "isCorrect": false },
-            { "text": "To discover and document the genuine needs of the user.", "rationale": "This option correctly identifies the goal of the observation process, which is to thoroughly understand and document the user's requirements and challenges in a real-world context.", "isCorrect": true },
-            { "text": "To write a marketing plan for the final product.", "rationale": "Marketing comes later in the process. The initial observation phase is about design and problem-solving, not sales strategy.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 4,
-        "questions": [
-            "What is the key difference between a Design Brief and a Specification in the design process?",
-            "Distinguish between a 'Design Brief' and a 'Specification'.",
-            "Which document outlines the broad project goals, and which one contains detailed technical requirements?"
-        ],
-        "answerOptions": [
-            { "text": "The Design Brief is created after the product is finished.", "rationale": "The Design Brief is created at the beginning of a project and acts as a guiding document, not a final summary.", "isCorrect": false },
-            { "text": "The Specification outlines the general goals, while the Design Brief details the technical requirements.", "rationale": "This is incorrect; the roles are reversed. The Design Brief outlines the broad goals and constraints, while the Specification provides the detailed technical and functional requirements.", "isCorrect": false },
-            { "text": "The Design Brief is a preliminary document outlining goals, and the Specification includes detailed technical requirements.", "rationale": "This option correctly describes the relationship: the Design Brief provides the overall direction and constraints, from which the more detailed and specific technical requirements in the Specification are derived.", "isCorrect": true },
-            { "text": "The Specification is an optional document, while the Design Brief is mandatory.", "rationale": "Both are crucial documents in a well-managed design project, though the Specification is derived from the Design Brief.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 5,
-        "questions": [
-            "A designer is creating a plan for a new type of bicycle helmet. Which of the following would be an example of a 'constraint' from a Design Brief?",
-            "In a project to design a helmet, which item is considered a 'constraint'?",
-            "If a helmet design brief requires it to be made from a specific type of material, what is this requirement called?"
-        ],
-        "answerOptions": [
-            { "text": "The helmet must be made from recycled materials.", "rationale": "This is a limitation or restriction placed on the design, which is the definition of a constraint. It dictates what the designer must or must not do.", "isCorrect": true },
-            { "text": "The helmet should be available in different colors.", "rationale": "This is a feature or a goal for the product's appearance, but it is not a constraint on the design process itself.", "isCorrect": false },
-            { "text": "The helmet must have a chin strap.", "rationale": "This would be a functional requirement or a specification, not a constraint. A constraint is a limiting factor on the design.", "isCorrect": false },
-            { "text": "The helmet should be comfortable to wear.", "rationale": "This is a general design goal, but it is not a specific, measurable constraint. It is a desirable outcome rather than a clear boundary.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 6,
-        "questions": [
-            "A flagpole is being pushed by the wind. What type of force is the base of the flagpole experiencing from the ground pushing up against it to keep it from falling?",
-            "What kind of force is exerted on the base of a structure when an external force is trying to push it over?",
-            "A flagpole's base is being squeezed by the ground and the pole's own weight. This is an example of what kind of force?"
-        ],
-        "answerOptions": [
-            { "text": "Tension", "rationale": "Tension is a pulling force that stretches an object, which is not what the ground does to the flagpole.", "isCorrect": false },
-            { "text": "Shear", "rationale": "Shear force occurs when forces act parallel to a surface, causing one part to slide past another. This is not the primary force at the base of the flagpole.", "isCorrect": false },
-            { "text": "Torsion", "rationale": "Torsion is a twisting force. This is not the main force acting on the base of the flagpole.", "isCorrect": false },
-            { "text": "Compression", "rationale": "Compression is a pushing force that squeezes an object. The ground is pushing up on the base of the pole, which is an example of a compressive force.", "isCorrect": true }
-        ]
-    },
-    {
-        "questionNumber": 7,
-        "questions": [
-            "A rope is used to suspend a large weight from a ceiling. The rope is being pulled taut by the weight. What force is acting on the rope?",
-            "What force is being applied to a rope when it is stretched taut by a heavy object hanging from it?",
-            "A rope is subject to a pulling force as it holds up a load. This force is known as...?"
-        ],
-        "answerOptions": [
-            { "text": "Compression", "rationale": "Compression is a squeezing or pushing force. The rope is not being squeezed; it is being stretched.", "isCorrect": false },
-            { "text": "Shear", "rationale": "Shear is a force that causes parts of an object to slide past each other, which is not what's happening to the rope.", "isCorrect": false },
-            { "text": "Tension", "rationale": "Tension is a pulling or stretching force. The weight is pulling on the rope, causing it to stretch and be under tension.", "isCorrect": true },
-            { "text": "Torsion", "rationale": "Torsion is a twisting force. The rope is being pulled straight down, not twisted.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 8,
-        "questions": [
-            "A bridge is a classic example of a structure. What is the 'load' on a bridge?",
-            "In the context of structures, what does 'load' refer to for a bridge?",
-            "What are the forces that a bridge is designed to support, such as the weight of vehicles and its own weight?"
-        ],
-        "answerOptions": [
-            { "text": "The type of material used to build it.", "rationale": "The material is a property of the bridge, not a force acting upon it.", "isCorrect": false },
-            { "text": "The force of the wind pushing against the bridge.", "rationale": "Wind is a force, but the primary load on a bridge is usually the weight of the traffic and the bridge itself.", "isCorrect": false },
-            { "text": "The weight of the traffic and the bridge itself.", "rationale": "A load is the force acting on a structure. The weight of traffic and the bridge's own weight are the primary examples of a load.", "isCorrect": true },
-            { "text": "The amount of time it takes to build the bridge.", "rationale": "The construction time is a project management metric, not a physical force or load acting on the structure.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 9,
-        "questions": [
-            "When a designer is focused on addressing a 'need,' they are primarily solving what kind of problem?",
-            "A designer who focuses on a user's 'need' is working on what type of issue?",
-            "What kind of problem is a designer solving when they are focused on a 'need' as opposed to a 'want'?"
-        ],
-        "answerOptions": [
-            { "text": "An aesthetic or stylistic problem.", "rationale": "Aesthetics fall into the category of 'wants.' Needs are essential and functional problems to solve.", "isCorrect": false },
-            { "text": "An essential or functional problem.", "rationale": "A 'need' is something essential that a user requires to perform a task or solve a critical issue, making it an essential or functional problem.", "isCorrect": true },
-            { "text": "A problem that only affects a small number of people.", "rationale": "A need can affect a small or large group of people. The key is that it's essential, not how many people it affects.", "isCorrect": false },
-            { "text": "A problem with the product's packaging.", "rationale": "Packaging is an important part of the design, but it is typically a secondary concern to the primary function of the product in solving the user's core problem.", "isCorrect": false }
-        ]
-    },
-    {
-        "questionNumber": 10,
-        "questions": [
-            "A student is asked to create a detailed list of all the materials, dimensions, and manufacturing processes for their new phone holder design. This student is primarily working on which document?",
-            "Which design document contains a detailed list of technical requirements, materials, and manufacturing processes?",
-            "The document that provides fine-grained details for a product, such as its exact size and the materials it will be made of, is called a...?"
-        ],
-        "answerOptions": [
-            { "text": "The Design Brief", "rationale": "The Design Brief outlines the broad goals and constraints, not the detailed technical specifics.", "isCorrect": false },
-            { "text": "The User Observation Report", "rationale": "A user observation report documents the user's behavior and needs, not the technical details of the product itself.", "isCorrect": false },
-            { "text": "The Final Product Plan", "rationale": "While this might be part of the final plan, 'Specification' is the precise term for the detailed technical requirements derived from the Design Brief.", "isCorrect": false },
-            { "text": "The Specification", "rationale": "A Specification includes all the detailed technical and functional requirements, such as materials, dimensions, and manufacturing processes, that are necessary to build the product.", "isCorrect": true }
-        ]
-    }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Theory Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+        }
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+        }
+        .question {
+            background: #eef;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .options-container {
+            list-style: none;
+            padding: 0;
+        }
+        .option-item {
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+        .option-item:hover {
+            background-color: #e2e2e2;
+        }
+        .option-item.selected {
+            border-color: #007bff;
+            background-color: #e0eaff;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover:enabled {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #results {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .result-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 5px solid;
+            text-align: left;
+        }
+        .result-item.correct {
+            background-color: #e6ffed;
+            border-color: #28a745;
+        }
+        .result-item.incorrect {
+            background-color: #fff0f0;
+            border-color: #dc3545;
+        }
+        .rationale {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Design & Technology Theory Quiz</h1>
+        <div id="quiz"></div>
+        <button id="submit-btn" disabled>Submit Answers</button>
+        <div id="results"></div>
+    </div>
+    <script>
+        const quizQuestions = [
+            {
+                "questionNumber": 1,
+                "questions": [
+                    "Which of the following best describes the core purpose of Design & Technology?",
+                    "What is the main goal of the subject, Design & Technology?",
+                    "Design & Technology is fundamentally about what key activity?"
+                ],
+                "answerOptions": [
+                    { "text": "To create beautiful works of art.", "rationale": "While aesthetics can be a part of design, the primary purpose of D&T is to solve problems and meet practical needs, not just to create art.", "isCorrect": false },
+                    { "text": "To study historical engineering failures.", "rationale": "Studying past failures can be instructive, but it is not the main focus. The field is forward-looking, centered on creating new solutions.", "isCorrect": false },
+                    { "text": "To apply creative and practical solutions to solve problems and meet needs.", "rationale": "This option accurately captures the essence of D&T, which is the application of creativity and practical skills to address genuine problems.", "isCorrect": true },
+                    { "text": "To memorize and recite engineering formulas.", "rationale": "D&T is about the application of principles, not rote memorization. While some formulas may be used, they are a means to an end, not the primary goal of the subject.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 2,
+                "questions": [
+                    "When developing a new product, what is the most important reason for a designer to distinguish between a 'need' and a 'want'?",
+                    "Why is it crucial for a product designer to differentiate between a 'need' and a 'want'?",
+                    "In product design, what is the primary benefit of knowing the difference between a 'need' and a 'want'?"
+                ],
+                "answerOptions": [
+                    { "text": "To ensure the product is profitable.", "rationale": "Profitability is a business consideration, but it is secondary to the primary design principle of solving a genuine problem. Products addressing a true need often have a better chance of success.", "isCorrect": false },
+                    { "text": "To address genuine and essential problems for the user.", "rationale": "This distinction is critical to ensure that the designer is focused on creating a product that is truly essential and provides a valuable solution, rather than just a desirable luxury.", "isCorrect": true },
+                    { "text": "To make the product more attractive to customers.", "rationale": "While attractive features may create a 'want,' the fundamental purpose of design is to fulfill a 'need,' which is a more critical problem to solve.", "isCorrect": false },
+                    { "text": "To reduce the complexity of the design.", "rationale": "Differentiating between needs and wants can sometimes reduce complexity, but this is a secondary effect. The main purpose is to ensure the product is essential and effective.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 3,
+                "questions": [
+                    "A team of designers is creating a new backpack for students. They decide to observe how students carry their books and other items throughout the day. What is the primary purpose of this observation?",
+                    "For a new backpack design, a team observes students' daily routines. What is the main objective of this observation?",
+                    "What is the key reason for a design team to observe how users behave with existing products?"
+                ],
+                "answerOptions": [
+                    { "text": "To find a unique material to make the backpack from.", "rationale": "Observing user behavior helps in understanding their needs and pain points, which is a broader goal than simply selecting a material.", "isCorrect": false },
+                    { "text": "To communicate with their clients about the project.", "rationale": "While observations are a form of communication, this is not their primary purpose. Their main goal is to gather information about the users' needs.", "isCorrect": false },
+                    { "text": "To discover and document the genuine needs of the user.", "rationale": "This option correctly identifies the goal of the observation process, which is to thoroughly understand and document the user's requirements and challenges in a real-world context.", "isCorrect": true },
+                    { "text": "To write a marketing plan for the final product.", "rationale": "Marketing comes later in the process. The initial observation phase is about design and problem-solving, not sales strategy.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 4,
+                "questions": [
+                    "What is the key difference between a Design Brief and a Specification in the design process?",
+                    "Distinguish between a 'Design Brief' and a 'Specification'.",
+                    "Which document outlines the broad project goals, and which one contains detailed technical requirements?"
+                ],
+                "answerOptions": [
+                    { "text": "The Design Brief is created after the product is finished.", "rationale": "The Design Brief is created at the beginning of a project and acts as a guiding document, not a final summary.", "isCorrect": false },
+                    { "text": "The Specification outlines the general goals, while the Design Brief details the technical requirements.", "rationale": "This is incorrect; the roles are reversed. The Design Brief outlines the broad goals and constraints, while the Specification provides the detailed technical and functional requirements.", "isCorrect": false },
+                    { "text": "The Design Brief is a preliminary document outlining goals, and the Specification includes detailed technical requirements.", "rationale": "This option correctly describes the relationship: the Design Brief provides the overall direction and constraints, from which the more detailed and specific technical requirements in the Specification are derived.", "isCorrect": true },
+                    { "text": "The Specification is an optional document, while the Design Brief is mandatory.", "rationale": "Both are crucial documents in a well-managed design project, though the Specification is derived from the Design Brief.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 5,
+                "questions": [
+                    "A designer is creating a plan for a new type of bicycle helmet. Which of the following would be an example of a 'constraint' from a Design Brief?",
+                    "In a project to design a helmet, which item is considered a 'constraint'?",
+                    "If a helmet design brief requires it to be made from a specific type of material, what is this requirement called?"
+                ],
+                "answerOptions": [
+                    { "text": "The helmet must be made from recycled materials.", "rationale": "This is a limitation or restriction placed on the design, which is the definition of a constraint. It dictates what the designer must or must not do.", "isCorrect": true },
+                    { "text": "The helmet should be available in different colors.", "rationale": "This is a feature or a goal for the product's appearance, but it is not a constraint on the design process itself.", "isCorrect": false },
+                    { "text": "The helmet must have a chin strap.", "rationale": "This would be a functional requirement or a specification, not a constraint. A constraint is a limiting factor on the design.", "isCorrect": false },
+                    { "text": "The helmet should be comfortable to wear.", "rationale": "This is a general design goal, but it is not a specific, measurable constraint. It is a desirable outcome rather than a clear boundary.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 6,
+                "questions": [
+                    "A flagpole is being pushed by the wind. What type of force is the base of the flagpole experiencing from the ground pushing up against it to keep it from falling?",
+                    "What kind of force is exerted on the base of a structure when an external force is trying to push it over?",
+                    "A flagpole's base is being squeezed by the ground and the pole's own weight. This is an example of what kind of force?"
+                ],
+                "answerOptions": [
+                    { "text": "Tension", "rationale": "Tension is a pulling force that stretches an object, which is not what the ground does to the flagpole.", "isCorrect": false },
+                    { "text": "Shear", "rationale": "Shear force occurs when forces act parallel to a surface, causing one part to slide past another. This is not the primary force at the base of the flagpole.", "isCorrect": false },
+                    { "text": "Torsion", "rationale": "Torsion is a twisting force. This is not the main force acting on the base of the flagpole.", "isCorrect": false },
+                    { "text": "Compression", "rationale": "Compression is a pushing force that squeezes an object. The ground is pushing up on the base of the pole, which is an example of a compressive force.", "isCorrect": true }
+                ]
+            },
+            {
+                "questionNumber": 7,
+                "questions": [
+                    "A rope is used to suspend a large weight from a ceiling. The rope is being pulled taut by the weight. What force is acting on the rope?",
+                    "What force is being applied to a rope when it is stretched taut by a heavy object hanging from it?",
+                    "A rope is subject to a pulling force as it holds up a load. This force is known as...?"
+                ],
+                "answerOptions": [
+                    { "text": "Compression", "rationale": "Compression is a squeezing or pushing force. The rope is not being squeezed; it is being stretched.", "isCorrect": false },
+                    { "text": "Shear", "rationale": "Shear is a force that causes parts of an object to slide past each other, which is not what's happening to the rope.", "isCorrect": false },
+                    { "text": "Tension", "rationale": "Tension is a pulling or stretching force. The weight is pulling on the rope, causing it to stretch and be under tension.", "isCorrect": true },
+                    { "text": "Torsion", "rationale": "Torsion is a twisting force. The rope is being pulled straight down, not twisted.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 8,
+                "questions": [
+                    "A bridge is a classic example of a structure. What is the 'load' on a bridge?",
+                    "In the context of structures, what does 'load' refer to for a bridge?",
+                    "What are the forces that a bridge is designed to support, such as the weight of vehicles and its own weight?"
+                ],
+                "answerOptions": [
+                    { "text": "The type of material used to build it.", "rationale": "The material is a property of the bridge, not a force acting upon it.", "isCorrect": false },
+                    { "text": "The force of the wind pushing against the bridge.", "rationale": "Wind is a force, but the primary load on a bridge is usually the weight of the traffic and the bridge itself.", "isCorrect": false },
+                    { "text": "The weight of the traffic and the bridge itself.", "rationale": "A load is the force acting on a structure. The weight of traffic and the bridge's own weight are the primary examples of a load.", "isCorrect": true },
+                    { "text": "The amount of time it takes to build the bridge.", "rationale": "The construction time is a project management metric, not a physical force or load acting on the structure.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 9,
+                "questions": [
+                    "When a designer is focused on addressing a 'need,' they are primarily solving what kind of problem?",
+                    "A designer who focuses on a user's 'need' is working on what type of issue?",
+                    "What kind of problem is a designer solving when they are focused on a 'need' as opposed to a 'want'?"
+                ],
+                "answerOptions": [
+                    { "text": "An aesthetic or stylistic problem.", "rationale": "Aesthetics fall into the category of 'wants.' Needs are essential and functional problems to solve.", "isCorrect": false },
+                    { "text": "An essential or functional problem.", "rationale": "A 'need' is something essential that a user requires to perform a task or solve a critical issue, making it an essential or functional problem.", "isCorrect": true },
+                    { "text": "A problem that only affects a small number of people.", "rationale": "A need can affect a small or large group of people. The key is that it's essential, not how many people it affects.", "isCorrect": false },
+                    { "text": "A problem with the product's packaging.", "rationale": "Packaging is an important part of the design, but it is typically a secondary concern to the primary function of the product in solving the user's core problem.", "isCorrect": false }
+                ]
+            },
+            {
+                "questionNumber": 10,
+                "questions": [
+                    "A student is asked to create a detailed list of all the materials, dimensions, and manufacturing processes for their new phone holder design. This student is primarily working on which document?",
+                    "Which design document contains a detailed list of technical requirements, materials, and manufacturing processes?",
+                    "The document that provides fine-grained details for a product, such as its exact size and the materials it will be made of, is called a...?"
+                ],
+                "answerOptions": [
+                    { "text": "The Design Brief", "rationale": "The Design Brief outlines the broad goals and constraints, not the detailed technical specifics.", "isCorrect": false },
+                    { "text": "The User Observation Report", "rationale": "A user observation report documents the user's behavior and needs, not the technical details of the product itself.", "isCorrect": false },
+                    { "text": "The Final Product Plan", "rationale": "While this might be part of the final plan, 'Specification' is the precise term for the detailed technical requirements derived from the Design Brief.", "isCorrect": false },
+                    { "text": "The Specification", "rationale": "A Specification includes all the detailed technical and functional requirements, such as materials, dimensions, and manufacturing processes, that are necessary to build the product.", "isCorrect": true }
+                ]
+            }
+        ];
 
-const quizContainer = document.getElementById('quiz');
-const submitBtn = document.getElementById('submit-btn');
-const resultsContainer = document.getElementById('results');
-let selectedAnswers = {};
+        const quizContainer = document.getElementById('quiz');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsContainer = document.getElementById('results');
+        let selectedAnswers = {};
 
-function renderQuiz() {
-    // Shuffle the order of questions for extra randomization
-    const shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+        function renderQuiz() {
+            const shuffledQuestions = [...quizQuestions].sort(() => Math.random() - 0.5);
+            shuffledQuestions.forEach((q, index) => {
+                const randomQuestionIndex = Math.floor(Math.random() * q.questions.length);
+                const questionText = q.questions[randomQuestionIndex];
 
-    shuffledQuestions.forEach((q, index) => {
-        // Randomly select one of the paraphrased questions
-        const randomQuestionIndex = Math.floor(Math.random() * q.questions.length);
-        const questionText = q.questions[randomQuestionIndex];
+                const questionEl = document.createElement('div');
+                questionEl.classList.add('question');
+                questionEl.innerHTML = `
+                    <div class="question-text">${index + 1}. ${questionText}</div>
+                    <ul class="options-container" data-original-question-id="${q.questionNumber - 1}">
+                        ${q.answerOptions.map((option, optIndex) => `
+                            <li class="option-item" data-option-id="${optIndex}">
+                                ${option.text}
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                quizContainer.appendChild(questionEl);
+            });
 
-        const questionEl = document.createElement('div');
-        questionEl.classList.add('question');
-        questionEl.innerHTML = `
-            <div class="question-text">${index + 1}. ${questionText}</div>
-            <ul class="options-container" data-original-question-id="${q.questionNumber - 1}">
-                ${q.answerOptions.map((option, optIndex) => `
-                    <li class="option-item" data-option-id="${optIndex}">
-                        ${option.text}
-                    </li>
-                `).join('')}
-            </ul>
-        `;
-        quizContainer.appendChild(questionEl);
-    });
-
-    document.querySelectorAll('.option-item').forEach(item => {
-        item.addEventListener('click', handleOptionClick);
-    });
-}
-
-function handleOptionClick(event) {
-    const originalQuestionId = event.target.closest('.options-container').dataset.originalQuestionId;
-    const optionId = event.target.dataset.optionId;
-    
-    // Deselect any previously selected option for this question
-    document.querySelectorAll(`[data-original-question-id="${originalQuestionId}"] .option-item`).forEach(item => {
-        item.classList.remove('selected');
-    });
-
-    // Select the current option
-    event.target.classList.add('selected');
-    selectedAnswers[originalQuestionId] = optionId;
-    
-    // Check if all questions have been answered to enable the submit button
-    if (Object.keys(selectedAnswers).length === quizQuestions.length) {
-        submitBtn.disabled = false;
-    }
-}
-
-function showResults() {
-    let correctCount = 0;
-    resultsContainer.innerHTML = '';
-    
-    quizQuestions.forEach((q, index) => {
-        const selectedOptionId = selectedAnswers[index];
-        const selectedOption = q.answerOptions[selectedOptionId];
-        const isCorrect = selectedOption.isCorrect;
-        
-        if (isCorrect) {
-            correctCount++;
+            document.querySelectorAll('.option-item').forEach(item => {
+                item.addEventListener('click', handleOptionClick);
+            });
         }
 
-        const resultItem = document.createElement('div');
-        resultItem.classList.add('result-item', isCorrect ? 'correct' : 'incorrect');
-        resultItem.innerHTML = `
-            <p><strong>Question ${q.questionNumber}:</strong></p>
-            <p>Your answer: ${selectedOption.text}</p>
-            <p class="rationale"><strong>Rationale:</strong> ${selectedOption.rationale}</p>
-        `;
-        resultsContainer.appendChild(resultItem);
-    });
+        function handleOptionClick(event) {
+            const originalQuestionId = event.target.closest('.options-container').dataset.originalQuestionId;
+            const optionId = event.target.dataset.optionId;
+            
+            document.querySelectorAll(`[data-original-question-id="${originalQuestionId}"] .option-item`).forEach(item => {
+                item.classList.remove('selected');
+            });
 
-    const score = document.createElement('h2');
-    score.textContent = `You got ${correctCount} out of ${quizQuestions.length} correct!`;
-    resultsContainer.prepend(score);
-    
-    submitBtn.style.display = 'none';
-    quizContainer.style.display = 'none';
-}
+            event.target.classList.add('selected');
+            selectedAnswers[originalQuestionId] = optionId;
+            
+            if (Object.keys(selectedAnswers).length === quizQuestions.length) {
+                submitBtn.disabled = false;
+            }
+        }
 
-submitBtn.addEventListener('click', showResults);
+        function showResults() {
+            let correctCount = 0;
+            resultsContainer.innerHTML = '';
+            
+            quizQuestions.forEach((q, index) => {
+                const selectedOptionId = selectedAnswers[index];
+                const selectedOption = q.answerOptions[selectedOptionId];
+                const isCorrect = selectedOption.isCorrect;
+                
+                if (isCorrect) {
+                    correctCount++;
+                }
 
-renderQuiz();
+                const resultItem = document.createElement('div');
+                resultItem.classList.add('result-item', isCorrect ? 'correct' : 'incorrect');
+                resultItem.innerHTML = `
+                    <p><strong>Question ${q.questionNumber}:</strong></p>
+                    <p>Your answer: ${selectedOption.text}</p>
+                    <p class="rationale"><strong>Rationale:</strong> ${selectedOption.rationale}</p>
+                `;
+                resultsContainer.appendChild(resultItem);
+            });
+
+            const score = document.createElement('h2');
+            score.textContent = `You got ${correctCount} out of ${quizQuestions.length} correct!`;
+            resultsContainer.prepend(score);
+            
+            submitBtn.style.display = 'none';
+            quizContainer.style.display = 'none';
+        }
+
+        submitBtn.addEventListener('click', showResults);
+        renderQuiz();
+    </script>
+</body>
+</html>
