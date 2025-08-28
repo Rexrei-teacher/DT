@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Orientación Vocacional</title>
+    <!-- Se importa la librería Chart.js para los gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Se importa la fuente Inter de Google Fonts para un mejor diseño -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Generales */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px 40px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        /* Encabezado y Título */
+        h1 {
+            color: #1e293b;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Estilo de las Preguntas */
+        .question-block {
+            margin-bottom: 25px;
+            border-left: 4px solid #cbd5e1;
+            padding-left: 20px;
+        }
+
+        .question-block p {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #334155;
+            margin-bottom: 15px;
+        }
+
+        .options label {
+            display: block;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .options label:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+            accent-color: #3b82f6;
+        }
+
+        /* Botón de Calcular */
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Sección de Resultados */
+        #results-container {
+            text-align: center;
+        }
+        
+        #chart-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        #results-container h2 {
+            font-size: 2.5rem;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        #results-container h3 {
+            font-size: 1.5rem;
+            color: #3b82f6;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .role-description {
+            text-align: left;
+            color: #475569;
+            line-height: 1.6;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .role-description h4 {
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 20px;
+        }
+
+        .role-description ul {
+            padding-left: 20px;
+        }
+
+        /* Mensaje de error */
+        #error-message {
+            color: #ef4444;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+            display: none;
+        }
+
+        /* Media Queries para Responsividad */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .instructions {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Contenedor del Quiz (visible al inicio) -->
+        <div id="quiz-container">
+            <h1>Quiz de Orientación Rápida</h1>
+            <p class="instructions">Para cada pregunta, elige la opción que mejor te represente.</p>
+            
+            <form id="quiz-form">
+                <!-- Las preguntas se insertarán aquí dinámicamente con JavaScript -->
+            </form>
+
+            <button type="button" class="submit-btn" onclick="calculateResults()">Calcular mi Rol</button>
+            <p id="error-message">Por favor, responde todas las preguntas antes de continuar.</p>
+        </div>
+
+        <!-- Contenedor de Resultados (oculto al inicio) -->
+        <div id="results-container" style="display:none;">
+            <h2>Tu resultado</h2>
+            <h3 id="dominant-role-title"></h3>
+            <div id="chart-container">
+                <canvas id="results-chart"></canvas>
+            </div>
+            <div id="role-description-text" class="role-description">
+                <!-- La descripción del rol se insertará aquí -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- BANCO DE PREGUNTAS Y DESCRIPCIONES ---
+
+        const questions = [
+            {
+                question: "1. When you see a new gadget, you are most curious about:",
+                options: {
+                    A: "Who designed it and why it looks that way",
+                    B: "How it works inside and what technology makes it function",
+                    C: "The craftsmanship, details, and materials used"
+                }
+            },
+            {
+                question: "2. Your teacher gives you a project to redesign the school cafeteria. You would:",
+                options: {
+                    A: "Sketch new layouts and imagine how people will move and feel inside",
+                    B: "Think about the wiring, plumbing, and equipment needed to make it run",
+                    C: "Focus on the decorations, atmosphere, and handmade details that make it unique"
+                }
+            },
+            {
+                question: "3. Which type of school project do you enjoy most?",
+                options: {
+                    A: "Coming up with new ideas and planning creative solutions",
+                    B: "Building or fixing something mechanical, electronic, or technical",
+                    C: "Creating something with your hands that shows skill and detail"
+                }
+            },
+            {
+                question: "4. If you had one free afternoon, you’d rather:",
+                options: {
+                    A: "Brainstorm ideas for a new invention",
+                    B: "Take apart an old device to understand how it works",
+                    C: "Make or customize something artistic and personal"
+                }
+            },
+            {
+                question: "5. When working in a group, your strength is:",
+                options: {
+                    A: "Generating and organizing creative ideas",
+                    B: "Making sure the design works in real life and is reliable",
+                    C: "Adding the finishing touches and making the product look beautiful"
+                }
+            },
+            {
+                question: "6. Which of these books would you pick first?",
+                options: {
+                    A: "“Famous Inventions and How They Changed the World”",
+                    B: "“How Machines Work”",
+                    C: "“The Art of Handcrafts”"
+                }
+            },
+            {
+                question: "7. When playing a game like Minecraft, you usually:",
+                options: {
+                    A: "Design unique buildings and worlds",
+                    B: "Build clever systems with redstone or mods",
+                    C: "Decorate spaces and focus on aesthetics and detail"
+                }
+            },
+            {
+                question: "8. Your teacher gives you a broken chair and asks you to do something with it. You would:",
+                options: {
+                    A: "Redesign it into a new kind of chair or product",
+                    B: "Fix it by strengthening the joints or replacing broken parts",
+                    C: "Transform it into a beautiful or artistic piece"
+                }
+            },
+            {
+                question: "9. If you could spend a day with someone, you’d pick:",
+                options: {
+                    A: "An inventor or product designer",
+                    B: "An engineer or scientist",
+                    C: "An artist or craftsperson"
+                }
+            },
+            {
+                question: "10. The part of Design & Technology that excites you most is:",
+                options: {
+                    A: "Coming up with original concepts that solve problems",
+                    B: "Figuring out how things are built and making them function",
+                    C: "Making products unique, detailed, and visually appealing"
+                }
+            }
+        ];
+
+        const roleDescriptions = {
+            Designer: {
+                title: "Tu rol ideal es: Designer",
+                description: `
+                    <h4>¿Qué hacen los Designers?</h4>
+                    <p>Los Designers crean las ideas, los planes y las decisiones centradas en el usuario para productos, sistemas o servicios. Comienzan identificando un problema o una necesidad, investigando quién usará el producto y definiendo cómo debería verse y comportarse. El trabajo de diseño incluye investigación de usuarios, bocetos, creación de modelos, dibujos y producción de modelos digitales que comunican la función, dimensión, elección de materiales, ergonomía y apariencia. Los diseñadores deben equilibrar la apariencia, la seguridad, el costo, la sostenibilidad y la usabilidad para que la idea pueda ser entendida por tecnólogos y artesanos.</p>
+                    
+                    <h4>¿Cómo se ve esto para los estudiantes?</h4>
+                    <p>Los estudiantes que aprenden diseño practican la investigación de usuarios, hacen prototipos simples, prueban y registran comentarios, y actualizan sus ideas. El trabajo puede incluir bocetos a mano, maquetas físicas, modelos de papel o cartón, modelos básicos de CAD y justificaciones escritas de sus elecciones. Las habilidades clave son la definición de problemas, la creatividad, el desarrollo iterativo, la comunicación y una comprensión básica de los materiales.</p>
+                    
+                    <h4>Ejemplos de tareas del mundo real</h4>
+                    <ul>
+                        <li>Diseñar una mochila escolar que sea cómoda, duradera y que quepa en los casilleros.</li>
+                        <li>Crear un diseño de interfaz de usuario o un empaque que ayude a las personas a usar un producto de manera segura.</li>
+                        <li>Desarrollar un pequeño producto que cumpla con restricciones de sostenibilidad, por ejemplo, utilizando materiales reciclados.</li>
+                    </ul>
+
+                    <h4>Personas muy conocidas vinculadas a este rol</h4>
+                    <ul>
+                        <li><strong>Jony Ive</strong>, quien dirigió el diseño industrial en Apple.</li>
+                        <li><strong>Dieter Rams</strong>, conocido por sus influyentes principios de diseño de productos.</li>
+                        <li><strong>Charles and Ray Eames</strong>, famosos por sus muebles icónicos.</li>
+                        <li><strong>Coco Chanel</strong>, una influyente diseñadora de moda.</li>
+                    </ul>
+
+                    <h4>Direcciones de carrera y habilidades transferibles</h4>
+                    <p>El diseño conduce a carreras en diseño de productos, diseño UX/UI, moda, diseño automotriz, arquitectura e investigación de diseño. Las habilidades transferibles incluyen comunicación visual, empatía con el usuario, pensamiento crítico, colaboración y presentación.</p>
+                `
+            },
+            Technologist: {
+                title: "Tu rol ideal es: Technologist",
+                description: `
+                    <h4>¿Qué hacen los Technologists?</h4>
+                    <p>Los Technologists convierten las ideas de diseño en productos y sistemas funcionales y confiables. Entienden de materiales, procesos de fabricación, sistemas mecánicos, electrónica, integración de software y controles de calidad. Seleccionan los materiales apropiados, configuran o programan métodos de producción, realizan pruebas, solucionan fallos y refinan procesos para que el diseño sea fabricable, seguro y rentable.</p>
+
+                    <h4>¿Cómo se ve esto para los estudiantes?</h4>
+                    <p>Los estudiantes que estudian tecnología trabajan con herramientas, sistemas de medición, electrónica básica, programación para control y métodos para unir materiales. Las lecciones de tecnología enseñan a resolver problemas con sistemas tangibles, como construir y probar mecanismos, programar controladores simples y aprender cómo las propiedades de los materiales afectan el rendimiento.</p>
+
+                    <h4>Ejemplos de tareas del mundo real</h4>
+                    <ul>
+                        <li>Elegir el plástico o metal correcto para una pieza para que resista el desgaste o la carga.</li>
+                        <li>Programar un microcontrolador para que un dispositivo responda a su entorno.</li>
+                        <li>Configurar un pequeño método de producción para fabricar 30 componentes idénticos.</li>
+                    </ul>
+
+                    <h4>Personas muy conocidas vinculadas a este rol</h4>
+                    <ul>
+                        <li><strong>Elon Musk</strong>, quien ha liderado empresas enfocadas en ingeniería y producción avanzada como Tesla y SpaceX.</li>
+                        <li><strong>Margaret Hamilton</strong>, quien dirigió el trabajo de ingeniería de software para el software de vuelo del Apolo.</li>
+                        <li><strong>James Dyson</strong>, inventor e ingeniero que desarrolló nuevas soluciones listas para la producción.</li>
+                        <li><strong>Nikola Tesla y Thomas Edison</strong>, figuras históricas cuyo trabajo avanzó la ingeniería eléctrica.</li>
+                    </ul>
+
+                    <h4>Direcciones de carrera y habilidades transferibles</h4>
+                    <p>Los roles de tecnólogo incluyen ingeniero mecánico, ingeniero industrial, ingeniero de procesos, técnico electrónico, técnico en robótica, integrador de sistemas e ingeniero de software. Las habilidades transferibles incluyen la resolución lógica de problemas, medición y pruebas, conocimiento de materiales, conceptos básicos de codificación y resiliencia con pruebas iterativas.</p>
+                `
+            },
+            Artisan: {
+                title: "Tu rol ideal es: Artisan",
+                description: `
+                    <h4>¿Qué hacen los Artisans?</h4>
+                    <p>Los Artisans son practicantes que dan forma a los materiales a mano o con técnicas tradicionales para producir objetos valorados por su artesanía, detalle e individualidad. Sus habilidades incluyen el conocimiento de materiales, técnicas con herramientas manuales, acabado de superficies, creación de patrones y una atención al detalle que a menudo no puede ser replicada por la producción en masa. Los artesanos preservan y adaptan métodos tradicionales, a veces combinándolos con el diseño contemporáneo.</p>
+
+                    <h4>¿Cómo se ve esto para los estudiantes?</h4>
+                    <p>La práctica artesanal en las aulas consiste en aprender cómo los materiales responden a las herramientas manuales y los procesos artesanales, dominar la unión y el acabado, y comprender el contexto cultural e histórico de la fabricación. Los estudiantes exploran textiles, cerámica, carpintería, metalistería, marroquinería, vidrio y decoración de superficies. El énfasis está en la técnica, la iteración y el control de calidad a nivel artesanal.</p>
+
+                    <h4>Ejemplos de tareas del mundo real</h4>
+                    <ul>
+                        <li>Trabajo en cuero cosido a mano para un pequeño producto personalizado.</li>
+                        <li>Cerámica torneada a mano y acabada con métodos de esmaltado tradicionales.</li>
+                        <li>Muebles de madera tallados a mano o elementos decorativos.</li>
+                    </ul>
+
+                    <h4>Personas muy conocidas vinculadas a este rol</h4>
+                    <ul>
+                        <li><strong>William Morris</strong>, una figura clave en el movimiento Arts and Crafts.</li>
+                        <li><strong>Thomas Chippendale</strong>, un fabricante de muebles del siglo XVIII conocido por su trabajo de ebanistería altamente calificado.</li>
+                        <li><strong>Bernard Leach y Shoji Hamada</strong>, influyentes ceramistas que ayudaron a revivir la cerámica de estudio.</li>
+                        <li>Diseñadores contemporáneos basados en la artesanía que dirigen pequeños talleres y estudios a medida.</li>
+                    </ul>
+
+                    <h4>Direcciones de carrera y habilidades transferibles</h4>
+                    <p>Las carreras incluyen fabricante independiente, fabricante de muebles a medida, ceramista, joyero, artesano textil, artesano de restauración y diseñador-fabricante de productos en lotes pequeños. Las habilidades transferibles incluyen el control motor fino, la selección de materiales, el aseguramiento de la calidad, la gestión del tiempo y la comunicación con el cliente para trabajos a medida.</p>
+                `
+            }
+        };
+
+        // --- LÓGICA DEL QUIZ ---
+
+        // Variable global para el gráfico para poder destruirlo antes de crear uno nuevo
+        let resultsChartInstance = null;
+
+        /**
+         * Función para cargar y mostrar las preguntas en el HTML.
+         */
+        function loadQuestions() {
+            const form = document.getElementById('quiz-form');
+            questions.forEach((q, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+
+                const questionText = document.createElement('p');
+                questionText.textContent = q.question;
+                questionBlock.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+
+                for (const optionKey in q.options) {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question${index}`;
+                    radio.value = optionKey;
+                    
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(q.options[optionKey]));
+                    optionsDiv.appendChild(label);
+                }
+
+                questionBlock.appendChild(optionsDiv);
+                form.appendChild(questionBlock);
+            });
+        }
+
+        /**
+         * Función principal que se ejecuta al hacer clic en el botón "Calcular".
+         */
+        function calculateResults() {
+            const form = document.getElementById('quiz-form');
+            const errorMessage = document.getElementById('error-message');
+            const answers = new FormData(form);
+            const totalAnswers = Array.from(answers.values());
+
+            // Validar que todas las preguntas han sido respondidas
+            if (totalAnswers.length < questions.length) {
+                errorMessage.style.display = 'block';
+                return;
+            }
+            errorMessage.style.display = 'none';
+
+            // Contar los puntos para cada rol
+            let scores = { A: 0, B: 0, C: 0 };
+            totalAnswers.forEach(answer => {
+                scores[answer]++;
+            });
+            
+            displayResults(scores);
+        }
+
+        /**
+         * Función para mostrar los resultados, el rol dominante y el gráfico.
+         * @param {object} scores - Objeto con los puntajes (ej: {A: 5, B: 3, C: 2}).
+         */
+        function displayResults(scores) {
+            const quizContainer = document.getElementById('quiz-container');
+            const resultsContainer = document.getElementById('results-container');
+
+            // Determinar el rol dominante
+            const dominantScore = Math.max(scores.A, scores.B, scores.C);
+            let dominantRole = 'Designer'; // Valor por defecto
+            if (scores.B === dominantScore) dominantRole = 'Technologist';
+            if (scores.C === dominantScore) dominantRole = 'Artisan';
+            
+            // Si hay empate, se prioriza en el orden A, B, C. Se puede ajustar esta lógica.
+            if (scores.A === dominantScore) dominantRole = 'Designer';
+
+            // Actualizar el contenido de la sección de resultados
+            document.getElementById('dominant-role-title').textContent = roleDescriptions[dominantRole].title;
+            document.getElementById('role-description-text').innerHTML = roleDescriptions[dominantRole].description;
+            
+            // Ocultar el quiz y mostrar los resultados
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+
+            // Crear el gráfico de torta (pie chart)
+            createPieChart([scores.A, scores.B, scores.C]);
+        }
+
+        /**
+         * Función para crear el gráfico de torta con Chart.js.
+         * @param {array} data - Array con los puntajes [Designer, Technologist, Artisan].
+         */
+        function createPieChart(data) {
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            
+            // Si ya existe un gráfico, lo destruimos para evitar errores al re-calcular
+            if (resultsChartInstance) {
+                resultsChartInstance.destroy();
+            }
+
+            resultsChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Designer', 'Technologist', 'Artisan'],
+                    datasets: [{
+                        label: 'Distribución de Roles',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',  // Azul
+                            'rgba(239, 68, 68, 0.8)',   // Rojo
+                            'rgba(22, 163, 74, 0.8)'    // Verde
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(22, 163, 74, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const total = context.dataset.data.reduce((acc, value) => acc + value, 0);
+                                    const value = context.raw;
+                                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                    label += `${value} respuestas (${percentage}%)`;
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Cargar las preguntas cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', loadQuestions);
+    </script>
+
+</body>
+</html>
