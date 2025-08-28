@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+        :root {
+            --background-color: #FDFBF8;
+            --card-background: #FFFFFF;
+            --text-color: #4A4A4A;
+            --primary-color: #0284c7; /* Sky Blue */
+            --correct-color: #22c55e; /* Green */
+            --incorrect-color: #ef4444; /* Red */
+            --border-color: #EAEAEA;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        #quiz-container {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #quiz-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #quiz-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #quiz-header p {
+            margin: 0.25rem 0 0;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        
+        #question-card {
+            padding: 1.5rem;
+        }
+
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        #answer-buttons {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: left;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            background-color: #f0f9ff;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7; /* Optional: Make disabled buttons look slightly faded */
+        }
+        
+        .btn.selected {
+            border-color: var(--primary-color);
+            background-color: #e0f2fe; /* Light blue background for selection */
+        }
+
+        .btn.correct {
+            border-color: var(--correct-color);
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+
+        .btn.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
+        #controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end; /* Align button to the right */
+            align-items: center;
+        }
+        
+        #next-btn, #show-feedback-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #next-btn:hover, #show-feedback-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        #rationale-text {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            color: #495057;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #results-card {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        #results-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        #score-text {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        #grade-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-container">
+        <div id="quiz-header">
+            <h1 id="main-title">D&T Quiz</h1>
+            <p id="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div id="question-card">
+            <h2 id="question-text">Loading question...</h2>
+            <div id="answer-buttons">
+                </div>
+            <div id="controls" class="hidden">
+                <button id="next-btn">Next</button>
+            </div>
+             <p id="rationale-text" class="hidden"></p>
+        </div>
+
+        <div id="results-card" class="hidden">
+            <h2>Quiz Complete!</h2>
+            <p id="score-text">Your score: 0 out of 10</p>
+            <p id="grade-text">Grade: 1.0</p>
+            <button id="show-feedback-btn" class="hidden">Show Feedback</button>
+        </div>
+    </div>
+<script>
+    // --- QUESTION BANK ---
+    // This bank contains a variety of questions related to design and technology concepts.
+    // The quiz will randomly select 10 questions from this bank.
+    const questionBank = [
+        // Concepts: Design & Technology
+        [
+            {
+                question: "What is the primary aim of design and technology as a field of study?",
+                answers: [
+                    { text: "To memorize historical facts about inventions.", correct: false },
+                    { text: "To identify problems and create solutions for real-world problems.", correct: true },
+                    { text: "To study abstract artistic concepts without any practical application.", correct: false },
+                    { text: "To learn advanced scientific theory without building anything.", correct: false }
+                ]
+            },
+            {
+                question: "How does design and technology differ from other subjects like science or art?",
+                answers: [
+                    { text: "It is a field that is purely theoretical and has no practical applications.", correct: false },
+                    { text: "It focuses exclusively on the historical and cultural impact of tools.", correct: false },
+                    { text: "It combines creative and practical skills to solve problems with tangible outcomes.", correct: true },
+                    { text: "It is solely about the aesthetic and expressive creation of objects.", correct: false }
+                ]
+            },
+            {
+                question: "In what ways does design and technology encourage innovation?",
+                answers: [
+                    { text: "By focusing only on repeating existing designs.", correct: false },
+                    { text: "By teaching students to ignore all design constraints.", correct: false },
+                    { text: "By providing a framework to create new and unique solutions to problems.", correct: true },
+                    { text: "By making sure all projects are exactly the same as previous ones.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Technology
+        [
+            {
+                question: "What is the basic definition of technology?",
+                answers: [
+                    { text: "The usage of electronical devices.", correct: false },
+                    { text: "The application of scientific knowledge to practical aims.", correct: true },
+                    { text: "The creation of purely abstract concepts.", correct: false },
+                    { text: "The process of observing nature without human intervention.", correct: false }
+                ]
+            },
+            {
+                question: "Is technology only related to computers and electronics?",
+                answers: [
+                    { text: "Yes, the term technology only applies to modern digital devices.", correct: false },
+                    { text: "No, technology includes any tool or process created to solve a problem, from a wheel to a computer.", correct: true },
+                    { text: "No, technology is a natural process that occurs in the environment.", correct: false },
+                    { text: "Yes, only technologies that are automated can be considered technology.", correct: false }
+                ]
+            },
+            {
+                question: "What is the purpose of technology?",
+                answers: [
+                    { text: "To create problems that require new solutions.", correct: false },
+                    { text: "To simplify and change human life by applying scientific knowledge.", correct: true },
+                    { text: "To exist as a theoretical concept without any real-world use.", correct: false },
+                    { text: "To only serve the purpose of entertainment.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Needs and Wants
+        [
+            {
+                question: "What is a 'need'? Provide an example.",
+                answers: [
+                    { text: "A desire for a luxury item, like a sports car.", correct: false },
+                    { text: "Something that is influenced by social trends, like a new smartphone.", correct: false },
+                    { text: "A fundamental requirement for survival, such as food or water.", correct: true },
+                    { text: "Something that a designer has decided you must have.", correct: false }
+                ]
+            },
+            {
+                question: "What are 'wants'?",
+                answers: [
+                    { text: "Things that are necessary for survival.", correct: false },
+                    { text: "Items that are always more expensive than needs.", correct: false },
+                    { text: "Things people desire that are not essential for survival.", correct: true },
+                    { text: "Items that have no influence on the design process.", correct: false }
+                ]
+            },
+            {
+                question: "How do needs and wants influence the design process?",
+                answers: [
+                    { text: "Designers only focus on needs, as wants are unimportant.", correct: false },
+                    { text: "They help designers understand the problem to be solved and the market for the product.", correct: true },
+                    { text: "They can make a designer's job more difficult by adding extra constraints.", correct: false },
+                    { text: "They are only considered after the product has already been built.", correct: false }
+                ]
+            },
+            {
+                question: "Can a want become a need?",
+                answers: [
+                    { text: "No, a want is always just a desire and can never become a need.", correct: false },
+                    { text: "Yes, when a product becomes so integrated into daily life that it becomes a necessity for function or communication.", correct: true },
+                    { text: "Yes, but only if the product is made from a very expensive material.", correct: false },
+                    { text: "No, the classification of a want or need is permanent and unchanging.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Designer, Technologist, Artisan
+        [
+            {
+                question: "What does a designer do?",
+                answers: [
+                    { text: "Manages the financial budget for a project.", correct: false },
+                    { text: "Creates the aesthetic and functional plan for a product.", correct: true },
+                    { text: "Works exclusively with machines and technical tools.", correct: false },
+                    { text: "Sells the final product to the public.", correct: false }
+                ]
+            },
+            {
+                question: "What does a technologist do?",
+                answers: [
+                    { text: "Sells technology to other companies.", correct: false },
+                    { text: "Applies existing technologies to solve problems and create products.", correct: true },
+                    { text: "Writes essays about the history of technology.", correct: false },
+                    { text: "Focuses only on the artistic expression of an object.", correct: false }
+                ]
+            },
+            {
+                question: "What does a Artisan do?",
+                answers: [
+                    { text: "Designs new products but does not build them.", correct: false },
+                    { text: "Manages the entire production line of a factory.", correct: false },
+                    { text: "Uses scientific knowledge to invent new laws of physics.", correct: false },
+                    { text: "Is skilled in a particular trade and creates high-quality handmade goods.", correct: true }
+                ]
+            }
+        ],
+        // Concepts: Roles in a Project
+        [
+            {
+                question: "In a design project, which role is most concerned with the 'why' and 'what' of a product?",
+                answers: [
+                    { text: "The technologist", correct: false },
+                    { text: "The artisan", correct: false },
+                    { text: "The designer", correct: true },
+                    { text: "The salesperson", correct: false }
+                ]
+            },
+            {
+                question: "In a design project, which role focuses more on the 'how' of a product's construction?",
+                answers: [
+                    { text: "The designer", correct: false },
+                    { text: "The technologist", correct: true },
+                    { text: "The customer", correct: false },
+                    { text: "The marketer", correct: false }
+                ]
+            },
+            {
+                question: "How do designers, technologists, and artisan collaborate on a project?",
+                answers: [
+                    { text: "They each work in isolation and never interact.", correct: false },
+                    { text: "The designer plans, the technologist builds, and the artisan adds finishing details and quality.", correct: true },
+                    { text: "They all perform the exact same task from start to finish.", correct: false },
+                    { text: "Only one of these roles is needed for any given project.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Tangible vs Intangible
+        [
+            {
+                question: "What is an example of a tangible want?",
+                answers: [
+                    { text: "The feeling of happiness.", correct: false },
+                    { text: "The need for a safe place to sleep.", correct: false },
+                    { text: "A new, powerful gaming console.", correct: true },
+                    { text: "The desire for a good reputation.", correct: false }
+                ]
+            },
+            {
+                question: "What is an example of an intangible want?",
+                answers: [
+                    { text: "A car to travel to work.", correct: false },
+                    { text: "The need for clean air.", correct: false },
+                    { text: "The desire for social status.", correct: true },
+                    { text: "A new piece of clothing.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Problem-solving in D&T
+        [
+            {
+                question: "How does design and technology help students develop problem-solving skills?",
+                answers: [
+                    { text: "By memorizing facts without practical application.", correct: false },
+                    { text: "By giving them an opportunity to work on projects with tangible outcomes.", correct: true },
+                    { text: "By ignoring real-world constraints.", correct: false },
+                    { text: "By requiring them to only study theory.", correct: false }
+                ]
+            },
+            {
+                question: "Why is a problem-solving approach important in design and technology?",
+                answers: [
+                    { text: "It allows a designer to create products that serve no purpose.", correct: false },
+                    { text: "It helps a designer systematically identify a problem and work toward a functional solution.", correct: true },
+                    { text: "It ensures the final product will be as expensive as possible.", correct: false },
+                    { text: "It prevents a project from ever being finished.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Technology and Design
+        [
+            {
+                question: "How does technology help a designer bring their ideas to life?",
+                answers: [
+                    { text: "By replacing the need for creativity entirely.", correct: false },
+                    { text: "By providing tools and processes to build the designed product.", correct: true },
+                    { text: "By preventing the designer from having new ideas.", correct: false },
+                    { text: "By increasing the cost and time it takes to make a product.", correct: false }
+                ]
+            },
+            {
+                question: "What is the relationship between a designer's creative vision and a technologist's understanding of technology?",
+                answers: [
+                    { text: "The technologist's role is to limit the designer's creativity.", correct: false },
+                    { text: "The designer's vision is irrelevant to the technologist's work.", correct: false },
+                    { text: "The technologist provides the practical knowledge to make the designer's vision a functional reality.", correct: true },
+                    { text: "They are completely separate roles and have no influence on each other.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Craftsman and Design
+        [
+            {
+                question: "What is the main reason a designer would need to consider the craftsman's skills?",
+                answers: [
+                    { text: "To prove that the craftsman's skills are outdated.", correct: false },
+                    { text: "To ensure the final product can be made with a high level of quality and detail.", correct: true },
+                    { text: "To make the product more expensive.", correct: false },
+                    { text: "To limit the designer's creativity to only what is easy to make.", correct: false }
+                ]
+            },
+            {
+                question: "What is the primary difference between a craftsman and a designer?",
+                answers: [
+                    { text: "A designer is a creative professional while a craftsman is not.", correct: false },
+                    { text: "A designer's work is always more valuable than a craftsman's.", correct: false },
+                    { text: "A designer plans and creates the blueprint, while a craftsman has the hands-on skill to make the object.", correct: true },
+                    { text: "A craftsman is always a hobbyist, while a designer is a professional.", correct: false }
+                ]
+            }
+        ],
+        // Concepts: Problem-solving in the real world
+        [
+            {
+                question: "How can technology be used to solve a problem?",
+                answers: [
+                    { text: "By only creating problems that are unsolvable.", correct: false },
+                    { text: "By ignoring the problem and focusing on an unrelated solution.", correct: false },
+                    { text: "By providing tools, processes, and systems that offer practical solutions to challenges.", correct: true },
+                    { text: "By preventing human intervention in a natural process.", correct: false }
+                ]
+            },
+            {
+                question: "In what way can design and technology be seen as a form of communication?",
+                answers: [
+                    { text: "It is only about building things and has no communicative value.", correct: false },
+                    { text: "It communicates a designer's intent and a product's function to the user.", correct: true },
+                    { text: "It only communicates with other designers and technologists.", correct: false },
+                    { text: "It is a communication that only works for verbal messages.", correct: false }
+                ]
+            }
+        ]
+    ];
+
+    const questionCard = document.getElementById('question-card');
+    const resultsCard = document.getElementById('results-card');
+    const questionText = document.getElementById('question-text');
+    const answerButtons = document.getElementById('answer-buttons');
+    const progressText = document.getElementById('progress-text');
+    const mainTitle = document.getElementById('main-title');
+    const controls = document.getElementById('controls');
+    const nextBtn = document.getElementById('next-btn');
+    const rationaleText = document.getElementById('rationale-text');
+    const scoreText = document.getElementById('score-text');
+    const gradeText = document.getElementById('grade-text');
+    const showFeedbackBtn = document.getElementById('show-feedback-btn');
+
+    let currentQuestionIndex = 0;
+    let quizQuestions = [];
+    let userAnswers = []; // Array to store user's choices
+
+    // Corresponds to scores 0 through 10
+    const gradingScale = [1.0, 1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0];
+
+    // --- RANDOMIZATION LOGIC ---
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+    
+    function generateQuiz() {
+        quizQuestions = [];
+        const conceptsToQuiz = [...questionBank];
+        shuffleArray(conceptsToQuiz);
+
+        for (const conceptGroup of conceptsToQuiz) {
+            if (conceptGroup.length > 0) {
+                const randomIndex = Math.floor(Math.random() * conceptGroup.length);
+                const question = { ...conceptGroup[randomIndex] };
+                shuffleArray(question.answers);
+                quizQuestions.push(question);
+            }
+        }
+        quizQuestions = quizQuestions.slice(0, 10);
+    }
+
+    // --- QUIZ FLOW ---
+    function startQuiz() {
+        // Check if a quiz already exists in session storage
+        const storedQuiz = sessionStorage.getItem('quizQuestions');
+        if (storedQuiz) {
+            // If a quiz exists, load it
+            quizQuestions = JSON.parse(storedQuiz);
+            currentQuestionIndex = parseInt(sessionStorage.getItem('currentQuestionIndex')) || 0;
+            userAnswers = JSON.parse(sessionStorage.getItem('userAnswers')) || [];
+        } else {
+            // If no quiz exists, generate a new one and store it
+            generateQuiz();
+            sessionStorage.setItem('quizQuestions', JSON.stringify(quizQuestions));
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+            sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+        }
+
+        mainTitle.textContent = "D&T Quiz";
+        progressText.classList.remove('hidden');
+        resultsCard.classList.add('hidden');
+        questionCard.classList.remove('hidden');
+        showFeedbackBtn.classList.add('hidden'); // Ensure feedback button is hidden on start
+        showQuestion();
+    }
+
+    function showQuestion() {
+        resetState();
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        questionText.textContent = currentQuestion.question;
+        progressText.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+
+        const selectedAnswerIndex = userAnswers[currentQuestionIndex];
+        const hasAnswered = selectedAnswerIndex !== undefined;
+
+        currentQuestion.answers.forEach((answer, index) => {
+            const button = document.createElement('button');
+            button.textContent = answer.text;
+            button.classList.add('btn');
+            button.dataset.index = index; // Store the index of the answer
+            button.addEventListener('click', selectAnswer);
+            
+            if (hasAnswered) {
+                button.disabled = true;
+                if (index === selectedAnswerIndex) {
+                    button.classList.add('selected');
+                }
+            }
+            
+            answerButtons.appendChild(button);
+        });
+        
+        controls.classList.remove('hidden');
+        // The next button should be visible if an answer has already been selected
+        if (hasAnswered) {
+             if (quizQuestions.length > currentQuestionIndex + 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                nextBtn.textContent = 'Show Grade';
+                nextBtn.classList.remove('hidden');
+            }
+        } else {
+            nextBtn.classList.add('hidden'); // Hide next button until a new answer is selected
+        }
+    }
+
+    function resetState() {
+        while (answerButtons.firstChild) {
+            answerButtons.removeChild(answerButtons.firstChild);
+        }
+    }
+
+    function selectAnswer(e) {
+        const selectedBtn = e.target;
+        const answerIndex = parseInt(selectedBtn.dataset.index);
+
+        // Remove 'selected' class from all buttons before adding to the clicked one
+        Array.from(answerButtons.children).forEach(button => {
+            button.classList.remove('selected');
+            button.disabled = true; // Disable all buttons
+        });
+
+        // Add 'selected' class to the clicked button
+        selectedBtn.classList.add('selected');
+
+        // Store the user's answer
+        userAnswers[currentQuestionIndex] = answerIndex;
+        sessionStorage.setItem('userAnswers', JSON.stringify(userAnswers));
+
+        // Show the next button
+        if (quizQuestions.length > currentQuestionIndex + 1) {
+            nextBtn.classList.remove('hidden');
+        } else {
+            nextBtn.textContent = 'Show Grade';
+            nextBtn.classList.remove('hidden');
+        }
+    }
+    
+    function setStatusClass(element, correct) {
+        if (correct) {
+            element.classList.add('correct');
+        } else {
+            element.classList.add('incorrect');
+        }
+    }
+    
+    function showResults() {
+        questionCard.classList.add('hidden');
+        progressText.classList.add('hidden');
+        mainTitle.textContent = "Quiz Complete!";
+        
+        // Calculate the final score
+        let correctAnswersCount = 0;
+        userAnswers.forEach((userAnswerIndex, index) => {
+            const questionData = quizQuestions[index];
+            if (questionData.answers[userAnswerIndex].correct) {
+                correctAnswersCount++;
+            }
+        });
+
+        const finalGrade = gradingScale[correctAnswersCount];
+        scoreText.textContent = `You answered ${correctAnswersCount} out of ${quizQuestions.length} questions correctly.`;
+        gradeText.textContent = `Grade: ${finalGrade.toFixed(1)}`;
+        
+        resultsCard.classList.remove('hidden');
+        showFeedbackBtn.classList.remove('hidden');
+
+        // Clear session storage when the quiz is completed
+        sessionStorage.clear();
+    }
+
+    function showDetailedFeedback() {
+        const existingFeedback = document.getElementById('feedback-container');
+        if (existingFeedback) {
+            existingFeedback.remove();
+        }
+
+        const detailedFeedbackContainer = document.createElement('div');
+        detailedFeedbackContainer.id = 'feedback-container';
+        
+        let detailedFeedbackHTML = '';
+        
+        userAnswers.forEach((userAnswerIndex, index) => {
+            const questionData = quizQuestions[index];
+            const isCorrect = questionData.answers[userAnswerIndex].correct;
+            const correctAnswerText = questionData.answers.find(answer => answer.correct).text;
+            
+            detailedFeedbackHTML += `<div style="margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #EAEAEA;">`;
+            detailedFeedbackHTML += `<strong>Question ${index + 1}:</strong> ${questionData.question}<br>`;
+            
+            if (isCorrect) {
+                detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">&#10004; You answered correctly: "${questionData.answers[userAnswerIndex].text}"</span>`;
+            } else {
+                detailedFeedbackHTML += `<span style="color: #ef4444; font-weight: bold;">&#10006; Your answer: "${questionData.answers[userAnswerIndex].text}"</span><br>`;
+                detailedFeedbackHTML += `<span style="color: #22c55e; font-weight: bold;">Correct answer: "${correctAnswerText}"</span>`;
+            }
+            detailedFeedbackHTML += `</div>`;
+        });
+
+        detailedFeedbackContainer.innerHTML = detailedFeedbackHTML;
+        resultsCard.insertBefore(detailedFeedbackContainer, showFeedbackBtn.nextSibling); // Insert before next element (if any)
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (quizQuestions.length > currentQuestionIndex + 1) {
+            currentQuestionIndex++;
+            sessionStorage.setItem('currentQuestionIndex', currentQuestionIndex); // Update index in storage
+            showQuestion();
+        } else {
+            showResults();
+        }
+    });
+
+    showFeedbackBtn.addEventListener('click', () => {
+        showDetailedFeedback();
+        showFeedbackBtn.classList.add('hidden');
+    });
+
+    // Start the quiz on page load
+    startQuiz();
+</script>    
+</body>
+</html>
