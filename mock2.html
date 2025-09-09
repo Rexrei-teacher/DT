@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Exam Preparation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+        :root {
+            --background-color: #FDFBF8;
+            --card-background: #FFFFFF;
+            --text-color: #4A4A4A;
+            --primary-color: #0284c7;
+            --correct-color: #22c55e;
+            --incorrect-color: #ef4444;
+            --border-color: #EAEAEA;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        #quiz-container {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        #quiz-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #quiz-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #quiz-header p {
+            margin: 0.25rem 0 0;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        
+        #question-card {
+            padding: 1.5rem;
+        }
+
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        #answer-buttons {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: left;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover:not(:disabled) {
+            border-color: var(--primary-color);
+            background-color: #f0f9ff;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .btn.correct {
+            border-color: var(--correct-color);
+            background-color: #f0fdf4;
+            color: #15803d;
+        }
+
+        .btn.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
+        #controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        #next-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #next-btn:hover {
+            background-color: #0369a1;
+        }
+        
+        #rationale-text {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            color: #495057;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #results-card {
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        #results-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        #score-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        #restart-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-container">
+        <div id="quiz-header">
+            <h1>D&T Exam Prep</h1>
+            <p id="progress-text">Question 1 of 10</p>
+        </div>
+
+        <div id="question-card">
+            <h2 id="question-text">Loading question...</h2>
+            <div id="answer-buttons"></div>
+            <p id="rationale-text" class="hidden"></p>
+            <div id="controls" class="hidden">
+                <button id="next-btn">Next</button>
+            </div>
+        </div>
+
+        <div id="results-card" class="hidden">
+            <h2>Quiz Complete!</h2>
+            <p id="score-text">Your score: 0 / 10</p>
+            <button id="restart-btn">Try Again</button>
+        </div>
+    </div>
+
+<script>
+    const questionBank = [
+        {
+            question: "Which statement best defines the core purpose of Design and Technology?",
+            answers: [
+                { text: "The study of historical artifacts and their cultural importance.", correct: false, rationale: "Incorrect. While D&T considers historical context, its main focus is on actively solving current problems, not just studying the past." },
+                { text: "The process of identifying real-world problems and creating practical, functional solutions.", correct: true, rationale: "Correct! Design and Technology is all about the cycle of identifying a need and developing a tangible product or system to meet that need." },
+                { text: "The creation of art for aesthetic appreciation and emotional expression.", correct: false, rationale: "Incorrect. While aesthetics are important in D&T, the primary goal is function and problem-solving, which distinguishes it from fine art." }
+            ]
+        },
+        {
+            question: "A person is tasked with planning the user experience, functionality, and overall look of a new smart speaker. What is their most likely role?",
+            answers: [
+                { text: "Artisan", correct: false, rationale: "Incorrect. An artisan is a skilled craftsperson who makes things by hand. This role is more focused on the high-level planning and conceptualization." },
+                { text: "Technologist", correct: false, rationale: "Incorrect. A technologist would focus on the technical implementation—like the electronics and software—to make the designer's plan work." },
+                { text: "Designer", correct: true, rationale: "Correct! The designer is responsible for the 'what' and 'why' of a product, focusing on its function, form, and how the user will interact with it." }
+            ]
+        },
+        {
+            question: "Which of the following is the best example of a 'need' in the context of D&T?",
+            answers: [
+                { text: "A smartphone with the latest camera technology.", correct: false, rationale: "Incorrect. While a phone can be a need, the 'latest camera' is a specific feature that enhances the product beyond basic necessity, making it a want." },
+                { text: "Clean, safe water for drinking and sanitation.", correct: true, rationale: "Correct! This is a fundamental requirement for human survival and well-being, making it a core need that can be solved with technology (e.g., water filters)." },
+                { text: "Designer-brand sneakers for social status.", correct: false, rationale: "Incorrect. Footwear is a need, but 'designer-brand' sneakers are a want, as they fulfill desires for style and status, not just basic foot protection." }
+            ]
+        },
+         {
+            question: "An engineer is given blueprints for a new electric bicycle and must figure out the best way to build the motor and battery system. What is this person's role?",
+            answers: [
+                { text: "Designer", correct: false, rationale: "Incorrect. The designer would have created the blueprints and decided on the overall concept. This role is about the practical execution." },
+                { text: "Technologist", correct: true, rationale: "Correct! The technologist applies technical knowledge and skills to bring the designer's vision to life, focusing on the 'how' of building the product." },
+                { text: "Artisan", correct: false, rationale: "Incorrect. An artisan typically works with traditional crafts. Building complex electronics and systems is the work of a technologist." }
+            ]
+        },
+        {
+            question: "A 'want' in Design and Technology is best described as...",
+            answers: [
+                { text: "A feature or product that is essential for survival.", correct: false, rationale: "Incorrect. This describes a 'need.' Wants are things we desire but can live without." },
+                { text: "A feature or product that improves convenience, aesthetics, or social standing.", correct: true, rationale: "Correct! Wants add value beyond basic function. For example, a car is a want (vs. the need for transport), and a sunroof in that car is another want." },
+                { text: "A problem that has no possible technological solution.", correct: false, rationale: "Incorrect. Wants are often the driving force behind new technologies and product features as companies compete to satisfy consumer desires." }
+            ]
+        },
+        {
+            question: "A skilled woodworker is hired to create a custom, hand-carved chair based on a designer's specifications. What role does the woodworker fill?",
+            answers: [
+                { text: "Designer", correct: false, rationale: "Incorrect. The designer provided the specifications. The woodworker is executing the plan with specialized skills." },
+                { text: "Technologist", correct: false, rationale: "Incorrect. While woodworking is a technology, the term 'artisan' or 'craftsperson' better describes someone skilled in a specific, hands-on trade." },
+                { text: "Artisan", correct: true, rationale: "Correct! An artisan is a master of a specific craft, using their hands-on skills to create high-quality objects. This perfectly describes the woodworker." }
+            ]
+        },
+        {
+            question: "What is the most fundamental 'need' that a public bus system is designed to solve?",
+            answers: [
+                { text: "The desire to travel in a luxury vehicle.", correct: false, rationale: "Incorrect. Luxury is a want. Public transport focuses on fulfilling the basic need for transportation efficiently and affordably." },
+                { text: "The need for accessible and affordable transportation for a community.", correct: true, rationale: "Correct. The core problem being solved is moving people around a city who may not have or want personal vehicles. This is a need for mobility and access." },
+                { text: "The want for a fast, private way to get to a destination.", correct: false, rationale: "Incorrect. Public transport is shared, not private, and while it aims to be efficient, its primary goal is access for all, not maximum speed for an individual." }
+            ]
+        },
+        {
+            question: "A company releases a new reusable coffee cup. Which feature would be considered a 'want' rather than a 'need'?",
+            answers: [
+                { text: "The ability to hold liquid without leaking.", correct: false, rationale: "Incorrect. A cup that leaks fails its primary function. Being leak-proof is a fundamental need for any beverage container." },
+                { text: "A personalized engraving of the owner's name.", correct: true, rationale: "Correct! The cup functions perfectly without the engraving. This feature adds a personal touch and aesthetic value, making it a clear example of a want." },
+                { text: "Being made of a food-safe, non-toxic material.", correct: false, rationale: "Incorrect. For health and safety, using food-safe materials is a basic requirement and therefore a need for any product designed for consumption." }
+            ]
+        },
+        {
+            question: "A team is developing a new product. One person focuses on market research and the product's overall purpose, another builds the functional prototype, and a third perfects the final finish. This illustrates...",
+            answers: [
+                { text: "That only one role is truly necessary for a project.", correct: false, rationale: "Incorrect. This example clearly shows that multiple roles are required for a successful outcome, each contributing something different." },
+                { text: "The collaborative relationship between the Designer, Technologist, and Artisan.", correct: true, rationale: "Correct! This shows the ideal workflow: the Designer (purpose), the Technologist (prototype), and the Artisan (finish) all working together." },
+                { text: "That a project's needs and wants are not important.", correct: false, rationale: "Incorrect. The entire process is driven by understanding and fulfilling the needs and wants of the target user." }
+            ]
+        },
+        {
+            question: "Considering a high-end gaming mouse, which of the following solves a 'want' for its user?",
+            answers: [
+                { text: "The ability to move the cursor on the screen.", correct: false, rationale: "Incorrect. This is the absolute basic need a mouse must fulfill. If it can't do this, it's not a functional mouse." },
+                { text: "An ergonomic shape that prevents hand strain.", correct: false, rationale: "Incorrect. While a very basic mouse might not have it, good ergonomics is a core need for anyone using a mouse for extended periods to ensure health and comfort." },
+                { text: "Customizable RGB lighting that syncs with the game.", correct: true, rationale: "Correct! The mouse works perfectly without the lights. This feature is purely for aesthetics and personalization, making it a classic 'want'." }
+            ]
+        }
+    ];
+
+    const questionCard = document.getElementById('question-card');
+    const resultsCard = document.getElementById('results-card');
+    const questionText = document.getElementById('question-text');
+    const answerButtons = document.getElementById('answer-buttons');
+    const progressText = document.getElementById('progress-text');
+    const controls = document.getElementById('controls');
+    const nextBtn = document.getElementById('next-btn');
+    const rationaleText = document.getElementById('rationale-text');
+    const scoreText = document.getElementById('score-text');
+    const restartBtn = document.getElementById('restart-btn');
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function startQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        nextBtn.innerHTML = "Next";
+        resultsCard.classList.add('hidden');
+        questionCard.classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        resetState();
+        let currentQuestion = questionBank[currentQuestionIndex];
+        let questionNo = currentQuestionIndex + 1;
+        questionText.innerHTML = currentQuestion.question;
+        progressText.innerHTML = `Question ${questionNo} of ${questionBank.length}`;
+
+        currentQuestion.answers.forEach(answer => {
+            const button = document.createElement("button");
+            button.innerHTML = answer.text;
+            button.classList.add("btn");
+            answerButtons.appendChild(button);
+            button.dataset.correct = answer.correct;
+            button.dataset.rationale = answer.rationale;
+            button.addEventListener("click", selectAnswer);
+        });
+    }
+
+    function resetState() {
+        controls.classList.add('hidden');
+        rationaleText.classList.add('hidden');
+        while (answerButtons.firstChild) {
+            answerButtons.removeChild(answerButtons.firstChild);
+        }
+    }
+
+    function selectAnswer(e) {
+        const selectedBtn = e.target;
+        const isCorrect = selectedBtn.dataset.correct === "true";
+        const rationale = selectedBtn.dataset.rationale;
+
+        if (isCorrect) {
+            selectedBtn.classList.add("correct");
+            score++;
+        } else {
+            selectedBtn.classList.add("incorrect");
+        }
+
+        Array.from(answerButtons.children).forEach(button => {
+            if (button.dataset.correct === "true") {
+                if(!isCorrect) button.classList.add("correct");
+            }
+            button.disabled = true;
+        });
+
+        rationaleText.innerHTML = rationale;
+        rationaleText.classList.remove('hidden');
+        controls.classList.remove('hidden');
+    }
+
+    function showScore() {
+        resetState();
+        questionCard.classList.add('hidden');
+        resultsCard.classList.remove('hidden');
+        scoreText.innerHTML = `Your score: ${score} / ${questionBank.length}`;
+    }
+
+    function handleNextButton() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questionBank.length) {
+            showQuestion();
+        } else {
+            showScore();
+        }
+    }
+
+    nextBtn.addEventListener("click", () => {
+        if (currentQuestionIndex < questionBank.length) {
+            handleNextButton();
+        } else {
+            startQuiz();
+        }
+    });
+
+    restartBtn.addEventListener("click", startQuiz);
+
+    startQuiz();
+</script>
+</body>
+</html>
