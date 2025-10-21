@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Project Guide & Checklist</title>
+    
+    <style>
+        /* General Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Main Container for the Guide */
+        .guide-container {
+            max-width: 850px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden; /* Keeps the rounded corners neat */
+        }
+
+        h1 {
+            text-align: center;
+            color: #1c1e21;
+            padding: 24px 20px 20px;
+            margin: 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        h2 {
+            font-size: 1.4em;
+            color: #0056b3;
+            padding: 20px 24px 0;
+            margin: 0;
+        }
+
+        /* Individual Step Item */
+        .step-item {
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.3s ease;
+        }
+        .step-item:last-child {
+            border-bottom: none;
+        }
+
+        /* The Clickable Header of each step */
+        .step-header {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            padding: 18px 24px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+        
+        /* CHECKBOX STYLES */
+        .step-checkbox {
+            transform: scale(1.4);
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .step-title {
+            flex-grow: 1; /* Takes up remaining space */
+        }
+
+        .step-header:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* COMPLETED STATE (TURN GREEN) */
+        .step-item.completed > .step-header {
+            background-color: #d4edda;
+        }
+        .step-item.completed .step-title {
+            text-decoration: line-through;
+            color: #5a6660;
+        }
+
+
+        /* The plus/minus icon */
+        .accordion-icon {
+            font-size: 1.8em;
+            font-weight: 300;
+            color: #007bff;
+            transition: transform 0.3s ease;
+            text-align: center;
+            width: 25px; /* Fixed width for alignment */
+        }
+        
+        .accordion-icon::before {
+            content: '+'; /* Plus sign by default */
+        }
+
+        /* When the header is active (clicked), rotate the icon to a minus sign */
+        .step-header.active .accordion-icon::before {
+            content: '−'; /* Minus sign */
+        }
+        .step-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* The hidden content that expands */
+        .step-content {
+            max-height: 0; /* Hidden by default */
+            overflow: hidden;
+            background-color: #fafcff;
+            transition: max-height 0.4s ease-out, padding 0.3s ease-out; /* Smooth animation */
+            padding: 0 24px;
+        }
+        
+        /* Styles for the content inside the collapsible area */
+        .content-wrapper {
+            padding: 20px 0;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .content-wrapper p, .content-wrapper ol, .content-wrapper ul {
+            margin-top: 0;
+            line-height: 1.6;
+        }
+        
+        .content-wrapper ol, .content-wrapper ul {
+            padding-left: 25px;
+        }
+        
+        .content-wrapper li {
+            margin-bottom: 12px;
+        }
+        
+        .content-wrapper code {
+            background-color: #e9ecef;
+            padding: 3px 7px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.95em;
+            color: #d63384;
+            word-wrap: break-word;
+        }
+        
+        /* Styles for the final button and message */
+        .footer-section {
+            padding: 24px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        #revealButton {
+            display: none; /* Hidden by default */
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #6c757d; /* Disabled color */
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: not-allowed;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        #revealButton.all-complete {
+            display: inline-block; /* Show the button */
+            background-color: #28a745; /* Green (success) */
+            cursor: pointer;
+        }
+        
+        #revealButton.all-complete:hover {
+            background-color: #218838;
+            transform: scale(1.03);
+        }
+        
+        #secretMessage {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 16px;
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 6px;
+            color: #664d03;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        #secretMessage.show {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="guide-container">
+        <h1>The Super Simple D&T Project Guide</h1>
+
+        <h2>PART 1: Learning the Words (Using ChatGPT)</h2>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 1: Open ChatGPT</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Go to your computer.</li>
+                        <li>Open your internet browser (the icon for Google Chrome, Safari, Firefox, or Edge).</li>
+                        <li>Click on the long white bar at the very top of the screen (the address bar).</li>
+                        <li>Type this exactly: <code>chat.openai.com</code></li>
+                        <li>Press the <strong>Enter</strong> key on your keyboard.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 2: Log in to ChatGPT</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>You will see a webpage. Find the button that says <strong>"Log in"</strong>. Click it.</li>
+                        <li>Type your email address in the box.</li>
+                        <li>Type your password in the next box.</li>
+                        <li>Click the <strong>"Continue"</strong> button.</li>
+                        <li>(If you do not have an account, you must click <strong>"Sign up"</strong> and create one first. Then come back to this step).</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 3: Create new conversation</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>After you log in, look at the top-left corner of the screen.</li>
+                        <li>You will see a button that says <strong>"New Chat"</strong> or looks like a pencil icon.</li>
+                        <li>Click that button. This gives you a blank, fresh page so the AI (the computer) does not get confused by old conversations.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 4: Activate Study and Learn mode</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Look near the top of the screen where you might see "GPT-4" or a <strong>"+"</strong> icon.</li>
+                        <li>Click on the <strong>"+"</strong> button or the menu.</li>
+                        <li>A list will appear. Find the option that says <strong>"Study and Learn"</strong>. Click it.</li>
+                        <li>This tells the computer to act like a teacher for your specific IGCSE subject.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 5: Introduce the prompt</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>A "prompt" is just the instructions you type.</li>
+                        <li>Click inside the big text box at the bottom of the screen that says "Message...".</li>
+                        <li>Type <em>exactly</em> this:<br><code>I need you to explain to me from the point of view of IGCSE 0445 Design & Technology what ______________ is and how it is used. (place the topic to study in the blank space)</code></li>
+                        <li><strong>VERY IMPORTANT:</strong> Now, use your mouse to highlight and delete the <code>______________</code> (the blank line).</li>
+                        <li>In that <em>exact</em> spot, type the first topic you need to learn. For example, type <code>ACCESSFM</code>.</li>
+                        <li>Your full prompt will look like this: <code>I need you to explain to me from the point of view of IGCSE 0445 Design & Technology what ACCESSFM is and how it is used.</code></li>
+                        <li>Press the <strong>Enter</strong> key on your keyboard.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 6: Read, understand, ask, and interact</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>ChatGPT will write a lot of words. Your job is to read <em>all</em> of them.</li>
+                        <li>If you read a word you don't know, ask about it. Type: <code>What does the word "aesthetics" mean?</code></li>
+                        <li>If you are confused, tell it. Type: <code>Can you explain the "Function" part again, but simpler?</code></li>
+                        <li>Keep asking questions until your brain says, "Oh, okay, I finally get it now."</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 7: Provide a definition and uses...</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Now it's your turn to prove you learned it.</li>
+                        <li>In the same chat box, type <em>exactly</em> this prompt:<br><code>Ok, let me see if I understood: (here goes your DEFINITION AND USE of the topic), verify if it is right or not, if it is right, tell me that I can now put it in the Word doc, if it is wrong, only tell me what I should improve, do not give me a new definition but explain where I am going wrong</code></li>
+                        <li><strong>VERY IMPORTANT:</strong> Highlight and delete the text that says <code>(here goes your DEFINITION AND USE of the topic)</code>.</li>
+                        <li>In that <em>exact</em> spot, type what you learned <em>in your own words</em>.</li>
+                        <li><strong>Example:</strong> <code>Ok, let me see if I understood: ACCESSFM is a checklist to make sure your design is good. It checks if it looks nice, how much it costs, if it's safe, and if it actually works. Is that right?</code></li>
+                        <li>Press <strong>Enter</strong> and read the computer's answer. If it says you are right, you are ready for the next topic. If it says you are wrong, read <em>why</em> you are wrong and try Step 7 again.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 8: Repeat in a new conversation for each topic</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>This is a very important step. You are now going to learn the <em>next</em> topic.</li>
+                        <li>Go back and do <strong>Step 3 (Create new conversation)</strong>. This is required.</li>
+                        <li>Do <strong>Step 4 (Activate Study and Learn mode)</strong> again.</li>
+                        <li>Do <strong>Step 5 (Introduce the prompt)</strong>, but this time, in the blank space, type the <em>next topic</em> from the list (for example, <code>SWOT analysis</code>).</li>
+                        <li>Do <strong>Step 6 (Read and understand)</strong>.</li>
+                        <li>Do <strong>Step 7 (Provide your definition)</strong>.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Steps 9-14: The Topics To-Do List</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <p>These are not actions. This is your "to-do" list. You must do <strong>Steps 3 through 8</strong> for <em>every single one</em> of these 6 topics:</p>
+                    <ul>
+                        <li>ACCESSFM</li>
+                        <li>SWOT analysis</li>
+                        <li>Design Brief</li>
+                        <li>Design Specs</li>
+                        <li>Data Analysis</li>
+                        <li>User Research</li>
+                    </ul>
+                    <p>When you have 6 separate conversations and you understand all 6 topics, you are ready for Part 2.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>PART 2: Creating Your Project Document</h2>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 15: Create a Word DOC</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Go to your computer's applications or programs.</li>
+                        <li>Find and open <strong>Microsoft Word</strong> (the program with the blue "W" icon).</li>
+                        <li>Choose <strong>"Blank document"</strong>.</li>
+                        <li>At the top, click <strong>"File"</strong>, then <strong>"Save As"</strong>.</li>
+                        <li>Name your file something you will remember, like <code>D&T Project - My Name.docx</code>.</li>
+                        <li>Save it to your Desktop or a school folder where you can find it.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 16: By using styles, organize the Word doc...</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <p>This step is about making your document look professional and organized.</p>
+                    <ol>
+                        <li><strong>To create an Index (Table of Contents):</strong>
+                            <ul>
+                                <li>Click the <strong>"References"</strong> tab at the top of Word.</li>
+                                <li>Click the <strong>"Table of Contents"</strong> button on the far left.</li>
+                                <li>Choose a style. It will probably say "No entries found." That is OK. We will add them next.</li>
+                            </ul>
+                        </li>
+                        <li><strong>To use Titles (Title, Title 1, Title 2):</strong>
+                            <ul>
+                                <li>Click on the <strong>"Home"</strong> tab at the top.</li>
+                                <li>Find the box called <strong>"Styles"</strong> (it has examples like <code>Normal</code>, <code>Heading 1</code>, <code>Heading 2</code>).</li>
+                                <li>When you type a <em>main</em> title for a new section (like <code>Research</code>), highlight the word and click on <strong>"Heading 1"</strong> in the Styles box.</li>
+                                <li>When you type a <em>sub-title</em> (like <code>My Chosen Methodology</code>), highlight it and click <strong>"Heading 2"</strong>.</li>
+                            </ul>
+                        </li>
+                        <li><strong>To add Header and Footer:</strong>
+                            <ul>
+                                <li>Click the <strong>"Insert"</strong> tab at the top. Find and click the <strong>"Header"</strong> button. Choose a style and type your name.</li>
+                                <li>Click the <strong>"Insert"</strong> tab again. Find and click the <strong>"Footer"</strong> button, then the <strong>"Page Number"</strong> option.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 17: Create a new section titled "Application"</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>In your Word document, press the <strong>Enter</strong> key until you are on a new, blank page.</li>
+                        <li>Type the word: <code>Application</code></li>
+                        <li>Highlight this word with your mouse.</li>
+                        <li>Go to the <strong>"Home"</strong> tab and click <strong>"Heading 1"</strong> from the Styles box.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 18: Select one methodology</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>In Part 1, you learned about ACCESSFM and SWOT analysis.</li>
+                        <li>You must now <strong>choose one</strong> of them to use for your project. You cannot use both.</li>
+                        <li>Pick the one you understood the best or that makes the most sense for your project.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 19: Explain why you chose that</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>In your Word document, click under your "Application" title.</li>
+                        <li>Type a new sub-title: <code>My Chosen Methodology</code></li>
+                        <li>Highlight this text and click <strong>"Heading 2"</strong> from the Styles box.</li>
+                        <li>Under this new sub-title, write 2-3 sentences explaining <em>why</em> you picked the one you picked.</li>
+                        <li><strong>Example:</strong> <code>I chose to use ACCESSFM. I picked this methodology because my project is a physical sign, and ACCESSFM covers all the details I need to think about, like materials, size, and safety.</code></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 20: Create a survey (max 3 questions)</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>You need to ask people what they think of your <em>original</em> sign (the "bad" one you are going to fix).</li>
+                        <li>Think of 3 very simple questions. The prompt gives you examples.</li>
+                        <li><strong>Good example questions:</strong>
+                            <ol>
+                                <li><code>What is the first thing you think this sign is trying to tell you?</code></li>
+                                <li><code>What part of this sign is the most confusing?</code></li>
+                                <li><code>If you could change one thing to make it better, what would you change?</code></li>
+                            </ol>
+                        </li>
+                        <li>Type these 3 questions into your Word document (in a new section called "User Research") so you don't forget them.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 21: Ask MAXIMUM 4 people those questions</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Find 4 people. You can ask 1, 2, or 3 people, but <strong>do not ask more than 4</strong>.</li>
+                        <li>Show each person your <em>original</em> sign (the "bad" one).</li>
+                        <li>Ask them your 3 questions from Step 20.</li>
+                        <li>In your Word document, create a new section. Type <code>USER RESEARCH</code> and make it a <strong>"Heading 1"</strong>.</li>
+                        <li>Under that title, write down <em>exactly</em> what each person said.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+         <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 22: Explain what the users said</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>In the <em>same</em> "USER RESEARCH" section of your Word doc, click below the answers you just typed.</li>
+                        <li>Type a new sub-title: <code>Summary of Feedback</code> and make it a <strong>"Heading 2"</strong>.</li>
+                        <li>Write one paragraph that explains what you learned <em>in general</em>.</li>
+                        <li><strong>Example:</strong> <code>In general, all 4 people were confused about the sign's main message. The main weakness, mentioned by 3 out of 4 people, was that the text was too small. The main strength was that it was colorful, but the symbol I used was not effective.</code></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 23: Under a section called Data Analysis...</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>In your Word document, create a new section. Type <code>Data Analysis</code> and make it a <strong>"Heading 1"</strong>.</li>
+                        <li>This is where you <em>use</em> the methodology you picked in Step 18 (SWOT or ACCESSFM) and fill it in using the answers from Step 22.</li>
+                        <li><strong>If you chose ACCESSFM:</strong> Write down the list (Aesthetics, Cost, etc.) and explain what needs to be fixed.</li>
+                        <li><strong>If you chose SWOT:</strong> Write down the 4 categories (Strengths, Weaknesses, Opportunities, Threats) and explain them.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 24: Create a short design brief</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>A "Design Brief" is a short, simple paragraph that explains your entire plan.</li>
+                        <li>In your Word document, create a new section. Type <code>Design Brief</code> and make it a <strong>"Heading 1"</strong>.</li>
+                        <li>Now, write one paragraph (between 50 and 100 words) that answers the 4 questions from the prompt (Problem, Who has it, Purpose, User, Context).</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 25: Create a list of specs for your design</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>"Specs" (specifications) are a list of <em>rules</em> your new design <em>must</em> follow to be successful.</li>
+                        <li>The prompt warns you <strong>NOT</strong> to use the exact examples it gives.</li>
+                        <li>In your Word document, create a new section. Type <code>Design Specifications</code> and make it a <strong>"Heading 1"</strong>.</li>
+                        <li>Write a bullet-point list of 5-7 <em>new</em> rules for your design based on your data analysis.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <h2>PART 3: Making the New Design</h2>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 26: Using Canva, redo your sign</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Go to the website <code>Canva.com</code>. Log in or create a free account.</li>
+                        <li>Start a new, blank design.</li>
+                        <li>Now, look at your list of "Specs" from Step 25.</li>
+                        <li>Build your new sign in Canva, following <em>every single rule</em> you wrote.</li>
+                        <li>When you are finished, click the <strong>"Share"</strong> or <strong>"Download"</strong> button. Save the new sign to your computer as a PNG or JPG file.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 27: Ask your friends about comparing</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Find 1 or 2 friends.</li>
+                        <li>Show them your <strong>OLD</strong> sign (the "bad" original one).</li>
+                        <li>Now, show them your <strong>NEW</strong> sign (the one you just made on Canva).</li>
+                        <li>Ask them questions like: <code>"Is this new sign better than the old one? Why?"</code></li>
+                        <li>Listen very carefully to see if their feedback matches your improvements.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-header">
+                <input type="checkbox" class="step-checkbox">
+                <span class="step-title">Step 28: Write down the highlights</span>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="step-content">
+                <div class="content-wrapper">
+                    <ol>
+                        <li>Go back to your Word document for the last time.</li>
+                        <li>Create a final new section. Type <code>Final Review and Feedback</code> and make it a <strong>"Heading 1"</strong>.</li>
+                        <li>Write one last paragraph about what your friends said in Step 27.</li>
+                        <li><strong>Example:</strong> <code>Our partners reviewed our new sign and they found that it was 'much clearer'. This contrasts with what the first group said about the original sign...</code></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- This is the footer area with the button -->
+        <div class="footer-section">
+            <button id="revealButton">Claim Your Reward</button>
+            <div id="secretMessage">
+                <!-- The secret message will appear here -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all the elements we need to work with
+            const headers = document.querySelectorAll('.step-header');
+            const checkboxes = document.querySelectorAll('.step-checkbox');
+            const totalTasks = checkboxes.length;
+            const revealButton = document.getElementById('revealButton');
+            const secretMessage = document.getElementById('secretMessage');
+
+            // --- ACCORDION FUNCTIONALITY ---
+            headers.forEach(header => {
+                header.addEventListener('click', function(event) {
+                    // Only toggle the accordion if the click was NOT on the checkbox itself
+                    if (event.target.type !== 'checkbox') {
+                        // Toggle the 'active' class on the header for the icon change
+                        this.classList.toggle('active');
+
+                        // Find the content panel that is the next element
+                        const content = this.nextElementSibling;
+
+                        // Check if the content is open or closed
+                        if (content.style.maxHeight) {
+                            // If it's open, close it
+                            content.style.maxHeight = null;
+                            content.style.padding = '0 24px';
+                        } else {
+                            // If it's closed, open it by setting maxHeight
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                            content.style.padding = '0 24px';
+                        }
+                    }
+                });
+            });
+
+            // --- CHECKLIST FUNCTIONALITY ---
+            function checkAllTasksComplete() {
+                const completedTasks = document.querySelectorAll('.step-checkbox:checked').length;
+                if (completedTasks === totalTasks) {
+                    revealButton.classList.add('all-complete');
+                } else {
+                    revealButton.classList.remove('all-complete');
+                }
+            }
+
+            checkboxes.forEach(checkbox => {
+                const stepItem = checkbox.closest('.step-item');
+                
+                checkbox.addEventListener('change', function() {
+                    stepItem.classList.toggle('completed', this.checked);
+                    checkAllTasksComplete();
+                });
+            });
+
+            // --- REVEAL BUTTON FUNCTIONALITY ---
+            revealButton.addEventListener('click', function() {
+                if (this.classList.contains('all-complete')) {
+                    const now = new Date();
+                    const timestamp = now.toLocaleString();
+                    secretMessage.innerHTML = `your journey is over mon ami<br>Completed on: ${timestamp}`;
+                    secretMessage.classList.add('show');
+                }
+            });
+
+            // Run initial check in case page reloads with saved states
+            checkAllTasksComplete();
+        });
+    </script>
+
+</body>
+</html>
+
