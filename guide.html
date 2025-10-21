@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-R">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design & Technology Checklist</title>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .checklist-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1c1e21;
+            padding: 24px 20px 16px;
+            margin: 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* THIS IS THE TASK CONTAINER
+          It's what will turn green.
+        */
+        .task-item {
+            display: flex;
+            align-items: flex-start; /* Aligns checkbox with the first line of text */
+            padding: 16px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+            cursor: pointer; /* Indicates the whole item is clickable */
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-checkbox {
+            flex-shrink: 0; /* Prevents checkbox from shrinking */
+            transform: scale(1.4);
+            margin-right: 20px;
+            margin-top: 4px; /* Aligns checkbox nicely with text */
+            cursor: pointer;
+        }
+
+        .task-text {
+            font-size: 1.05em;
+            line-height: 1.5;
+            flex-grow: 1;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+        
+        /* Styles for prompts or examples within the text */
+        .task-text code {
+            background-color: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.95em;
+            color: #d63384;
+            /* Allow code blocks to break lines */
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        
+        .task-text ul {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            padding-left: 25px;
+        }
+        
+        .task-text strong {
+            color: #0d6efd;
+        }
+
+        /* THE MAGIC!
+          When 'task-item' also has the 'completed' class,
+          it changes its background to green.
+        */
+        .task-item.completed {
+            background-color: #d4edda; /* Soft green */
+            border-color: #c3e6cb;
+        }
+        
+        /* Optional: Strike-through text when completed */
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #5a6660;
+        }
+        
+        /* Styles for the final button and message */
+        .footer-section {
+            padding: 24px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        #revealButton {
+            display: none; /* Hidden by default */
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #6c757d; /* Disabled color */
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        /* This class is added by JavaScript when all tasks are done */
+        #revealButton.all-complete {
+            display: inline-block; /* Show the button */
+            background-color: #28a745; /* Green (success) */
+        }
+        
+        #revealButton.all-complete:hover {
+            background-color: #218838;
+            transform: scale(1.03);
+        }
+        
+        #secretMessage {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 16px;
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 6px;
+            color: #664d03;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        
+        /* This class is added by JavaScript when the button is clicked */
+        #secretMessage.show {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="checklist-container">
+        <h1>IGCSE D&T Project Checklist</h1>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>1)</strong> Open ChatGPT.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>2)</strong> Log in to ChatGPT.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>3)</strong> Create a new conversation.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>4)</strong> Activate Study and Learn mode (Click on the + and then Study and Learn).
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>5)</strong> Introduce the prompt: <code>"I need you to explain to me from the point of view of IGCSE 0445 Design & Technology what ______________ is and how it is used. (place the topic to study in the blank space)"</code>
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>6)</strong> Read, understand, ask, and interact with ChatGPT to obtain relevant information on the topic.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>7)</strong> Provide a definition and uses of the topic to ChatGPT with this prompt: <code>"Ok, let me see if I understood: (here goes your DEFINITION AND USE of the topic), verify if it is right or not, if it is right, tell me that I can now put it in the Word doc, if it is wrong, only tell me what I should improve, do not give me a new definition but explain where I am going wrong"</code>
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>8)</strong> Repeat in a new conversation for each topic.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>9)</strong> ACCESSFM
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>10)</strong> SWOT analysis
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>11)</strong> Design Brief
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>12)</strong> Design Specs
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>13)</strong> Data Analysis
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>14)</strong> User Research
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>15)</strong> Create a Word DOC.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>16)</strong> By using styles, organize the Word doc with index, titles, Title 1, Title 2, header and footer (and background for 9th grade).
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>17)</strong> Create a new section titled "Application".
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>18)</strong> Select one methodology (SWOT or ACCESSFM).
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>19)</strong> Explain why you chose that.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>20)</strong> Create a survey (max 3 questions) to gather information to fill your chosen methodology (e.g., "what do you think this sign needs to change?" or "what do you understand by this sign?").
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>21)</strong> Ask MAXIMUM 4 people those questions and store them in the Word doc under a section called "USER RESEARCH".
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>22)</strong> Explain what the users said in general about your sign, making clear its strengths and weaknesses (same section).
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>23)</strong> Under a section called "Data Analysis", write which elements (according to your methodology) must be improved (e.g., Aesthetics, Cost, Safety for ACCESSFM or state the Opportunities and Weaknesses for SWOT).
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>24)</strong> Create a short design brief (50 - 100 words) following the steps:
+                <ul>
+                    <li>A clear statement of the problem: What is wrong, missing, or could be improved?</li>
+                    <li>Who has the problem (the user or client)?</li>
+                    <li>Purpose of the design: State what you intend to design.</li>
+                    <li>Intended user or target market: Who will use it?</li>
+                    <li>Context of use: Where and how will it be used?</li>
+                </ul>
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>25)</strong> Create a list of specs for your design. (Example provided: Function, Materials, Visibility, Safety, Aesthetics, Maintenance). <strong>YOU CAN NOT USE THOSE.</strong>
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>26)</strong> Using Canva, redo your sign with all the corrections.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>27)</strong> Ask your friends to compare both signs and check if there was any improvement and check if what you said about the first sign is the same as they have.
+            </span>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" class="task-checkbox">
+            <span class="task-text">
+                <strong>28)</strong> Write down the highlights of that interaction (e.g., "our partners reviewed our sign and they found...", "and that contrasts with what people said...", "so in the revised version we found that...").
+            </span>
+        </div>
+
+
+        <div class="footer-section">
+            <button id="revealButton">Claim Your Reward</button>
+            <div id="secretMessage">
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Wait for the entire HTML document to be loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Get all the elements we need to work with
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const totalTasks = checkboxes.length;
+            const revealButton = document.getElementById('revealButton');
+            const secretMessage = document.getElementById('secretMessage');
+
+            // This function checks if all boxes are ticked
+            function checkAllTasksComplete() {
+                // Count how many checkboxes are currently checked
+                const completedTasks = document.querySelectorAll('.task-checkbox:checked').length;
+
+                if (completedTasks === totalTasks) {
+                    // All tasks are done! Show the button.
+                    revealButton.classList.add('all-complete');
+                } else {
+                    // Not all tasks are done. Hide the button.
+                    revealButton.classList.remove('all-complete');
+                }
+            }
+
+            // Loop through each checkbox
+            checkboxes.forEach(function(checkbox) {
+                
+                // Find the parent container (.task-item)
+                const taskItemContainer = checkbox.parentElement;
+
+                // Add a 'change' listener to the checkbox
+                checkbox.addEventListener('change', function() {
+                    // 'this' is the checkbox that was clicked
+                    // 'this.checked' is true if it's now checked, false if unchecked
+                    
+                    // Add/remove the 'completed' class based on check status
+                    taskItemContainer.classList.toggle('completed', this.checked);
+                    
+                    // After every change, check if all tasks are complete
+                    checkAllTasksComplete();
+                });
+
+                // BONUS: Allow clicking the whole text area to toggle the checkbox
+                taskItemContainer.addEventListener('click', function(event) {
+                    // Only run if the click was NOT on the checkbox itself
+                    // (to prevent this from running twice)
+                    if (event.target !== checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                        
+                        // Manually trigger the 'change' event we created above
+                        checkbox.dispatchEvent(new Event('change'));
+                    }
+                });
+            });
+
+            // Add a 'click' listener for the reveal button
+            revealButton.addEventListener('click', function() {
+                // Get the current date and time
+                const now = new Date();
+                const timestamp = now.toLocaleString(); // Format time for the user's locale
+
+                // Set and show the secret message
+                secretMessage.innerHTML = `your journey is over mon ami, paste this in you footer to get extra marks<br>Completed on: ${timestamp}`;
+                secretMessage.classList.add('show');
+            });
+            
+            // Run an initial check in case the page reloads with saved checkbox states
+            checkAllTasksComplete();
+
+        });
+    </script>
+
+</body>
+</html>
