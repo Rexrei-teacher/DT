@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Emergencies</title>
+    <!-- Incluimos Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Incluimos la fuente Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Incluimos Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Usamos la fuente Inter como fuente principal */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Color de fondo gris muy claro */
+        }
+        
+        /* Estilos para el estado activo de las pestañas */
+        .tab-button.active {
+            background-color: #ffffff;
+            color: var(--active-color, #dc2626); /* Color de emergencia dinámico */
+            border-bottom: 2px solid var(--active-color, #dc2626);
+        }
+        
+        /* Ocultar contenido de pestañas por defecto */
+        .tab-content {
+            display: none;
+        }
+        
+        /* Mostrar contenido de la pestaña activa */
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Pequeña animación de entrada para el contenido */
+        .tab-content.active {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        
+        <!-- Cabecera -->
+        <header class="relative text-center mb-8">
+            <i class="ph-duotone ph-student text-6xl text-blue-600"></i>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2" data-key="header_title">Protocolo de Role Play</h1>
+            <p class="text-lg text-gray-600 mt-2" data-key="header_subtitle">Guía de Actuación para Emergencias en el Taller (Grado 6)</p>
+            
+            <!-- Botón de Traducción -->
+            <button id="translate-toggle" onclick="toggleLanguage()" class="absolute top-0 right-0 p-2 text-gray-500 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transition" title="Cambiar idioma">
+                <i class="ph-duotone ph-globe text-3xl"></i>
+            </button>
+        </header>
+
+        <!-- Contenedor principal de pestañas -->
+        <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+            
+            <!-- Navegación de pestañas -->
+            <nav class="flex flex-wrap border-b border-gray-200" aria-label="Tabs">
+                <!-- Se usan flex-wrap y min-w-0 para mejorar la responsividad en móviles -->
+                <button class="tab-button active flex-1 md:flex-none min-w-0 p-4 font-semibold text-gray-500 hover:bg-gray-100 focus:outline-none" style="--active-color: #1d4ed8;" onclick="showTab(event, 'corte', '#1d4ed8')">
+                    <i class="ph-duotone ph-bandaids align-middle mr-2"></i> <span data-key="tab_corte">Corte (Cúter)</span>
+                </button>
+                <button class="tab-button flex-1 md:flex-none min-w-0 p-4 font-semibold text-gray-500 hover:bg-gray-100 focus:outline-none" style="--active-color: #dc2626;" onclick="showTab(event, 'quemadura', '#dc2626')">
+                    <i class="ph-duotone ph-fire align-middle mr-2"></i> <span data-key="tab_quemadura">Quemadura (Glue)</span>
+                </button>
+                <button class="tab-button flex-1 md:flex-none min-w-0 p-4 font-semibold text-gray-500 hover:bg-gray-100 focus:outline-none" style="--active-color: #7c3aed;" onclick="showTab(event, 'desmayo', '#7c3aed')">
+                    <i class="ph-duotone ph-person align-middle mr-2"></i> <span data-key="tab_desmayo">Desmayo</span>
+                </button>
+                <button class="tab-button flex-1 md:flex-none min-w-0 p-4 font-semibold text-gray-500 hover:bg-gray-100 focus:outline-none" style="--active-color: #ca8a04;" onclick="showTab(event, 'caida', '#ca8a04')">
+                    <i class="ph-duotone ph-warning-octagon align-middle mr-2"></i> <span data-key="tab_caida">Caída (Piso Mojado)</span>
+                </button>
+                <button class="tab-button flex-1 md:flex-none min-w-0 p-4 font-semibold text-gray-500 hover:bg-gray-100 focus:outline-none" style="--active-color: #4338ca;" onclick="showTab(event, 'electrico', '#4338ca')">
+                    <i class="ph-duotone ph-plugs-connected align-middle mr-2"></i> <span data-key="tab_electrico">Eléctrico</span>
+                </button>
+                <!-- NUEVA PESTAÑA PARA LA RÚBRICA -->
+                <button class="tab-button flex-1 md:flex-none min-w-0 p-4 font-semibold text-gray-500 hover:bg-gray-100 focus:outline-none" style="--active-color: #0d9488;" onclick="showTab(event, 'rubrica', '#0d9488')">
+                    <i class="ph-duotone ph-clipboard-text align-middle mr-2"></i> <span data-key="tab_rubrica">Rúbrica</span>
+                </button>
+            </nav>
+
+            <!-- Contenido de las pestañas -->
+            <div class="p-6 md:p-8">
+
+                <!-- Pestaña 1: Corte (Activa por defecto) -->
+                <div id="corte" class="tab-content active">
+                    <h2 class="text-2xl font-bold text-blue-700 mb-2" data-key="corte_escenario_titulo">Escenario 1: El Corte por Distracción</h2>
+                    <p class="text-gray-600 mb-6" data-key="corte_escenario_desc">Una estudiante se ríe, su mano resbala y el cúter le provoca un corte en el dedo. La hoja cae y mancha el papel de rojo.</p>
+                    <div class="space-y-4">
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-user"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_herido">Persona Herida</h3>
+                                <p class="text-gray-700" data-key="corte_rol_herido_desc">Mantén el dedo quieto y pide ayuda con calma.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-first-aid"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_respondiente">Primer Respondiente</h3>
+                                <p class="text-gray-700" data-key="corte_rol_respondiente_desc">Aleja el cúter (objeto peligroso) y aplica presión sobre la herida (simulado).</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-shield-warning"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_seguridad">Oficial de Seguridad</h3>
+                                <p class="text-gray-700" data-key="corte_rol_seguridad_desc">Detén el trabajo en el área y despeja el espacio alrededor de la persona herida.</p>
+                            </div>
+                        </div>
+                         <!-- Rol -->
+                         <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-phone-outgoing"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_reportero">Reportero</h3>
+                                <p class="text-gray-700" data-key="corte_rol_reportero_desc">Informa al profesor (quién, qué, dónde) y trae el botiquín de primeros auxilios.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Primeros Auxilios -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-first-aid-kit align-middle mr-2 text-green-600"></i>
+                            <span data-key="guia_pa_titulo_corte">Guía de Primeros Auxilios (Corte)</span>
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700" data-key="corte_guia_pasos">
+                            <li><strong>Prioridad: AVISAR AL PROFESOR</strong> y buscar el botiquín de primeros auxilios.</li>
+                            <li><strong>Evaluar el Sangrado:</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li><strong>Corte Menor (gotea):</strong> Lavar con agua limpia y jabón suave.</li>
+                                    <li><strong>Corte Mayor (sangra activamente):</strong> ¡No lavar! Ir directo al paso 3.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Aplicar Presión DIRECTA y FIRME:</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Usa una gasa estéril o el paño más limpio que encuentres.</li>
+                                    <li>Presiona con fuerza directamente sobre la herida.</li>
+                                    <li><strong>¡NO QUITES LA PRIMERA GASA!</strong> Si se empapa de sangre, pon más gasas limpias *encima* de la anterior y sigue presionando.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Elevar la Extremidad:</strong> Si el corte es en un brazo o pierna, elévalo por encima del nivel del corazón (mientras sigues presionando). Esto reduce el flujo de sangre.</li>
+                            <li><strong>Vigilar Shock:</strong> Observa si la persona está pálida, sudorosa, fría, mareada o confundida. Si es así, acuéstala (con los pies un poco elevados) y abrígala mientras esperas ayuda.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Sección de Gemini API -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-brain align-middle mr-2 text-blue-600"></i>
+                            <span data-key="gemini_titulo">Reflexión y Prevención</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4" data-key="gemini_desc">Usa la IA para generar ideas sobre cómo prevenir este accidente en el futuro.</p>
+                        <button onclick="getSafetyRules('corte', this)" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span data-key="gemini_boton">✨ Generar Reglas de Prevención</span>
+                        </button>
+                        <div id="loading-corte" class="hidden mt-4 flex items-center text-gray-500">
+                            <i class="ph-duotone ph-spinner-gap animate-spin text-2xl mr-2"></i>
+                            <span data-key="gemini_cargando">Generando ideas...</span>
+                        </div>
+                        <div id="rules-corte" class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña 2: Quemadura -->
+                <div id="quemadura" class="tab-content">
+                    <h2 class="text-2xl font-bold text-red-700 mb-2" data-key="quemadura_escenario_titulo">Escenario 2: La Quemadura por Pegamento Caliente</h2>
+                    <p class="text-gray-600 mb-6" data-key="quemadura_escenario_desc">Una burbuja de pegamento caliente salta y aterriza en la cara de un estudiante. Al soltar la pistola, esta cae sobre la mesa, aún enchufada y caliente.</p>
+                    <div class="space-y-4">
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-user"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_herido">Persona Herida</h3>
+                                <p class="text-gray-700" data-key="quemadura_rol_herido_desc">Simula dolor por la quemadura, pero mantén la calma. No te toques la cara.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-first-aid"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_respondiente">Primer Respondiente</h3>
+                                <p class="text-gray-700" data-key="quemadura_rol_respondiente_desc">Desenchufa la pistola de pegamento. Guía al herido al lavamanos para aplicar agua fría (simulado).</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-shield-warning"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_seguridad">Oficial de Seguridad</h3>
+                                <p class="text-gray-700" data-key="quemadura_rol_seguridad_desc">Asegura la pistola caliente en su base. Mantiene a otros estudiantes alejados del área.</p>
+                            </div>
+                        </div>
+                         <!-- Rol -->
+                         <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-phone-outgoing"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_reportero">Reportero</h3>
+                                <p class="text-gray-700" data-key="quemadura_rol_reportero_desc">Informa al profesor inmediatamente y describe la quemadura (dónde, con qué).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Primeros Auxilios -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-first-aid-kit align-middle mr-2 text-green-600"></i>
+                            <span data-key="guia_pa_titulo_quemadura">Guía de Primeros Auxilios (Quemadura)</span>
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700" data-key="quemadura_guia_pasos">
+                            <li><strong>Avisar al profesor</strong> inmediatamente.</li>
+                            <li><strong>¡Agua Fría CORRIENTE! (10-15 min):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>La acción más importante es enfriar la piel para detener el daño.</li>
+                                    <li>Usa agua fría del grifo (no helada, sin hielo). Deja que corra sobre la quemadura.</li>
+                                </ul>
+                            </li>
+                            <li><strong>¡NO Quitar el Pegamento!:</strong> Si el pegamento caliente está pegado a la piel, no intentes despegarlo. El agua fría lo endurecerá y enfriará, y quitarlo podría arrancar la piel.</li>
+                            <li><strong>Proteger la Quemadura (No "curar"):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Cubre la zona *sin apretar* con una gasa estéril (preferiblemente húmeda) o film transparente de cocina (limpio).</li>
+                                    <li>Esto protege de infecciones y del dolor causado por el aire.</li>
+                                    <li><strong>¡NUNCA USES!</strong> Algodón, hielo directo, cremas, ungüentos, mantequilla o pasta de dientes.</li>
+                                </ul>
+                            </li>
+                            <li>Quitar ropa o joyas cercanas a la quemadura, *excepto* si están pegadas a la piel.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Sección de Gemini API -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-brain align-middle mr-2 text-red-600"></i>
+                            <span data-key="gemini_titulo">Reflexión y Prevención</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4" data-key="gemini_desc">Usa la IA para generar ideas sobre cómo prevenir este accidente en el futuro.</p>
+                        <button onclick="getSafetyRules('quemadura', this)" class="inline-flex items-center px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span data-key="gemini_boton">✨ Generar Reglas de Prevención</span>
+                        </button>
+                        <div id="loading-quemadura" class="hidden mt-4 flex items-center text-gray-500">
+                            <i class="ph-duotone ph-spinner-gap animate-spin text-2xl mr-2"></i>
+                            <span data-key="gemini_cargando">Generando ideas...</span>
+                        </div>
+                        <div id="rules-quemadura" class="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña 3: Desmayo -->
+                <div id="desmayo" class="tab-content">
+                    <h2 class="text-2xl font-bold text-purple-700 mb-2" data-key="desmayo_escenario_titulo">Escenario 3: El Desmayo Repentino</h2>
+                    <p class="text-gray-600 mb-6" data-key="desmayo_escenario_desc">Un estudiante que ha estado de pie mucho tiempo sin beber agua, se marea y se desploma lentamente en el suelo.</p>
+                    <div class="space-y-4">
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-user"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_herido">Persona Herida</h3>
+                                <p class="text-gray-700" data-key="desmayo_rol_herido_desc">Permanece en el suelo, quieta, simulando estar inconsciente o mareada.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-first-aid"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_respondiente">Primer Respondiente</h3>
+                                <p class="text-gray-700" data-key="desmayo_rol_respondiente_desc">Asegura que el área sea segura (que no haya caído sobre nada). Revisa si respira y habla con calma a la persona.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-shield-warning"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_seguridad">Oficial de Seguridad</h3>
+                                <p class="text-gray-700" data-key="desmayo_rol_seguridad_desc">Despeja el área de inmediato. Pide a los demás estudiantes que den espacio.</p>
+                            </div>
+                        </div>
+                         <!-- Rol -->
+                         <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-phone-outgoing"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_reportero">Reportero</h3>
+                                <p class="text-gray-700" data-key="desmayo_rol_reportero_desc">Llama al profesor con calma, informando de un posible desmayo.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Primeros Auxilios -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-first-aid-kit align-middle mr-2 text-green-600"></i>
+                            <span data-key="guia_pa_titulo_desmayo">Guía de Primeros Auxilios (Desmayo)</span>
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700" data-key="desmayo_guia_pasos">
+                            <li><strong>Avisar al profesor</strong>.</li>
+                            <li><strong>Revisar Peligros:</strong> Asegurarse de que el área es segura (que no haya caído sobre vidrios, cables, etc.).</li>
+                            <li><strong>Revisar Respuesta y Respiración (ABC):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Habla a la persona: "¿Estás bien? ¿Puedes oírme?".</li>
+                                    <li>Mira si su pecho se mueve. Acerca tu oído a su boca para sentir la respiración.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Si Respira (Desmayo común):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Acuéstala boca arriba y levanta sus piernas unos 30 cm (sobre una mochila o silla baja). Esto envía sangre al cerebro.</li>
+                                    <li>Afloja ropa apretada (cuello, cinturón).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Si NO Responde pero Respira:</strong> Colocar en <strong>Posición Lateral de Seguridad (PLS)</strong>. Esto evita que se ahogue si vomita. (El profesor debe enseñar esta técnica).</li>
+                            <li><strong>Si NO Respira:</strong> Gritar por ayuda. "¡NO RESPIRA, NECESITAMOS AYUDA PROFESIONAL Y UN DEA (Desfibrilador)!". Iniciar RCP solo si se está entrenado.</li>
+                            <li><strong>Al Despertar:</strong> Tranquilizar. No dejes que se levante de inmediato. Siéntala y dale agua o jugo (sólo si está 100% despierta).</li>
+                        </ol>
+                    </div>
+
+                    <!-- Sección de Gemini API -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-brain align-middle mr-2 text-purple-600"></i>
+                            <span data-key="gemini_titulo">Reflexión y Prevención</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4" data-key="gemini_desc">Usa la IA para generar ideas sobre cómo prevenir este accidente en el futuro.</p>
+                        <button onclick="getSafetyRules('desmayo', this)" class="inline-flex items-center px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-75 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span data-key="gemini_boton">✨ Generar Reglas de Prevención</span>
+                        </button>
+                        <div id="loading-desmayo" class="hidden mt-4 flex items-center text-gray-500">
+                            <i class="ph-duotone ph-spinner-gap animate-spin text-2xl mr-2"></i>
+                            <span data-key="gemini_cargando">Generando ideas...</span>
+                        </div>
+                        <div id="rules-desmayo" class="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg text-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña 4: Caída -->
+                <div id="caida" class="tab-content">
+                    <h2 class="text-2xl font-bold text-yellow-700 mb-2" data-key="caida_escenario_titulo">Escenario 4: La Caída por Resbalón</h2>
+                    <p class="text-gray-600 mb-6" data-key="caida_escenario_desc">Un estudiante que lleva su prototipo pisa un charco de agua cerca del lavamanos, resbala y cae hacia atrás. El modelo se rompe.</p>
+                    <div class="space-y-4">
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-user"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_herido">Persona Herida</h3>
+                                <p class="text-gray-700" data-key="caida_rol_herido_desc">Permanece en el suelo, sentándose con cuidado. No intentes levantarte de inmediato.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-first-aid"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_respondiente">Primer Respondiente</h3>
+                                <p class="text-gray-700" data-key="caida_rol_respondiente_desc">Acércate con cuidado (sin pisar el charco). Pregunta a la persona si puede moverse o si siente dolor.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-shield-warning"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_seguridad">Oficial de Seguridad</h3>
+                                <p class="text-gray-700" data-key="caida_rol_seguridad_desc">¡Bloquea el área del derrame! Coloca una silla o señal para que nadie más pise el charco.</p>
+                            </div>
+                        </div>
+                         <!-- Rol -->
+                         <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-phone-outgoing"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_reportero">Reportero</h3>
+                                <p class="text-gray-700" data-key="caida_rol_reportero_desc">Informa al profesor sobre la caída y la ubicación del piso mojado.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Primeros Auxilios -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-first-aid-kit align-middle mr-2 text-green-600"></i>
+                            <span data-key="guia_pa_titulo_caida">Guía de Primeros Auxilios (Caída)</span>
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700" data-key="caida_guia_pasos">
+                            <li><strong>Avisar al profesor</strong>.</li>
+                            <li><strong>¡REGLA DE ORO: NO MOVER!</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Acércate y dile: "No te muevas, la ayuda viene".</li>
+                                    <li>Pregunta: "¿Te duele el cuello o la espalda?".</li>
+                                    <li>Si la respuesta es SÍ, o si está inconsciente, <strong>NO MOVER BAJO NINGUNA CIRCUNSTANCIA</strong>. Moverla podría causar parálisis.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Revisar Golpe en la Cabeza:</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Pregunta cosas simples: "¿Cómo te llamas? ¿Dónde estamos?".</li>
+                                    <li>Busca sangrado en cabeza, nariz u oídos.</li>
+                                    <li>Vigila si hay confusión, vómitos o somnolencia. Son señales de alerta graves.</li>
+                                    <li>Aplica frío (hielo envuelto) en el golpe.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Revisar Esguinces/Fracturas (Tobillo, Muñeca):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Si hay dolor intenso, hinchazón o deformidad en una extremidad.</li>
+                                    <li>Inmovilizar: No dejes que apoye el pie o mueva el brazo.</li>
+                                    <li>Aplicar frío (hielo envuelto en un paño) para reducir la hinchazón.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Sección de Gemini API -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-brain align-middle mr-2 text-yellow-600"></i>
+                            <span data-key="gemini_titulo">Reflexión y Prevención</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4" data-key="gemini_desc">Usa la IA para generar ideas sobre cómo prevenir este accidente en el futuro.</p>
+                        <button onclick="getSafetyRules('caida', this)" class="inline-flex items-center px-4 py-2 bg-yellow-600 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-75 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span data-key="gemini_boton">✨ Generar Reglas de Prevención</span>
+                        </button>
+                        <div id="loading-caida" class="hidden mt-4 flex items-center text-gray-500">
+                            <i class="ph-duotone ph-spinner-gap animate-spin text-2xl mr-2"></i>
+                            <span data-key="gemini_cargando">Generando ideas...</span>
+                        </div>
+                        <div id="rules-caida" class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña 5: Eléctrico -->
+                <div id="electrico" class="tab-content">
+                    <h2 class="text-2xl font-bold text-indigo-700 mb-2" data-key="electrico_escenario_titulo">Escenario 5: El Susto Eléctrico</h2>
+                    <p class="text-gray-600 mb-6" data-key="electrico_escenario_desc">Al probar un modelo motorizado, hay una chispa, olor a plástico quemado y el motor se detiene. Una estudiante se asusta y salta hacia atrás.</p>
+                    <div class="space-y-4">
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-user"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_herido">Persona Herida</h3>
+                                <p class="text-gray-700" data-key="electrico_rol_herido_desc">Da un paso atrás rápidamente, actúa asustada por la chispa.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-first-aid"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_respondiente">Primer Respondiente</h3>
+                                <p class="text-gray-700" data-key="electrico_rol_respondiente_desc">Grita "¡No toquen nada!" y asegura que nadie se acerque a los cables o al modelo.</p>
+                            </div>
+                        </div>
+                        <!-- Rol -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-shield-warning"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_seguridad">Oficial de Seguridad</h3>
+                                <p class="text-gray-700" data-key="electrico_rol_seguridad_desc">Desconecta la fuente de poder (la batería o el enchufe) de forma segura, si sabe cómo hacerlo.</p>
+                            </div>
+                        </div>
+                         <!-- Rol -->
+                         <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg"><i class="ph-bold ph-phone-outgoing"></i></div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900" data-key="rol_reportero">Reportero</h3>
+                                <p class="text-gray-700" data-key="electrico_rol_reportero_desc">Informa al profesor sobre la chispa, el olor a quemado y el modelo involucrado.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Primeros Auxilios -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-first-aid-kit align-middle mr-2 text-green-600"></i>
+                            <span data-key="guia_pa_titulo_electrico">Guía de Primeros Auxilios (Eléctrico)</span>
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700" data-key="electrico_guia_pasos">
+                            <li><strong>¡PELIGRO! ¡NO TOCAR!</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>La electricidad puede "saltar" y electrocutarte a ti también.</li>
+                                    <li>Tu seguridad es la prioridad N°1.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Cortar la Corriente:</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Es la acción más importante. Desconecta la batería, desenchufa el cable o baja el interruptor general (breaker) del taller.</li>
+                                    <li>Grita "¡AYUDA, DESCARGA ELÉCTRICA!" mientras lo haces.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Si NO Puedes Cortar la Corriente (Último Recurso):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Busca un objeto <strong>seco y no conductor</strong> (palo de escoba de madera, silla de plástico).</li>
+                                    <li>Párate sobre algo seco (alfombra de goma, libros).</li>
+                                    <li>Usa el objeto para empujar el cable o a la persona *lejos* de la fuente de electricidad.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Una vez Seguro (Corriente Cortada):</strong>
+                                <ul class="list-disc list-inside ml-5 mt-1">
+                                    <li>Revisa si la persona responde y respira (ver Paso 3 de Desmayo).</li>
+                                    <li>Una descarga eléctrica puede detener el corazón. Si no respira, se necesita RCP y un DEA inmediatamente.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Buscar Quemaduras:</strong> La electricidad deja quemaduras de entrada y salida (a menudo en manos y pies). Cúbrelas con gasa limpia.</li>
+                            <li><strong>Atención Médica Urgente:</strong> Toda descarga eléctrica requiere evaluación médica, incluso si la persona parece estar bien.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Sección de Gemini API -->
+                    <hr class="my-6 border-gray-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i class="ph-duotone ph-brain align-middle mr-2 text-indigo-600"></i>
+                            <span data-key="gemini_titulo">Reflexión y Prevención</span>
+                        </h3>
+                        <p class="text-gray-600 mb-4" data-key="gemini_desc">Usa la IA para generar ideas sobre cómo prevenir este accidente en el futuro.</p>
+                        <button onclick="getSafetyRules('electrico', this)" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span data-key="gemini_boton">✨ Generar Reglas de Prevención</span>
+                        </button>
+                        <div id="loading-electrico" class="hidden mt-4 flex items-center text-gray-500">
+                            <i class="ph-duotone ph-spinner-gap animate-spin text-2xl mr-2"></i>
+                            <span data-key="gemini_cargando">Generando ideas...</span>
+                        </div>
+                        <div id="rules-electrico" class="mt-4 p-4 bg-indigo-50 border border-indigo-200 rounded-lg text-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- Pestaña 6: Rúbrica (NUEVA) -->
+                <div id="rubrica" class="tab-content">
+                    <h2 class="text-2xl font-bold text-teal-700 mb-6" data-key="rubrica_titulo">Rúbrica de Evaluación</h2>
+                    
+                    <!-- Contenedor para scroll horizontal en móviles -->
+                    <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                        
+                        <!-- Tabla en Inglés (Se muestra/oculta por JS) -->
+                        <table class="min-w-full divide-y divide-gray-200" data-lang-table="en">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_criteria">Criteria</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_excelente">4 – Excellent</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_bueno">3 – Good</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_desarrollo">2 – Developing</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_mejora">1 – Needs Improvement</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_1_nombre">Performance & Realism</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_4">Role play is very realistic, calm, and clearly shows understanding of the emergency scenario; all group members fully engaged and confident in their roles.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_3">Role play is mostly realistic with minor lapses in calmness or clarity; most group members engaged and understand their roles well.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_2">Role play shows some understanding but lacks calmness or clarity; some group members are not fully engaged or unsure of roles.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_1">Role play is unrealistic or chaotic; group members are disengaged or do not understand their roles.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_2_nombre">Use of Props & Creativity</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_4">Props are used effectively to enhance realism and learning; creative approaches clearly support the scenario and safety message.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_3">Props are used appropriately with some creativity; contribute to understanding the scenario.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_2">Minimal use of props; limited creativity that only somewhat supports the scenario.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_1">No use of props or creativity; role play lacks engagement and support from materials.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_3_nombre">Safety Procedures</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_4">Demonstrates clear, calm, and correct safety procedures; follows all instructions precisely to ensure safety of all participants.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_3">Generally follows safety procedures with minor errors or hesitations; mostly ensures safety.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_2">Some safety procedures followed but with significant errors or omissions that could cause confusion.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_1">Safety procedures are mostly ignored or incorrectly performed, risking unsafe conditions.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_4_nombre">Respect, Self-Awareness & Teamwork</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_4">Shows high respect for self and others; communicates calmly and clearly; supports teammates and reflects thoughtfully after role play.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_3">Shows respect and communicates clearly most of the time; generally supportive and aware of team dynamics.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_2">Shows limited respect or awareness; communication is sometimes unclear or disruptive to teamwork.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_1">Lacks respect or awareness; communication is poor; disruptive to group and learning environment.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Tabla en Español (Se muestra/oculta por JS) -->
+                        <table class="min-w-full divide-y divide-gray-200" data-lang-table="es" style="display: none;">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_criteria">Criterio</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_excelente">4 – Excelente</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_bueno">3 – Bueno</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_desarrollo">2 – En Desarrollo</th>
+                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" data-key="rubrica_mejora">1 – Necesita Mejora</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_1_nombre">Desempeño y Realismo</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_4_es">El role play es muy realista, calmado y muestra claramente la comprensión del escenario de emergencia; todos los miembros del grupo están completamente comprometidos y seguros en sus roles.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_3_es">El role play es mayormente realista con pequeños lapsos de calma o claridad; la mayoría de los miembros del grupo están comprometidos y entienden bien sus roles.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_2_es">El role play muestra cierta comprensión pero carece de calma o claridad; algunos miembros del grupo no están completamente comprometidos o no están seguros de sus roles.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_1_1_es">El role play no es realista o es caótico; los miembros del grupo están desconectados o no entienden sus roles.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_2_nombre">Uso de Accesorios y Creatividad</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_4_es">Los accesorios se utilizan eficazmente para mejorar el realismo y el aprendizaje; los enfoques creativos apoyan claramente el escenario y el mensaje de seguridad.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_3_es">Los accesorios se utilizan adecuadamente con algo de creatividad; contribuyen a la comprensión del escenario.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_2_es">Uso mínimo de accesorios; creatividad limitada que solo apoya parcialmente el escenario.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_2_1_es">No se utilizan accesorios ni creatividad; el role play carece de compromiso y apoyo de materiales.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_3_nombre">Procedimientos de Seguridad</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_4_es">Demuestra procedimientos de seguridad claros, calmados y correctos; sigue todas las instrucciones con precisión para garantizar la seguridad de todos los participantes.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_3_es">Generalmente sigue los procedimientos de seguridad con errores menores o vacilaciones; garantiza la seguridad en su mayor parte.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_2_es">Se siguen algunos procedimientos de seguridad pero con errores u omisiones significativas que podrían causar confusión.</td>
+                                    <td classs="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_3_1_es">Los procedimientos de seguridad se ignoran en su mayoría o se realizan incorrectamente, arriesgando condiciones inseguras.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-900 align-top" data-key="rubrica_crit_4_nombre">Respeto, Autoconciencia y Trabajo en Equipo</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_4_es">Muestra un alto respeto por sí mismo y por los demás; se comunica con calma y claridad; apoya a sus compañeros y reflexiona atentamente después del role play.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_3_es">Muestra respeto y se comunica claramente la mayor parte del tiempo; generalmente es solidario y consciente de la dinámica del equipo.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_2_es">Muestra respeto o conciencia limitados; la comunicación a veces no es clara o perturba el trabajo en equipo.</td>
+                                    <td class="px-4 py-4 text-sm text-gray-700 align-top" data-key="rubrica_crit_4_1_es">Carece de respeto o conciencia; la comunicación es deficiente; perturba al grupo y al ambiente de aprendizaje.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-8">
+            <p class="text-sm text-gray-500" data-key="footer_text">Recuerda: La seguridad es la prioridad número uno. Ante la duda, pregunta al profesor.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        let currentLang = 'en'; // Idioma inicial (Cambiado a 'en')
+
+        // Objeto con todas las traducciones
+        const translations = {
+            'es': {
+                'header_title': 'Protocolo de Role Play',
+                'header_subtitle': 'Guía de Actuación para Emergencias en el Taller (Grado 6)',
+                'tab_corte': 'Corte (Cúter)',
+                'tab_quemadura': 'Quemadura (Glue)',
+                'tab_desmayo': 'Desmayo',
+                'tab_caida': 'Caída (Piso Mojado)',
+                'tab_electrico': 'Eléctrico',
+                'tab_rubrica': 'Rúbrica', // NUEVA TRADUCCIÓN
+                'rol_herido': 'Persona Herida',
+                'rol_respondiente': 'Primer Respondiente',
+                'rol_seguridad': 'Oficial de Seguridad',
+                'rol_reportero': 'Reportero',
+                'corte_escenario_titulo': 'Escenario 1: El Corte por Distracción',
+                'corte_escenario_desc': 'Una estudiante se ríe, su mano resbala y el cúter le provoca un corte en el dedo. La hoja cae y mancha el papel de rojo.',
+                'corte_rol_herido_desc': 'Mantén el dedo quieto y pide ayuda con calma.',
+                'corte_rol_respondiente_desc': 'Aleja el cúter (objeto peligroso) y aplica presión sobre la herida (simulado).',
+                'corte_rol_seguridad_desc': 'Detén el trabajo en el área y despeja el espacio alrededor de la persona herida.',
+                'corte_rol_reportero_desc': 'Informa al profesor (quién, qué, dónde) y trae el botiquín de primeros auxilios.',
+                'guia_pa_titulo_corte': 'Guía de Primeros Auxilios (Corte)',
+                'corte_guia_pasos': `<li><strong>Prioridad: AVISAR AL PROFESOR</strong> y buscar el botiquín de primeros auxilios.</li>
+                    <li><strong>Evaluar el Sangrado:</strong><ul class="list-disc list-inside ml-5 mt-1"><li><strong>Corte Menor (gotea):</strong> Lavar con agua limpia y jabón suave.</li><li><strong>Corte Mayor (sangra activamente):</strong> ¡No lavar! Ir directo al paso 3.</li></ul></li>
+                    <li><strong>Aplicar Presión DIRECTA y FIRME:</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Usa una gasa estéril o el paño más limpio que encuentres.</li><li>Presiona con fuerza directamente sobre la herida.</li><li><strong>¡NO QUITES LA PRIMERA GASA!</strong> Si se empapa de sangre, pon más gasas limpias *encima* de la anterior y sigue presionando.</li></ul></li>
+                    <li><strong>Elevar la Extremidad:</strong> Si el corte es en un brazo o pierna, elévalo por encima del nivel del corazón (mientras sigues presionando). Esto reduce el flujo de sangre.</li>
+                    <li><strong>Vigilar Shock:</strong> Observa si la persona está pálida, sudorosa, fría, mareada o confundida. Si es así, acuéstala (con los pies un poco elevados) y abrígala mientras esperas ayuda.</li>`,
+                'gemini_titulo': 'Reflexión y Prevención',
+                'gemini_desc': 'Usa la IA para generar ideas sobre cómo prevenir este accidente en el futuro.',
+                'gemini_boton': '✨ Generar Reglas de Prevención',
+                'gemini_cargando': 'Generando ideas...',
+                'quemadura_escenario_titulo': 'Escenario 2: La Quemadura por Pegamento Caliente',
+                'quemadura_escenario_desc': 'Una burbuja de pegamento caliente salta y aterriza en la cara de un estudiante. Al soltar la pistola, esta cae sobre la mesa, aún enchufada y caliente.',
+                'quemadura_rol_herido_desc': 'Simula dolor por la quemadura, pero mantén la calma. No te toques la cara.',
+                'quemadura_rol_respondiente_desc': 'Desenchufa la pistola de pegamento. Guía al herido al lavamanos para aplicar agua fría (simulado).',
+                'quemadura_rol_seguridad_desc': 'Asegura la pistola caliente en su base. Mantiene a otros estudiantes alejados del área.',
+                'quemadura_rol_reportero_desc': 'Informa al profesor inmediatamente y describe la quemadura (dónde, con qué).',
+                'guia_pa_titulo_quemadura': 'Guía de Primeros Auxilios (Quemadura)',
+                'quemadura_guia_pasos': `<li><strong>Avisar al profesor</strong> inmediatamente.</li>
+                    <li><strong>¡Agua Fría CORRIENTE! (10-15 min):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>La acción más importante es enfriar la piel para detener el daño.</li><li>Usa agua fría del grifo (no helada, sin hielo). Deja que corra sobre la quemadura.</li></ul></li>
+                    <li><strong>¡NO Quitar el Pegamento!:</strong> Si el pegamento caliente está pegado a la piel, no intentes despegarlo. El agua fría lo endurecerá y enfriará, y quitarlo podría arrancar la piel.</li>
+                    <li><strong>Proteger la Quemadura (No "curar"):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Cubre la zona *sin apretar* con una gasa estéril (preferiblemente húmeda) o film transparente de cocina (limpio).</li><li>Esto protege de infecciones y del dolor causado por el aire.</li><li><strong>¡NUNCA USES!</strong> Algodón, hielo directo, cremas, ungüentos, mantequilla o pasta de dientes.</li></ul></li>
+                    <li>Quitar ropa o joyas cercanas a la quemadura, *excepto* si están pegadas a la piel.</li>`,
+                'desmayo_escenario_titulo': 'Escenario 3: El Desmayo Repentino',
+                'desmayo_escenario_desc': 'Un estudiante que ha estado de pie mucho tiempo sin beber agua, se marea y se desploma lentamente en el suelo.',
+                'desmayo_rol_herido_desc': 'Permanece en el suelo, quieta, simulando estar inconsciente o mareada.',
+                'desmayo_rol_respondiente_desc': 'Asegura que el área sea segura (que no haya caído sobre nada). Revisa si respira y habla con calma a la persona.',
+                'desmayo_rol_seguridad_desc': 'Despeja el área de inmediato. Pide a los demás estudiantes que den espacio.',
+                'desmayo_rol_reportero_desc': 'Llama al profesor con calma, informando de un posible desmayo.',
+                'guia_pa_titulo_desmayo': 'Guía de Primeros Auxilios (Desmayo)',
+                'desmayo_guia_pasos': `<li><strong>Avisar al profesor</strong>.</li>
+                    <li><strong>Revisar Peligros:</strong> Asegurarse de que el área es segura (que no haya caído sobre vidrios, cables, etc.).</li>
+                    <li><strong>Revisar Respuesta y Respiración (ABC):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Habla a la persona: "¿Estás bien? ¿Puedes oírme?".</li><li>Mira si su pecho se mueve. Acerca tu oído a su boca para sentir la respiración.</li></ul></li>
+                    <li><strong>Si Respira (Desmayo común):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Acuéstala boca arriba y levanta sus piernas unos 30 cm (sobre una mochila o silla baja). Esto envía sangre al cerebro.</li><li>Afloja ropa apretada (cuello, cinturón).</li></ul></li>
+                    <li><strong>Si NO Responde pero Respira:</strong> Colocar en <strong>Posición Lateral de Seguridad (PLS)</strong>. Esto evita que se ahogue si vomita. (El profesor debe enseñar esta técnica).</li>
+                    <li><strong>Si NO Respira:</strong> Gritar por ayuda. "¡NO RESPIRA, NECESITAMOS AYUDA PROFESIONAL Y UN DEA (Desfibrilador)!". Iniciar RCP solo si se está entrenado.</li>
+                    <li><strong>Al Despertar:</strong> Tranquilizar. No dejes que se levante de inmediato. Siéntala y dale agua o jugo (sólo si está 100% despierta).</li>`,
+                'caida_escenario_titulo': 'Escenario 4: La Caída por Resbalón',
+                'caida_escenario_desc': 'Un estudiante que lleva su prototipo pisa un charco de agua cerca del lavamanos, resbala y cae hacia atrás. El modelo se rompe.',
+                'caida_rol_herido_desc': 'Permanece en el suelo, sentándose con cuidado. No intentes levantarte de inmediato.',
+                'caida_rol_respondiente_desc': 'Acércate con cuidado (sin pisar el charco). Pregunta a la persona si puede moverse o si siente dolor.',
+                'caida_rol_seguridad_desc': '¡Bloquea el área del derrame! Coloca una silla o señal para que nadie más pise el charco.',
+                'caida_rol_reportero_desc': 'Informa al profesor sobre la caída y la ubicación del piso mojado.',
+                'guia_pa_titulo_caida': 'Guía de Primeros Auxilios (Caída)',
+                'caida_guia_pasos': `<li><strong>Avisar al profesor</strong>.</li>
+                    <li><strong>¡REGLA DE ORO: NO MOVER!</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Acércate y dile: "No te muevas, la ayuda viene".</li><li>Pregunta: "¿Te duele el cuello o la espalda?".</li><li>Si la respuesta es SÍ, o si está inconsciente, <strong>NO MOVER BAJO NINGUNA CIRCUNSTANCIA</strong>. Moverla podría causar parálisis.</li></ul></li>
+                    <li><strong>Revisar Golpe en la Cabeza:</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Pregunta cosas simples: "¿Cómo te llamas? ¿Dónde estamos?".</li><li>Busca sangrado en cabeza, nariz u oídos.</li><li>Vigila si hay confusión, vómitos o somnolencia. Son señales de alerta graves.</li><li>Aplica frío (hielo envuelto) en el golpe.</li></ul></li>
+                    <li><strong>Revisar Esguinces/Fracturas (Tobillo, Muñeca):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Si hay dolor intenso, hinchazón o deformidad en una extremidad.</li><li>Inmovilizar: No dejes que apoye el pie o mueva el brazo.</li><li>Aplicar frío (hielo envuelto en un paño) para reducir la hinchazón.</li></ul></li>`,
+                'electrico_escenario_titulo': 'Escenario 5: El Susto Eléctrico',
+                'electrico_escenario_desc': 'Al probar un modelo motorizado, hay una chispa, olor a plástico quemado y el motor se detiene. Una estudiante se asusta y salta hacia atrás.',
+                'electrico_rol_herido_desc': 'Da un paso atrás rápidamente, actúa asustada por la chispa.',
+                'electrico_rol_respondiente_desc': 'Grita "¡No toquen nada!" y asegura que nadie se acerque a los cables o al modelo.',
+                'electrico_rol_seguridad_desc': 'Desconecta la fuente de poder (la batería o el enchufe) de forma segura, si sabe cómo hacerlo.',
+                'electrico_rol_reportero_desc': 'Informa al profesor sobre la chispa, el olor a quemado y el modelo involucrado.',
+                'guia_pa_titulo_electrico': 'Guía de Primeros Auxilios (Eléctrico)',
+                'electrico_guia_pasos': `<li><strong>¡PELIGRO! ¡NO TOCAR!</strong><ul class="list-disc list-inside ml-5 mt-1"><li>La electricidad puede "saltar" y electrocutarte a ti también.</li><li>Tu seguridad es la prioridad N°1.</li></ul></li>
+                    <li><strong>Cortar la Corriente:</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Es la acción más importante. Desconecta la batería, desenchufa el cable o baja el interruptor general (breaker) del taller.</li><li>Grita "¡AYUDA, DESCARGA ELÉCTRICA!" mientras lo haces.</li></ul></li>
+                    <li><strong>Si NO Puedes Cortar la Corriente (Último Recurso):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Busca un objeto <strong>seco y no conductor</strong> (palo de escoba de madera, silla de plástico).</li><li>Párate sobre algo seco (alfombra de goma, libros).</li><li>Usa el objeto para empujar el cable o a la persona *lejos* de la fuente de electricidad.</li></ul></li>
+                    <li><strong>Una vez Seguro (Corriente Cortada):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Revisa si la persona responde y respira (ver Paso 3 de Desmayo).</li><li>Una descarga eléctrica puede detener el corazón. Si no respira, se necesita RCP y un DEA inmediatamente.</li></ul></li>
+                    <li><strong>Buscar Quemaduras:</strong> La electricidad deja quemaduras de entrada y salida (a menudo en manos y pies). Cúbrelas con gasa limpia.</li>
+                    <li><strong>Atención Médica Urgente:</strong> Toda descarga eléctrica requiere evaluación médica, incluso si la persona parece estar bien.</li>`,
+                'footer_text': 'Recuerda: La seguridad es la prioridad número uno. Ante la duda, pregunta al profesor.',
+                'gemini_error_api': 'No se pudieron generar las reglas en este momento. Por favor, inténtalo de nuevo.',
+                'gemini_error_safety': 'La respuesta fue bloqueada por motivos de seguridad. Intenta con una solicitud diferente.',
+                'gemini_error_failed': 'La generación de texto falló. Razón: ',
+                'gemini_error_blocked': 'La solicitud fue bloqueada. Razón: ',
+                'gemini_error_network': 'No se pudieron generar las reglas. Hubo un error de red o de API.',
+                'rubrica_titulo': 'Rúbrica de Evaluación', // NUEVA TRADUCCIÓN
+                'rubrica_criteria': 'Criterio', // NUEVA TRADUCCIÓN
+                'rubrica_excelente': '4 – Excelente', // NUEVA TRADUCCIÓN
+                'rubrica_bueno': '3 – Bueno', // NUEVA TRADUCCIÓN
+                'rubrica_desarrollo': '2 – En Desarrollo', // NUEVA TRADUCCIÓN
+                'rubrica_mejora': '1 – Necesita Mejora', // NUEVA TRADUCCIÓN
+                'rubrica_crit_1_nombre': 'Desempeño y Realismo', // NUEVA TRADUCCIÓN
+                'rubrica_crit_2_nombre': 'Uso de Accesorios y Creatividad', // NUEVA TRADUCCIÓN
+                'rubrica_crit_3_nombre': 'Procedimientos de Seguridad', // NUEVA TRADUCCIÓN
+                'rubrica_crit_4_nombre': 'Respeto, Autoconciencia y Trabajo en Equipo' // NUEVA TRADUCCIÓN
+                // Las celdas de la tabla se manejan por separado
+            },
+            'en': {
+                'header_title': 'Role Play Protocol',
+                'header_subtitle': 'Action Guide for Workshop Emergencies (Grade 6)',
+                'tab_corte': 'Cut (Utility Knife)',
+                'tab_quemadura': 'Burn (Glue Gun)',
+                'tab_desmayo': 'Faint',
+                'tab_caida': 'Fall (Wet Floor)',
+                'tab_electrico': 'Electrical',
+                'tab_rubrica': 'Rubric', // NEW TRANSLATION
+                'rol_herido': 'Injured Person',
+                'rol_respondiente': 'First Responder',
+                'rol_seguridad': 'Safety Officer',
+                'rol_reportero': 'Reporter',
+                'corte_escenario_titulo': 'Scenario 1: The Distraction Cut',
+                'corte_escenario_desc': 'A student laughs, their hand slips, and the utility knife causes a cut on their finger. The blade falls, staining the paper red.',
+                'corte_rol_herido_desc': 'Keep your finger still and ask for help calmly.',
+                'corte_rol_respondiente_desc': 'Move the utility knife (dangerous object) away and apply pressure to the wound (simulated).',
+                'corte_rol_seguridad_desc': 'Stop work in the area and clear the space around the injured person.',
+                'corte_rol_reportero_desc': 'Inform the teacher (who, what, where) and bring the first aid kit.',
+                'guia_pa_titulo_corte': 'First Aid Guide (Cut)',
+                'corte_guia_pasos': `<li><strong>Priority: NOTIFY THE TEACHER</strong> and get the first aid kit.</li>
+                    <li><strong>Assess Bleeding:</strong><ul class="list-disc list-inside ml-5 mt-1"><li><strong>Minor Cut (dripping):</strong> Wash with clean water and mild soap.</li><li><strong>Major Cut (actively bleeding):</strong> Do not wash! Go directly to step 3.</li></ul></li>
+                    <li><strong>Apply DIRECT and FIRM Pressure:</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Use a sterile gauze or the cleanest cloth you can find.</li><li>Press hard directly on the wound.</li><li><strong>DO NOT REMOVE THE FIRST GAUZE!</strong> If it soaks through with blood, place more clean gauze *on top* of the old one and continue pressing.</li></ul></li>
+                    <li><strong>Elevate the Limb:</strong> If the cut is on an arm or leg, raise it above heart level (while still applying pressure). This reduces blood flow.</li>
+                    <li><strong>Monitor for Shock:</strong> Watch if the person is pale, sweaty, cold, dizzy, or confused. If so, lay them down (with feet slightly elevated) and keep them warm while waiting for help.</li>`,
+                'gemini_titulo': 'Reflection and Prevention',
+                'gemini_desc': 'Use the AI to generate ideas on how to prevent this accident in the future.',
+                'gemini_boton': '✨ Generate Prevention Rules',
+                'gemini_cargando': 'Generating ideas...',
+                'quemadura_escenario_titulo': 'Scenario 2: The Hot Glue Burn',
+                'quemadura_escenario_desc': 'A bubble of hot glue pops and lands on a student\'s face. As they drop the gun, it falls onto the table, still plugged in and hot.',
+                'quemadura_rol_herido_desc': 'Simulate pain from the burn, but stay calm. Do not touch your face.',
+                'quemadura_rol_respondiente_desc': 'Unplug the glue gun. Guide the injured person to the sink to apply cold water (simulated).',
+                'quemadura_rol_seguridad_desc': 'Secure the hot glue gun in its stand. Keep other students away from the area.',
+                'quemadura_rol_reportero_desc': 'Inform the teacher immediately and describe the burn (where, with what).',
+                'guia_pa_titulo_quemadura': 'First Aid Guide (Burn)',
+                'quemadura_guia_pasos': `<li><strong>Notify the teacher</strong> immediately.</li>
+                    <li><strong>Cool RUNNING Water! (10-15 min):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>The most important action is to cool the skin to stop the damage.</li><li>Use cool tap water (not icy, no ice). Let it run over the burn.</li></ul></li>
+                    <li><strong>DO NOT Remove the Glue!:</strong> If the hot glue is stuck to the skin, do not try to peel it off. The cold water will harden and cool it, and removing it could tear the skin.</li>
+                    <li><strong>Protect the Burn (Don't "cure" it):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Cover the area *loosely* with sterile gauze (preferably damp) or clean plastic kitchen wrap.</li><li>This protects from infection and pain from the air.</li><li><strong>NEVER USE!</strong> Cotton balls, direct ice, creams, ointments, butter, or toothpaste.</li></ul></li>
+                    <li>Remove clothing or jewelry near the burn, *unless* it is stuck to the skin.</li>`,
+                'desmayo_escenario_titulo': 'Scenario 3: The Sudden Faint',
+                'desmayo_escenario_desc': 'A student who has been standing for a long time without drinking water feels dizzy and slowly slumps to the floor.',
+                'desmayo_rol_herido_desc': 'Stay on the floor, still, pretending to be unconscious or dizzy.',
+                'desmayo_rol_respondiente_desc': 'Ensure the area is safe (they didn\'t fall on anything). Check if they are breathing and speak calmly to them.',
+                'desmayo_rol_seguridad_desc': 'Clear the area immediately. Ask other students to give space.',
+                'desmayo_rol_reportero_desc': 'Call the teacher calmly, reporting a possible faint.',
+                'guia_pa_titulo_desmayo': 'First Aid Guide (Fainting)',
+                'desmayo_guia_pasos': `<li><strong>Notify the teacher</strong>.</li>
+                    <li><strong>Check for Dangers:</strong> Ensure the area is safe (no glass, wires, etc.).</li>
+                    <li><strong>Check Response and Breathing (ABC):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Talk to the person: "Are you okay? Can you hear me?".</li><li>Watch for chest movement. Put your ear near their mouth to feel for breath.</li></ul></li>
+                    <li><strong>If Breathing (Common faint):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Lay them flat on their back and elevate their legs about 12 inches (30 cm) (on a backpack or low stool). This sends blood to the brain.</li><li>Loosen tight clothing (collar, belt).</li></ul></li>
+                    <li><strong>If Unresponsive but Breathing:</strong> Place in <strong>Recovery Position (PLS)</strong>. This prevents choking if they vomit. (The teacher should demonstrate this).</li>
+                    <li><strong>If NOT Breathing:</strong> Shout for help. "NOT BREATHING, WE NEED PROFESSIONAL HELP AND AN AED (Defibrillator)!". Start CPR only if trained.</li>
+                    <li><strong>On Waking:</strong> Reassure them. Do not let them get up immediately. Sit them up and give them water or juice (only if 100% awake).</li>`,
+                'caida_escenario_titulo': 'Scenario 4: The Slip and Fall',
+                'caida_escenario_desc': 'A student carrying their prototype steps in a puddle of water near the sink, slips, and falls backward. The model breaks.',
+                'caida_rol_herido_desc': 'Stay on the floor, sitting up carefully. Do not try to get up immediately.',
+                'caida_rol_respondiente_desc': 'Approach carefully (avoiding the puddle). Ask the person if they can move or if they feel pain.',
+                'caida_rol_seguridad_desc': 'Block off the spill area! Place a chair or sign so no one else steps in the puddle.',
+                'caida_rol_reportero_desc': 'Inform the teacher about the fall and the location of the wet floor.',
+                'guia_pa_titulo_caida': 'First Aid Guide (Fall)',
+                'caida_guia_pasos': `<li><strong>Notify the teacher</strong>.</li>
+                    <li><strong>GOLDEN RULE: DO NOT MOVE!</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Approach and say: "Don't move, help is coming."</li><li>Ask: "Does your neck or back hurt?".</li><li>If the answer is YES, or if they are unconscious, <strong>DO NOT MOVE UNDER ANY CIRCUMSTANCES</strong>. Moving them could cause paralysis.</li></ul></li>
+                    <li><strong>Check for Head Injury:</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Ask simple questions: "What is your name? Where are we?".</li><li>Look for bleeding from the head, nose, or ears.</li><li>Watch for confusion, vomiting, or drowsiness. These are serious warning signs.</li><li>Apply cold (ice wrapped in a cloth) to the bump.</li></ul></li>
+                    <li><strong>Check for Sprains/Fractures (Ankle, Wrist):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>If there is intense pain, swelling, or deformity in a limb.</li><li>Immobilize: Do not let them put weight on the foot or move the arm.</li><li>Apply cold (ice wrapped in a cloth) to reduce swelling.</li></ul></li>`,
+                'electrico_escenario_titulo': 'Scenario 5: The Electrical Scare',
+                'electrico_escenario_desc': 'While testing a motorized model, there is a spark, a smell of burnt plastic, and the motor stops. A student gets scared and jumps back.',
+                'electrico_rol_herido_desc': 'Step back quickly, act startled by the spark.',
+                'electrico_rol_respondiente_desc': 'Shout "Don\'t touch anything!" and ensure no one approaches the wires or the model.',
+                'electrico_rol_seguridad_desc': 'Disconnect the power source (battery or plug) safely, if they know how.',
+                'electrico_rol_reportero_desc': 'Inform the teacher about the spark, burning smell, and the model involved.',
+                'guia_pa_titulo_electrico': 'First Aid Guide (Electrical)',
+                'electrico_guia_pasos': `<li><strong>DANGER! DO NOT TOUCH!</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Electricity can "jump" and electrocute you too.</li><li>Your safety is priority #1.</li></ul></li>
+                    <li><strong>Cut the Power:</strong><ul class="list-disc list-inside ml-5 mt-1"><li>This is the most important action. Disconnect the battery, unplug the cord, or flip the main breaker for the workshop.</li><li>Shout "HELP, ELECTRIC SHOCK!" while doing it.</li></ul></li>
+                    <li><strong>If You CANNOT Cut the Power (Last Resort):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Find a <strong>dry, non-conductive</strong> object (wooden broom handle, plastic chair).</li><li>Stand on something dry (rubber mat, books).</li><li>Use the object to push the wire or the person *away* from the electricity source.</li></ul></li>
+                    <li><strong>Once Safe (Power is OFF):</strong><ul class="list-disc list-inside ml-5 mt-1"><li>Check if the person is responsive and breathing (See Faint Step 3).</li><li>An electric shock can stop the heart. If not breathing, CPR and an AED are needed immediately.</li></ul></li>
+                    <li><strong>Check for Burns:</strong> Electricity leaves entry and exit burns (often on hands and feet). Cover them with clean gauze.</li>
+                    <li><strong>Urgent Medical Attention:</strong> Every electric shock requires medical evaluation, even if the person seems fine.</li>`,
+                'footer_text': 'Remember: Safety is priority number one. When in doubt, ask the teacher.',
+                'gemini_error_api': 'Could not generate rules at this time. Please try again.',
+                'gemini_error_safety': 'The response was blocked for safety reasons. Try a different request.',
+                'gemini_error_failed': 'Text generation failed. Reason: ',
+                'gemini_error_blocked': 'The request was blocked. Reason: ',
+                'gemini_error_network': 'Could not generate rules. There was a network or API error.',
+                'rubrica_titulo': 'Evaluation Rubric', // NEW TRANSLATION
+                'rubrica_criteria': 'Criteria', // NEW TRANSLATION
+                'rubrica_excelente': '4 – Excellent', // NEW TRANSLATION
+                'rubrica_bueno': '3 – Good', // NEW TRANSLATION
+                'rubrica_desarrollo': '2 – Developing', // NEW TRANSLATION
+                'rubrica_mejora': '1 – Needs Improvement', // NEW TRANSLATION
+                'rubrica_crit_1_nombre': 'Performance & Realism', // NEW TRANSLATION
+                'rubrica_crit_2_nombre': 'Use of Props & Creativity', // NEW TRANSLATION
+                'rubrica_crit_3_nombre': 'Safety Procedures', // NEW TRANSLATION
+                'rubrica_crit_4_nombre': 'Respect, Self-Awareness & Teamwork' // NEW TRANSLATION
+                // Table cells are handled separately
+            }
+        };
+
+        // Función para cambiar de pestaña
+        function showTab(event, tabID, activeColor) {
+            // Ocultar todo el contenido de las pestañas
+            const allContent = document.querySelectorAll('.tab-content');
+            allContent.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Quitar la clase 'active' de todos los botones
+            const allButtons = document.querySelectorAll('.tab-button');
+            allButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Mostrar el contenido de la pestaña seleccionada
+            document.getElementById(tabID).classList.add('active');
+
+            // Añadir la clase 'active' al botón presionado
+            const activeButton = event.currentTarget;
+            activeButton.classList.add('active');
+            
+            // Actualizar el color activo (para la pestaña y el borde)
+            // Esto usa una variable CSS (--active-color) definida en el estilo de la pestaña
+            document.documentElement.style.setProperty('--active-color', activeColor);
+        }
+
+        // Función para actualizar todo el texto
+        function updateAllText() {
+            const elements = document.querySelectorAll('[data-key]');
+            elements.forEach(el => {
+                const key = el.dataset.key;
+                const text = translations[currentLang][key];
+                if (text !== undefined) {
+                    el.innerHTML = text;
+                } else {
+                    console.warn(`Translation key not found: ${key} for lang: ${currentLang}`);
+                }
+            });
+
+            // Actualizar el 'lang' del tag <html> para accesibilidad
+            document.documentElement.lang = currentLang;
+            
+            // Actualizar el 'title' del tag <title>
+            if (currentLang === 'es') {
+                document.title = 'Emergencias de Laboratorio';
+            } else {
+                document.title = 'Workshop Emergencies';
+            }
+
+            // Actualizar el 'title' (tooltip) del botón de traducción
+            const toggleButton = document.getElementById('translate-toggle');
+            if (currentLang === 'es') {
+                toggleButton.title = 'Switch to English';
+            } else {
+                toggleButton.title = 'Cambiar a Español';
+            }
+
+            // NUEVA LÓGICA: Mostrar/ocultar las tablas de la rúbrica
+            const langTables = document.querySelectorAll('[data-lang-table]');
+            langTables.forEach(table => {
+                if (table.dataset.langTable === currentLang) {
+                    // Usamos 'table' para que el elemento <table> se renderice correctamente
+                    table.style.display = 'table';
+                } else {
+                    table.style.display = 'none';
+                }
+            });
+        }
+
+        // Función para cambiar el idioma
+        function toggleLanguage() {
+            currentLang = (currentLang === 'es') ? 'en' : 'es';
+            updateAllText();
+            
+            // Limpiar los resultados de Gemini al cambiar de idioma
+            const ruleDivs = document.querySelectorAll('[id^="rules-"]');
+            ruleDivs.forEach(div => div.innerHTML = '');
+        }
+
+
+        // Asegurarse de que la primera pestaña esté activa al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('corte').classList.add('active');
+            // Establecer el color inicial
+            document.documentElement.style.setProperty('--active-color', '#1d4ed8');
+            // LLAMAR A updateAllText() para traducir el HTML base (español) al inglés
+            updateAllText();
+        });
+
+        // --- Funcionalidad de Gemini API ---
+
+        // NOTA: La API Key se deja como "" y será provista por el entorno de ejecución.
+        const apiKey = ""; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        // Definimos los prompts (instrucciones) para la IA basados en cada escenario
+        const scenarioPrompts = {
+            'es': {
+                'corte': "Un estudiante se distrae mientras usa un cúter y se corta el dedo.",
+                'quemadura': "Un estudiante se quema accidentalmente la cara con una pistola de pegamento caliente.",
+                'desmayo': "Un estudiante se marea y se desmaya por estar mucho tiempo de pie sin beber agua.",
+                'caida': "Un estudiante pisa un charco de agua cerca del lavamanos, resbala y cae hacia atrás.",
+                'electrico': "Hay una chispa, olor a plástico quemado y humo en un modelo motorizado que un estudiante está probando."
+            },
+            'en': {
+                'corte': "A student gets distracted while using a utility knife and cuts their finger.",
+                'quemadura': "A student accidentally burns their face with a hot glue gun.",
+                'desmayo': "A student feels dizzy and faints from standing for a long time without drinking water.",
+                'caida': "A student steps in a puddle of water near the sink, slips, and falls backward.",
+                'electrico': "There is a spark, a smell of burnt plastic, and smoke from a motorized model a student is testing."
+            }
+        };
+
+        // Instrucción del sistema: define el "rol" o "personalidad" de la IA
+        const systemPrompts = {
+            'es': "Eres un experto en seguridad de talleres para estudiantes de 12 años (Grado 6). Tu tono es amigable, claro y muy enfocado en la seguridad. Genera una lista de 3 a 5 reglas de seguridad claras y simples para *prevenir* el accidente descrito por el usuario. Responde en español, usando una lista numerada (ej. '1. ...'). No uses markdown ni asteriscos.",
+            'en': "You are a workshop safety expert for 12-year-old students (Grade 6). Your tone is friendly, clear, and very safety-focused. Generate a list of 3-5 clear and simple safety rules to *prevent* the accident described by the user. Respond in English, using a numbered list (e.g., '1. ...'). Do not use markdown or asterisks."
+        };
+
+        /**
+         * Llama a la API de Gemini para obtener reglas de prevención.
+         * @param {string} scenarioId - El ID del escenario (ej. 'corte', 'quemadura').
+         * @param {HTMLElement} button - El botón que fue presionado.
+         */
+        async function getSafetyRules(scenarioId, button) {
+            const loadingEl = document.getElementById(`loading-${scenarioId}`);
+            const rulesEl = document.getElementById(`rules-${scenarioId}`);
+            
+            // *** NUEVO: Obtener el prompt y systemPrompt en el idioma actual ***
+            const prompt = scenarioPrompts[currentLang][scenarioId];
+            const systemPrompt = systemPrompts[currentLang];
+
+            // Mostrar estado de carga y deshabilitar el botón
+            loadingEl.classList.remove('hidden');
+            rulesEl.innerHTML = '';
+            button.disabled = true;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: { 
+                    temperature: 0.4, // Un poco creativo pero enfocado
+                    maxOutputTokens: 1024 // FIX: Aumentado de 300 a 1024
+                }
+            };
+
+            try {
+                // Usamos la función de reintento para más robustez
+                const response = await fetchWithRetries(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                
+                const result = await response.json();
+
+                // FIX: Se mejora la lógica de manejo de errores.
+                // En lugar de lanzar un error genérico si 'parts[0].text' no existe,
+                // ahora se inspecciona la respuesta para dar un mensaje más útil.
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    // Caso de éxito: Tenemos el texto.
+                    const text = candidate.content.parts[0].text;
+                    rulesEl.innerHTML = text.replace(/\n/g, '<br>');
+                } else {
+                    // Caso de fallo: No hay texto. Investigamos por qué.
+                    let errorMessage = translations[currentLang]['gemini_error_api']; // Usar texto traducido
+                    
+                    if (candidate && candidate.finishReason) {
+                        // Si la API nos dice por qué finalizó sin texto
+                        if (candidate.finishReason === "SAFETY") {
+                            errorMessage = translations[currentLang]['gemini_error_safety'];
+                        } else {
+                            errorMessage = `${translations[currentLang]['gemini_error_failed']} ${candidate.finishReason}`;
+                        }
+                    } else if (result.promptFeedback?.blockReason) {
+                        // Si el bloqueo ocurrió a nivel de la solicitud (prompt)
+                        errorMessage = `${translations[currentLang]['gemini_error_blocked']} ${result.promptFeedback.blockReason}`;
+                    }
+                    
+                    // Mostramos el error detallado en la UI
+                    rulesEl.innerHTML = `<p class="text-red-600">${errorMessage}</p>`;
+                    // Y registramos el objeto de respuesta completo en la consola para depuración
+                    console.error('Error: No se pudo extraer texto de la respuesta de Gemini.', result);
+                }
+
+            } catch (error) {
+                // Este bloque 'catch' ahora manejará errores de red, fallos de 'fetch' o errores de parseo JSON.
+                console.error('Error en la solicitud a Gemini API:', error);
+                rulesEl.innerHTML = `<p class="text-red-600">${translations[currentLang]['gemini_error_network']}</p>`;
+            } finally {
+                // Ocultar estado de carga y rehabilitar el botón
+                loadingEl.classList.add('hidden');
+                button.disabled = false;
+            }
+        }
+
+        /**
+         * Función auxiliar para realizar 'fetch' con reintentos y backoff exponencial.
+         * @param {string} url - La URL de la API.
+         * @param {object} options - Opciones de Fetch (method, headers, body).
+         * @param {number} retries - Número de reintentos.
+         * @param {number} delay - Retraso inicial en ms.
+         */
+        async function fetchWithRetries(url, options, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    // Reintentar solo en errores de servidor (5xx) o 'rate limiting' (429)
+                    if (response.status === 429 || response.status >= 500) {
+                        throw new Error(`Retryable error: ${response.status}`);
+                    }
+                    return response; // Éxito, devolvemos la respuesta
+                } catch (error) {
+                    if (i === retries - 1) throw error; // Último intento, lanzar el error
+                    // Esperar antes de reintentar (backoff exponencial)
+                    // No registrar estos reintentos en la consola.
+                    await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
