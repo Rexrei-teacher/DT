@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA3 Activity: India's Food Challenge</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for active tab */
+        .tab-active {
+            border-bottom-color: #3B82F6; /* blue-500 */
+            color: #3B82F6;
+            font-weight: 600;
+        }
+        /* Style for inactive tab */
+        .tab-inactive {
+            border-bottom-color: transparent;
+            color: #6B7280; /* gray-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+    <div class="container mx-auto max-w-6xl p-4 md:p-8">
+
+        <!-- Header Section -->
+        <header class="mb-8 p-6 bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600">GA3 Activity (55%)</h1>
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-700 mt-2">IGCSE 0445 Design & Technology: India's Food Security Challenge</h2>
+            <p class="mt-4 text-gray-600">
+                Welcome to your GA3 assessment. The focus of this project is to research, design, and propose a viable solution to a specific problem related to food security in India. This webpage will guide you through the three key components of your submission: developing a solution, creating a design brief, and conducting a peer review.
+            </p>
+            <p class="mt-2 text-sm font-medium text-blue-500">Note: The final rubric will be added here once provided.</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="mb-6">
+            <nav class="flex border-b border-gray-300 bg-white rounded-t-lg shadow-sm">
+                <!-- Tab 1: Solution -->
+                <button data-tab="solution" class="tab-button tab-active py-4 px-6 text-sm md:text-base border-b-2 focus:outline-none">
+                    1. Reasoning a Solution
+                </button>
+                <!-- Tab 2: Design Brief -->
+                <button data-tab="brief" class="tab-button tab-inactive py-4 px-6 text-sm md:text-base border-b-2 focus:outline-none">
+                    2. The Design Brief
+                </button>
+                <!-- Tab 3: Sketching (NEW) -->
+                <button data-tab="sketching" class="tab-button tab-inactive py-4 px-6 text-sm md:text-base border-b-2 focus:outline-none">
+                    3. Sketching
+                </button>
+                <!-- Tab 4: Peer Review (UPDATED) -->
+                <button data-tab="review" class="tab-button tab-inactive py-4 px-6 text-sm md:text-base border-b-2 focus:outline-none">
+                    4. Peer Review
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tab Content -->
+        <main class="bg-white p-6 md:p-8 rounded-b-lg shadow-md">
+
+            <!-- Content 1: Solution (Visible by default) -->
+            <div id="solution" class="tab-content">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">1. Reasoning a Solution Based on Needs</h3>
+                <p class="mb-4">
+                    In IGCSE Design & Technology, a successful solution is not just a "good idea"; it is a direct response to a clearly identified <strong class="text-blue-600">need</strong>. Your entire project must be driven by this principle.
+                </p>
+                
+                <h4 class="text-lg font-semibold mt-6 mb-2">How to Reason from Needs:</h4>
+                <ol class="list-decimal list-inside space-y-4 text-gray-700">
+                    <li>
+                        <strong>Identify the Problem & User:</strong> You can't solve "India's food problem"—it's too big. You must narrow it down. Who is your specific user (e.g., a small-hold farmer, a street vendor, a family in a rural village)? What is their *specific* problem (e.g., "30% of tomato harvest spoils before reaching the market due to heat and poor transport")?
+                    </li>
+                    <li>
+                        <strong>Analyse the Needs:</strong> A "need" is the gap between the current problem and the desired outcome.
+                        <ul class="list-disc list-inside ml-6 mt-2 p-4 bg-gray-50 rounded-lg">
+                            <li><strong>Problem:</strong> Crops are spoiling from heat.</li>
+                            <li><strong>Need:</strong> A low-cost, non-electric method to keep vegetables cool.</li>
+                            <li><strong>Problem:</strong> Inefficient water use for irrigation during droughts.</li>
+                            <li><strong>Need:</strong> A system to deliver water directly to plant roots with minimal waste.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Generate Ideas (Divergent Thinking):</strong> Brainstorm multiple possible solutions that address the specific need. Don't pick your first idea! Think about different approaches (e.g., for cooling: a pot-in-pot cooler, a solar-powered fan, a ventilated storage crate).
+                    </li>
+                    <li>
+                        <strong>Select and Justify (Convergent Thinking):</strong> Evaluate your ideas against the user's needs and constraints (like cost, materials, local skills). Select the *most appropriate* solution and justify *why* it is the best choice for this specific user and problem. Your solution must be a logical and defensible answer to the need.
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Content 2: Design Brief (Hidden by default) -->
+            <div id="brief" class="tab-content hidden">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">2. The Design Brief</h3>
+                
+                <h4 class="text-lg font-semibold mt-6 mb-2">What is a Design Brief?</h4>
+                <p class="mb-4">
+                    The Design Brief is the most important document in your project. It is a clear statement that defines the problem you are going to solve, who you are solving it for, and the rules (constraints) you must follow. It acts as a "contract" for your design, guiding all your decisions and helping you measure your success.
+                </p>
+
+                <h4 class="text-lg font-semibold mt-6 mb-2">How to Construct a Design Brief:</h4>
+                <p class="mb-4">A good brief contains two main parts: a clear problem statement and a list of specifications (constraints).</p>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Column 1: How-to -->
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <h5 class="text-md font-semibold mb-2">1. Problem Statement</h5>
+                        <p class="text-sm mb-2">This is a short paragraph that sets the scene.</p>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                            <li><strong>Who:</strong> Who is the target user/client?</li>
+                            <li><strong>What:</strong> What is their problem?</li>
+                            <li><strong>Where:</strong> What is the context/environment?</li>
+                            <li><strong>Why:</strong> Why does this problem need solving?</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <h5 class="text-md font-semibold mb-2">2. Design Specifications (Constraints)</h5>
+                        <p class="text-sm mb-2">This is a bulleted list of measurable rules your design MUST follow.</p>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                            <li><strong>Function:</strong> What must it do? (e.g., "Must be able to store 10kg of produce.")</li>
+                            <li><strong>Cost:</strong> Max/min budget? (e.g., "Must cost less than ₹500 to build.")</li>
+                            <li><strong>Materials:</strong> What can it be made from? (e.g., "Must use locally available materials like clay, sand, or bamboo.")</li>
+                            <li><strong>Aesthetics:</strong> What should it look like? (e.g., "Must be unobtrusive and easy to clean.")</li>
+                            <li><strong>Safety:</strong> How will it be safe? (e.g., "Must have no sharp edges.")</li>
+                            <li><strong>Size/Weight:</strong> (e.g., "Must be portable by one person.")</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-semibold mt-8 mb-4">Example Design Brief:</h4>
+                <div class="border-l-4 border-blue-500 pl-4 italic bg-blue-50 p-6 rounded-r-lg">
+                    <p class="font-semibold mb-2"><strong>Problem Statement:</strong></p>
+                    <p class="mb-4">
+                        "Small-hold farmers in rural Maharashtra, India, often lose 25-40% of their fruit and vegetable harvest to spoilage before they can sell it at the local market. This is primarily due to high temperatures and a lack of affordable, reliable cold storage, as electricity access is intermittent. A low-cost, non-electric cooling device is needed to extend the shelf life of their produce, allowing them to sell more and increase their income."
+                    </p>
+                    
+                    <p class="font-semibold mb-2"><strong>Design Specifications:</strong></p>
+                    <ul class="list-disc list-inside">
+                        <li>The device must require no electricity to operate.</li>
+                        <li>The total cost of materials must not exceed ₹800 (approx. $10 USD).</li>
+                        <li>It must be buildable using tools commonly available in a rural village.</li>
+                        <li>It must use locally sourced materials (e.g., clay, sand, jute, bamboo).</li>
+                        <li>It must be able to lower the internal temperature by at least 8°C compared to the ambient temperature.</li>
+                        <li>It must have a minimum capacity to hold 15kg of produce.</li>
+                        <li>The device must be durable and last at least one year with minimal maintenance.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Content 3: Sketching (NEW) -->
+            <div id="sketching" class="tab-content hidden">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">3. Sketching & Ideation</h3>
+                <p class="mb-4">
+                    Sketching is how designers think and communicate. In IGCSE D&T, your sketches are not marked on artistic ability, but on their <strong class="text-blue-600">clarity</strong> and <strong class="text-blue-600">ability to communicate your ideas</strong>. You must show your thinking process.
+                </p>
+                
+                <h4 class="text-lg font-semibold mt-6 mb-2">Key Sketching Tips:</h4>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-5 rounded-lg border">
+                        <h5 class="font-semibold text-gray-800 mb-2">Communicate, Don't Decorate</h5>
+                        <ul class="list-disc list-inside mt-2 space-y-2 text-sm text-gray-700">
+                            <li><strong>Clarity over Beauty:</strong> Use simple lines. A clear, well-labelled diagram is better than a "pretty" but confusing drawing.</li>
+                            <li><strong>Use 2D and 3D:</strong> Use quick 2D (orthographic) sketches to show dimensions and 3D (isometric, perspective) sketches to show what the product will look like.</li>
+                            <li><strong>Show Scale:</strong> Give a sense of size. You can draw a common object (like a hand or a brick) next to your design for scale, or add dimensions.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 p-5 rounded-lg border">
+                        <h5 class="font-semibold text-gray-800 mb-2">Annotation is Essential</h5>
+                        <ul class="list-disc list-inside mt-2 space-y-2 text-sm text-gray-700">
+                            <li><strong>Label Everything:</strong> Use leader lines to point to parts of your design.</li>
+                            <li><strong>Explain "What":</strong> Label materials (e.g., "bamboo pole," "terracotta pot," "recycled plastic sheet").</li>
+                            <li><strong>Explain "How":</strong> Label how parts connect (e.g., "bolted joint," "welded," "friction fit").</li>
+                            <li><strong>Explain "Why":</strong> Justify your choices (e.g., "vents for airflow," "rounded edges for safety").</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h4 class="text-lg font-semibold mt-6 mb-2">What to Include:</h4>
+                <ul class="list-disc list-inside space-y-3 text-gray-700 mt-4">
+                    <li><strong>Initial Ideas (Brainstorm):</strong> Show lots of different, quick sketches to explore multiple solutions. It's okay if they are rough.</li>
+                    <li><strong>Development Sketches:</strong> Take your best idea and draw it again, adding details, solving problems (like "how will the lid attach?"), and refining the design.</li>
+                    <li><strong>Exploded Views:</strong> Show how the components fit together by "exploding" them apart.</li>
+                    <li><strong>Sectional Views:</strong> Show a "slice" through your design to reveal internal parts and how they work.</li>
+                </ul>
+            </div>
+
+            <!-- Content 4: Peer Review (UPDATED from 3) -->
+            <div id="review" class="tab-content hidden">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">4. Peer Review Process</h3>
+                <p class="mb-4">
+                    Peer review is a critical part of the design process. It helps you identify strengths and weaknesses in your project that you might have missed. Your task is to review the <strong class="text-blue-600">Design Brief</strong> and <strong class="text-blue-600">Initial Solution Concept</strong> of one of your classmates.
+                </p>
+                <p class="mb-6">
+                    Use the "Two Stars and a Wish" model: two things that are done well (Stars) and one specific suggestion for improvement (a Wish). Be constructive and specific.
+                </p>
+
+                <h4 class="text-lg font-semibold mt-6 mb-2">Review Checklist:</h4>
+                <p class="mb-4">When reviewing your peer's work, consider the following questions.</p>
+
+                <div class="space-y-6">
+                    <!-- Review for Design Brief -->
+                    <div class="bg-gray-50 p-5 rounded-lg border">
+                        <h5 class="font-semibold text-gray-800">Reviewing the Design Brief:</h5>
+                        <ul class="list-disc list-inside mt-2 space-y-2 text-sm text-gray-700">
+                            <li>Is the problem statement clear and specific? Do you understand exactly who the user is and what their problem is?</li>
+                            <li>Are the design specifications <strong class="font-medium">measurable</strong>? (e.g., "Must be cheap" is bad. "Must cost less than ₹500" is good).</li>
+                            <li>Are the constraints realistic for the context of rural India?</li>
+                            <li>Does the brief clearly define what a "successful" solution would look like?</li>
+                        </ul>
+                    </div>
+
+                    <!-- Review for Solution -->
+                    <div class="bg-gray-50 p-5 rounded-lg border">
+                        <h5 class="font-semibold text-gray-800">Reviewing the Solution Concept:</h5>
+                        <ul class="list-disc list-inside mt-2 space-y-2 text-sm text-gray-700">
+                            <li>Does the proposed solution directly solve the problem stated in the design brief?</li>
+                            <li>Does the solution meet all of the design specifications (constraints) listed?</li>
+                            <li>Is the solution appropriate for the target user? (e.g., Is it too complex? Too expensive?)</li>
+                            <li>Is there clear evidence of research into the problem (e.g., research on climate, local materials, existing solutions)?</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feedback Form -->
+                    <div class="mt-6">
+                        <h5 class="font-semibold text-gray-800 mb-2">Feedback Form (Example)</h5>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="star1" class="block text-sm font-medium text-gray-700">⭐ Star 1 (What they did well):</label>
+                                <textarea id="star1" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"></textarea>
+                            </div>
+                            <div>
+                                <label for="star2" class="block text-sm font-medium text-gray-700">⭐ Star 2 (Another thing they did well):</label>
+                                <textarea id="star2" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"></textarea>
+                            </div>
+                            <div>
+                                <label for="wish1" class="block text-sm font-medium text-gray-700">🙏 Wish (A specific suggestion for improvement):</label>
+                                <textarea id="wish1" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" placeholder="e.g., 'I wish you would make your cost specification more specific, as 'low-cost' is hard to measure.'"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Simple Footer -->
+    <footer class="text-center p-4 mt-8 text-sm text-gray-500">
+        IGCSE 0445 Design & Technology | GA3 Assessment
+    </footer>
+
+    <script>
+        // JavaScript for Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+
+                // Update button styles
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                });
+                button.classList.add('tab-active');
+                button.classList.remove('tab-inactive');
+
+                // Show/hide content
+                tabContents.forEach(content => {
+                    if (content.id === tabName) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
+
