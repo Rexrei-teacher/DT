@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA 2: Industrial Design Workflow</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #d35400;
+            --bg: #f4f4f9;
+            --white: #ffffff;
+            --info: #2980b9;
+        }
+        body { font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: var(--secondary); max-width: 1000px; margin: 0 auto; padding: 40px 20px; background-color: var(--bg); }
+        
+        .header-box { background: var(--primary); color: white; padding: 30px; border-radius: 8px; text-align: center; margin-bottom: 30px; }
+        .header-box h1 { margin: 0; font-size: 2.2em; letter-spacing: 1px; }
+        
+        .setup-section { background: #fff3cd; border: 2px solid #ffeeba; padding: 25px; border-radius: 8px; margin-bottom: 40px; }
+        .setup-section h2 { color: #856404; margin-top: 0; border-bottom: 1px solid #ffeeba; }
+
+        .card { background: var(--white); margin-bottom: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden; border-left: 10px solid var(--primary); }
+        .card-header { padding: 15px 25px; background: #fafafa; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; }
+        .card-content { padding: 25px; }
+        
+        .metrics { display: flex; gap: 20px; margin-bottom: 15px; }
+        .metric-pill { background: #ebf5fb; color: #2980b9; padding: 4px 12px; border-radius: 15px; font-size: 0.85em; font-weight: bold; border: 1px solid #d6eaf8; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .box { background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eef0f2; }
+        .label { font-weight: bold; color: var(--accent); display: block; margin-bottom: 5px; font-size: 0.9em; text-transform: uppercase; }
+        
+        .improvement-box { margin-top: 20px; background: #e8f8f5; border-left: 4px solid #1abc9c; padding: 15px; font-size: 0.95em; }
+        
+        input[type="checkbox"] { transform: scale(1.5); cursor: pointer; }
+        .footer { text-align: center; margin-top: 50px; color: #95a5a6; font-style: italic; }
+        
+        code { background: #eee; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div class="header-box">
+        <h1>GA 2: Project Deliverables & Roadmap</h1>
+        <p>A Step-by-Step Guide for Industrial Revolution Machine Research</p>
+    </div>
+
+    <div class="setup-section">
+        <h2>Step 0: Document Setup (Do this first!)</h2>
+        <p>Before you type a single word, set up your "Environment" so you don't run out of pages later.</p>
+        <div class="grid">
+            <div class="box">
+                <span class="label">Font & Spacing</span>
+                <ul>
+                    <li><strong>Font:</strong> Times New Roman</li>
+                    <li><strong>Size:</strong> 12pt for body / 14pt for headings</li>
+                    <li><strong>Line Spacing:</strong> 1.5 lines</li>
+                    <li><strong>Margins:</strong> Normal (1 inch / 2.54 cm all around)</li>
+                </ul>
+            </div>
+            <div class="box">
+                <span class="label">Mandatory Elements</span>
+                <ul>
+                    <li><strong>Header:</strong> Your Names (Top Right)</li>
+                    <li><strong>Footer:</strong> Page Number (Center)</li>
+                    <li><strong>Table of Contents:</strong> Use <code>References > Table of Contents</code></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span style="font-size: 1.3em; font-weight: bold;">1. Introduction: The Industrial Need</span>
+            <input type="checkbox">
+        </div>
+        <div class="card-content">
+            <div class="metrics">
+                <span class="metric-pill">Length: 300 - 450 words</span>
+                <span class="metric-pill">Target: ~0.75 Page</span>
+            </div>
+            <div class="grid">
+                <div class="box">
+                    <span class="label">Thinking Questions</span>
+                    Why are we studying this specific machine? What was the manual labor like before this invention? What is the "Goal" of your project simulation?
+                </div>
+                <div class="box">
+                    <span class="label">Step-by-Step</span>
+                    Paragraph 1: History & Context.<br>
+                    Paragraph 2: The specific problem (e.g. mine flooding).<br>
+                    Paragraph 3: Objectives of this paper.
+                </div>
+            </div>
+            <div class="improvement-box">
+                <strong>Level Up:</strong> Quote a historical figure or a patent description from that era to show deep research.
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #2980b9;">
+        <div class="card-header">
+            <span style="font-size: 1.3em; font-weight: bold;">2. Design Requirements & Specs</span>
+            <input type="checkbox">
+        </div>
+        <div class="card-content">
+            <div class="metrics">
+                <span class="metric-pill">Length: 200 words + 1 Table</span>
+                <span class="metric-pill">Target: ~1 Page</span>
+            </div>
+            <div class="grid">
+                <div class="box">
+                    <span class="label">Thinking Questions</span>
+                    How do we know if the machine is "good"? Does it need to be made of iron to handle steam pressure? What are the exact dimensions (height, width)?
+                </div>
+                <div class="box">
+                    <span class="label">Step-by-Step</span>
+                    List 5 "Requirements" (functional goals). Then, create a <strong>Table</strong> with 3 columns: Component, Material, and Technical Dimension.
+                </div>
+            </div>
+            <div class="improvement-box">
+                <strong>Level Up:</strong> Use engineering units (kg, Pascals, Watts) to define your specs rather than just saying "strong" or "fast."
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #8e44ad;">
+        <div class="card-header">
+            <span style="font-size: 1.3em; font-weight: bold;">3. Design Brief (1800s POV)</span>
+            <input type="checkbox">
+        </div>
+        <div class="card-content">
+            <div class="metrics">
+                <span class="metric-pill">Length: 250 - 350 words</span>
+                <span class="metric-pill">Target: ~0.5 Page</span>
+            </div>
+            <div class="grid">
+                <div class="box">
+                    <span class="label">Thinking Questions</span>
+                    If you were an engineer in the year 1830, how would you pitch this to a factory owner? Why is your design a good investment?
+                </div>
+                <div class="box">
+                    <span class="label">Step-by-Step</span>
+                    Write this as a formal letter. Use words like "Sir," "Henceforth," and "Apparatus." Explain the *efficiency* gain over human labor.
+                </div>
+            </div>
+            <div class="improvement-box">
+                <strong>Level Up:</strong> Mention "Reliability." Factory owners in the 1800s feared machines breaking down; tell them why yours won't.
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #27ae60;">
+        <div class="card-header">
+            <span style="font-size: 1.3em; font-weight: bold;">4. Drafts & MotionGen Simulation</span>
+            <input type="checkbox">
+        </div>
+        <div class="card-content">
+            <div class="metrics">
+                <span class="metric-pill">Visual Heavy Section</span>
+                <span class="metric-pill">Target: 1.5 - 2 Pages</span>
+            </div>
+            <div class="grid">
+                <div class="box">
+                    <span class="label">Thinking Questions</span>
+                    Does your draft look like a blueprint? When you ran the simulation in MotionGen, did the "Trace Path" show the movement you expected?
+                </div>
+                <div class="box">
+                    <span class="label">Step-by-Step</span>
+                    1. Insert a photo of your hand-sketch.<br>
+                    2. Insert a clean digital drawing.<br>
+                    3. Insert a screenshot of the MotionGen linkage moving.
+                </div>
+            </div>
+            <div class="improvement-box">
+                <strong>Level Up:</strong> Use arrows to label the "Input" (where power enters) and the "Output" (where work happens) on your simulation.
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #c0392b;">
+        <div class="card-header">
+            <span style="font-size: 1.3em; font-weight: bold;">5. Analysis & Annex "Math"</span>
+            <input type="checkbox">
+        </div>
+        <div class="card-content">
+            <div class="metrics">
+                <span class="metric-pill">Length: 300 words + Formulas</span>
+                <span class="metric-pill">Target: ~1 Page</span>
+            </div>
+            <div class="grid">
+                <div class="box">
+                    <span class="label">Thinking Questions</span>
+                    What do the numbers tell us? Is the machine powerful or just fast? Where does the most stress occur in the linkage?
+                </div>
+                <div class="box">
+                    <span class="label">Step-by-Step</span>
+                    Write your text analysis in the main body. Put your step-by-step math (formulas) in the "Anex" at the very end of this section.
+                </div>
+            </div>
+            <div class="improvement-box">
+                <strong>Level Up:</strong> Mention "Mechanical Advantage." Calculate the ratio of the input arm vs the output arm.
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Remember: The total document must not exceed 5 pages (excluding the cover). Update your Index last!
+    </div>
+
+</body>
+</html>
