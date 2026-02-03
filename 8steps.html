@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA 2: Spaghetti Bridge Engineering Roadmap</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #d35400;
+            --logic: #27ae60;
+            --bg: #f4f7f6;
+        }
+        body { font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 30px; background-color: var(--bg); }
+        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        
+        /* STYLE RULES FIRST */
+        .style-requirements { background: #e8f6f3; border: 2px solid #1abc9c; padding: 25px; border-radius: 10px; margin-bottom: 30px; }
+        .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.95em; }
+        
+        .card { border: 1px solid #ddd; border-radius: 10px; margin-bottom: 20px; border-left: 10px solid var(--primary); background: #fff; }
+        .card-header { background: #fafafa; padding: 15px 20px; font-weight: bold; font-size: 1.1em; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+        .card-content { padding: 20px; }
+        .box { background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #eef0f2; margin-bottom: 10px; }
+        .label { font-weight: bold; color: var(--accent); display: block; margin-bottom: 5px; font-size: 0.85em; text-transform: uppercase; }
+
+        /* UNLOCK AT THE END */
+        .unlock-container { background: #2c3e50; color: white; padding: 30px; border-radius: 10px; margin-top: 40px; text-align: center; }
+        .unlock-button { background: var(--logic); color: white; border: none; padding: 15px 35px; font-size: 1.1em; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px #196f3d; }
+        .unlock-button:hover { background: #2ecc71; }
+        .logic-content { display: none; background: #ffffff; color: #333; padding: 30px; border-radius: 10px; margin-top: 25px; text-align: left; border: 3px solid var(--logic); }
+        .math-display { background: #f0f7ff; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 5px solid #2980b9; }
+        input[type="checkbox"] { transform: scale(1.6); cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>GA 2: Truss Bridge Project Roadmap</h1>
+    
+    <div class="style-requirements">
+        <h3 style="margin-top:0; color: #16a085;">1. Initial Document Style Requirements</h3>
+        <div class="style-grid">
+            <div>
+                <strong>Typography:</strong> Times New Roman, 12pt.<br>
+                <strong>Spacing:</strong> 1.5 Lines.<br>
+                <strong>Limit:</strong> Maximum 5 Pages (Not counting Cover).
+            </div>
+            <div>
+                <strong>Fixed Elements:</strong> Header (Name/ID) & Footer (Page Numbers) on every page.<br>
+                <strong>Thresholds:</strong> 70N Load | 0.25m Span | < 0.25kg Mass.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><span>01-03. Foundation & Index</span> <input type="checkbox"></div>
+        <div class="card-content">
+            <div class="box"><span class="label">1. Cover Page</span>Include project title and a photo of your finished bridge.</div>
+            <div class="box"><span class="label">2. Index</span>Table of contents—make sure page numbers match the Footer!</div>
+            <div class="box"><span class="label">3. Introduction</span>Discuss the physics of trusses and why triangulation is rigid.</div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #2980b9;">
+        <div class="card-header"><span>04-05. Constraints & Details</span> <input type="checkbox"></div>
+        <div class="card-content">
+            <div class="box"><span class="label">4. Design Requirements</span>State the 70N, 0.25m, and 0.25kg limits.</div>
+            <div class="box"><span class="label">5. Design Specs</span>Materials: Spaghetti strands and glue sticks used. Final dimensions in Meters.</div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #e67e22;">
+        <div class="card-header"><span>06. Design Brief</span> <input type="checkbox"></div>
+        <div class="card-content">
+            <span class="label">Problem-Solving POV</span>
+            Explain how you planned to achieve the 70N load. (Once you unlock the strategy at the bottom, you can explain your "Spaghetti Count" logic here).
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #27ae60;">
+        <div class="card-header"><span>07-08. Drafts & JHU Simulation</span> <input type="checkbox"></div>
+        <div class="card-content">
+            <div class="box"><span class="label">7. Drafts</span>Show hand sketches vs. neat blueprints.</div>
+            <div class="box"><span class="label">8. Simulations</span>Screenshots from <a href="https://ei.jhu.edu/truss-simulator/" target="_blank">JHU Truss Simulator</a> showing force distribution.</div>
+            
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #c0392b;">
+        <div class="card-header"><span>09. Analysis</span> <input type="checkbox"></div>
+        <div class="card-content">
+            <span class="label">Structural Failure</span>
+            Did it hold 70N? Compare the physical break-point to the simulation colors.
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #8e44ad;">
+        <div class="card-header"><span>10-11. Exhibit & Bibliography</span> <input type="checkbox"></div>
+        <div class="card-content">
+            <div class="box"><span class="label">10. Bibliography</span>Sources and JHU Simulator link.</div>
+            <div class="box"><span class="label">11. Exhibit: Math</span>Show your Stress and Efficiency formulas here.</div>
+            
+        </div>
+    </div>
+
+    <div class="unlock-container">
+        <h3 style="margin-top:0;">[RESTRICTED] Engineering Design Intelligence</h3>
+        <p>Unlock the professional mathematical method to optimize your bridge.</p>
+        <button class="unlock-button" onclick="toggleLogic()">UNLOCK STRATEGY</button>
+        
+        <div id="logicContent" class="logic-content">
+            <h4 style="color: var(--logic); margin-top:0;">Step-by-Step Optimization (SI Units)</h4>
+            <p><strong>Note:</strong> Ultimate Strength of spaghetti (\(\sigma_{u}\)) \(\approx 15,000,000 \text{ Pa}\).</p>
+            
+            <div class="math-display">
+                <strong>1. Identify Member Force (\(F\)):</strong><br>
+                Find the Force in Newtons (\(N\)) from JHU.
+            </div>
+
+            <div class="math-display">
+                <strong>2. Calculate Area (\(A\)) in \(m^2\):</strong><br>
+                $$A = \frac{F}{\sigma_{u}} = \frac{F}{15,000,000}$$
+            </div>
+
+            <div class="math-display">
+                <strong>3. Find Spaghetti Count (\(n\)):</strong><br>
+                If area of one strand is (\(a\)):
+                $$n = \frac{A}{a}$$
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleLogic() {
+        var content = document.getElementById("logicContent");
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
