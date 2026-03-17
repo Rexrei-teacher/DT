@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Science of Standing Up - Workshop</title>
+    <style>
+        :root {
+            --navy-blue: #1a237e;
+            --forest-green: #2e7d32;
+            --white: #ffffff;
+            --slate-gray: #455a64;
+            --light-gray: #f5f5f5;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--slate-gray);
+            background-color: var(--white);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--navy-blue);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 5px solid var(--forest-green);
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 2rem;
+        }
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .mission {
+            background-color: var(--light-gray);
+            border-left: 10px solid var(--forest-green);
+        }
+        h2 {
+            color: var(--navy-blue);
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 0.5rem;
+        }
+        .task-box {
+            background-color: var(--white);
+            border: 2px solid var(--navy-blue);
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .question-list {
+            list-style: none;
+            padding: 0;
+        }
+        .question-list li {
+            background: var(--light-gray);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--navy-blue);
+        }
+        .question-list strong {
+            color: var(--forest-green);
+        }
+        .footer {
+            background-color: var(--slate-gray);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--forest-green);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>THE SCIENCE OF STANDING UP</h1>
+    <p>IGCSE 0445 Design & Technology | Structural Engineering Challenge</p>
+</header>
+
+<div class="container">
+    <section class="mission">
+        <h2>🚀 The Mission</h2>
+        <p>Welcome, Engineers. Your goal today is to decode the invisible forces that keep the world standing. Using the provided guide and your research, you will complete this structural portfolio in pairs.</p>
+        <ul>
+            <li><strong>Time:</strong> 80 Minutes</li>
+            <li><strong>Tool:</strong> Canva Presentation / Webpage</li>
+            <li><strong>Colors:</strong> Navy Blue, Forest Green, White, Gray</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🧠 Stage 1: The Visual Mind Map (20 min)</h2>
+        <p>Create a central Mind Map on your first slide. You must categorize structures based on how they support loads[cite: 5]:</p>
+        <div class="task-box">
+            <ul>
+                <li><strong>Mass Structures:</strong> Focus on weight and gravity (e.g., Dams, Pyramids)[cite: 5, 8].</li>
+                <li><strong>Frame Structures:</strong> Focus on skeletons and load paths (e.g., Human skeleton, Skyscrapers)[cite: 5, 10].</li>
+                <li><strong>Shell Structures:</strong> Focus on curvature and thin skins (e.g., Eggs, Helmets)[cite: 6, 13].</li>
+                <li><strong>Hybrids:</strong> Complex modern objects (e.g., Cars)[cite: 7, 46].</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>✍️ Stage 2: The 10-Question Challenge (40 min)</h2>
+        <p>Answer these questions using technical diagrams and clear English descriptions:</p>
+        <ul class="question-list">
+            <li><strong>1. Definition:</strong> What is the primary job of a "Structure" regarding loads? [cite: 5, 39]</li>
+            <li><strong>2. Stability:</strong> Why do Mass Structures require a "broad base" to resist water pressure or gravity? [cite: 9, 53]</li>
+            <li><strong>3. Shell Power:</strong> How does "curvature" allow a thin material to become rigid? [cite: 13, 14]</li>
+            <li><strong>4. Force Duo:</strong> Define <strong>Tension</strong> and <strong>Compression</strong>. Use arrows to show their direction[cite: 17, 88].</li>
+            <li><strong>5. Anatomy:</strong> In a frame, what is the specific job of a <strong>Tie</strong> and a <strong>Strut</strong>? [cite: 16, 77]</li>
+            <li><strong>6. Geometry:</strong> Why is the triangle considered the strongest shape in engineering? [cite: 19, 24]</li>
+            <li><strong>7. Joints:</strong> What is a <strong>Gusset Plate</strong> and how does it prevent a frame from collapsing? [cite: 20, 23]</li>
+            <li><strong>8. Efficiency:</strong> What is the "Neutral Axis" of an I-Beam and why is there no material there? [cite: 27, 28]</li>
+            <li><strong>9. Evolution:</strong> Explain the difference between a 2D <strong>Truss</strong> and a 3D <strong>Space Frame</strong>[cite: 24, 25].</li>
+            <li><strong>10. Innovation:</strong> Why is a "Sandwich" composite better than a solid heavy beam? [cite: 30, 31]</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🔍 Stage 3: Case Study (10 min)</h2>
+        <p>Find a photo of a famous structure (Eiffel Tower, Burj Khalifa, or a Bike Frame). Label at least 3 parts using the terms: <em>Triangulation, Tension, Compression, or Shell</em>.</p>
+    </section>
+
+    <section style="background-color: var(--light-gray);">
+        <h2>🔗 Research Hub</h2>
+        <p>Use these verified sources to find your answers:</p>
+        <a href="http://www.technologystudent.com/struct1/structax.htm" class="btn" target="_blank">Technology Student</a>
+        <a href="https://www.bbc.co.uk/bitesize/guides/zh677p3/revision/1" class="btn" style="background: var(--navy-blue);" target="_blank">BBC Bitesize D&T</a>
+    </section>
+</div>
+
+<div class="footer">
+    <p>© 2024 IGCSE Structural Engineering Workshop | Designed for 9th Grade</p>
+</div>
+
+</body>
+</html>
