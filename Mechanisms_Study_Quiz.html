@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mechanisms Study &amp; Practice — Marymount D&amp;T</title>
+<style>
+  :root{
+    --navy:#1B2A4A;
+    --navy-2:#020381;
+    --lime:#3EC878;
+    --lime-light:#E9FBF1;
+    --gray-bg:#F5F6F8;
+    --red:#D64545;
+    --red-light:#FDECEC;
+    --text:#1F2430;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:var(--gray-bg);
+    color:var(--text);
+    line-height:1.5;
+  }
+  header{
+    background:linear-gradient(135deg, var(--navy), var(--navy-2));
+    color:#fff;
+    padding:28px 24px 22px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px; font-size:1.7rem;}
+  header p{margin:0; opacity:0.85; font-size:0.95rem;}
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--navy);
+    display:flex; flex-wrap:wrap; justify-content:center; gap:6px;
+    padding:10px 12px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  nav a{
+    color:#fff; text-decoration:none;
+    font-size:0.85rem; font-weight:600;
+    padding:8px 14px; border-radius:20px;
+    background:rgba(255,255,255,0.08);
+    transition:background .2s;
+  }
+  nav a:hover{background:var(--lime); color:var(--navy);}
+  main{max-width:880px; margin:0 auto; padding:24px 16px 80px;}
+  section.topic{margin-bottom:56px;}
+  .topic-title{
+    display:flex; align-items:center; gap:10px;
+    color:var(--navy); font-size:1.35rem; font-weight:800;
+    border-bottom:3px solid var(--lime);
+    padding-bottom:8px; margin-bottom:16px;
+  }
+  .topic-badge{
+    background:var(--lime); color:var(--navy);
+    font-size:0.75rem; font-weight:700;
+    padding:3px 10px; border-radius:12px;
+  }
+  .guide{
+    background:#fff; border-left:6px solid var(--lime);
+    border-radius:8px; padding:18px 20px; margin-bottom:24px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.06);
+  }
+  .guide h3{margin-top:0; color:var(--navy); font-size:1.05rem;}
+  .guide table{width:100%; border-collapse:collapse; margin:10px 0 14px; font-size:0.88rem;}
+  .guide th{background:var(--navy); color:#fff; text-align:left; padding:6px 8px;}
+  .guide td{padding:6px 8px; border-bottom:1px solid #e3e3e3; vertical-align:top;}
+  .guide .formula{
+    background:var(--lime-light); border:1px dashed var(--lime);
+    border-radius:6px; padding:8px 12px; font-family:'Consolas', monospace;
+    font-size:0.9rem; margin:8px 0; color:var(--navy);
+  }
+  .guide p{font-size:0.9rem; margin:8px 0;}
+  .qcard{
+    background:#fff; border-radius:10px; padding:16px 18px 14px;
+    margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.07);
+    border:1px solid #eaeaea;
+  }
+  .qcard .qnum{
+    display:inline-block; background:var(--navy); color:#fff;
+    font-size:0.75rem; font-weight:700; padding:2px 9px;
+    border-radius:12px; margin-bottom:8px;
+  }
+  .qcard .qtext{font-size:0.97rem; font-weight:600; margin-bottom:12px; color:var(--text);}
+  .options{display:flex; flex-direction:column; gap:8px;}
+  .opt-btn{
+    text-align:left; padding:10px 14px; border-radius:8px;
+    border:1.5px solid #d7dae0; background:#fafbfc; cursor:pointer;
+    font-size:0.9rem; color:var(--text); transition:all .15s;
+  }
+  .opt-btn:hover{border-color:var(--lime); background:var(--lime-light);}
+  .opt-btn.correct{background:var(--lime-light); border-color:var(--lime); font-weight:700;}
+  .opt-btn.incorrect{background:var(--red-light); border-color:var(--red);}
+  .opt-btn.disabled{cursor:default;}
+  .feedback{
+    margin-top:10px; padding:10px 12px; border-radius:8px;
+    font-size:0.87rem; display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:var(--lime-light); color:#1c6b3e; border:1px solid var(--lime);}
+  .feedback.incorrect-fb{background:var(--red-light); color:#8a1f1f; border:1px solid var(--red);}
+  .results-bar{
+    position:fixed; bottom:0; left:0; right:0;
+    background:var(--navy); padding:12px 16px;
+    display:flex; justify-content:center; gap:12px; align-items:center;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.2); z-index:60;
+  }
+  .results-bar button{
+    background:var(--lime); color:var(--navy); border:none;
+    font-weight:800; font-size:0.95rem; padding:11px 26px;
+    border-radius:24px; cursor:pointer;
+  }
+  .results-bar button:hover{filter:brightness(1.05);}
+  .results-bar .progress-text{color:#fff; font-size:0.8rem; opacity:0.85;}
+  #resultsModal{
+    display:none; position:fixed; inset:0; background:rgba(10,15,30,0.55);
+    z-index:100; align-items:center; justify-content:center; padding:20px;
+  }
+  #resultsModal.show{display:flex;}
+  .modal-box{
+    background:#fff; border-radius:14px; max-width:520px; width:100%;
+    padding:26px 26px 22px; max-height:85vh; overflow-y:auto;
+  }
+  .modal-box h2{color:var(--navy); margin-top:0;}
+  .score-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0; border-bottom:1px solid #eee;
+  }
+  .score-row:last-of-type{border-bottom:none;}
+  .score-bar-bg{background:#eee; border-radius:6px; height:10px; width:55%; overflow:hidden;}
+  .score-bar-fill{height:100%; border-radius:6px;}
+  .recommendation{
+    margin-top:18px; background:var(--lime-light); border:1.5px solid var(--lime);
+    border-radius:10px; padding:14px 16px; font-size:0.92rem; color:var(--navy);
+  }
+  .recommendation.warn{background:var(--red-light); border-color:var(--red); color:#8a1f1f;}
+  .modal-close{
+    margin-top:18px; width:100%; background:var(--navy); color:#fff; border:none;
+    padding:10px; border-radius:8px; font-weight:700; cursor:pointer; font-size:0.9rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Mechanisms — Study &amp; Practice</h1>
+  <p>Design &amp; Technology (IGCSE 0445) · Marymount School Medellín</p>
+</header>
+
+<nav>
+  <a href="#topic1">1. Types of Motion</a>
+  <a href="#topic2">2. Mechanisms</a>
+  <a href="#topic3">3. Gears</a>
+</nav>
+
+<main>
+
+  <!-- ============= TOPIC 1 ============= -->
+  <section class="topic" id="topic1">
+    <div class="topic-title">Types of Motion <span class="topic-badge">10 questions</span></div>
+
+    <div class="guide">
+      <h3>Study Guide</h3>
+      <table>
+        <tr><th>Motion Type</th><th>Description</th><th>Example</th></tr>
+        <tr><td>Linear</td><td>Movement in a straight line, in one direction.</td><td>A drawer sliding open; a lift moving up a shaft.</td></tr>
+        <tr><td>Rotary</td><td>Movement in a full circle around a fixed centre point.</td><td>A wheel turning; a spinning drill bit.</td></tr>
+        <tr><td>Reciprocating</td><td>Straight-line movement that repeats back and forth.</td><td>A piston in an engine; a sewing machine needle.</td></tr>
+        <tr><td>Oscillating</td><td>Swinging movement back and forth around a pivot, through an arc.</td><td>A pendulum; a see-saw; a rocking chair.</td></tr>
+      </table>
+      <p><strong>Key distinction:</strong> reciprocating motion travels along a straight line, while oscillating motion swings through an arc around a fixed pivot. Both are repetitive and change direction, but the path they follow is different.</p>
+      <p><strong>Which mechanism converts which motion?</strong></p>
+      <table>
+        <tr><th>Mechanism</th><th>Converts</th></tr>
+        <tr><td>Cam and follower</td><td>Rotary → Reciprocating or Oscillating</td></tr>
+        <tr><td>Crank and slider</td><td>Rotary ↔ Reciprocating</td></tr>
+        <tr><td>Bell crank / wiper linkage</td><td>Reciprocating → Oscillating (also changes direction)</td></tr>
+        <tr><td>Gears / pulleys</td><td>Rotary → Rotary (changes speed, torque or direction)</td></tr>
+      </table>
+    </div>
+
+    <div id="q-container-1"></div>
+  </section>
+
+  <!-- ============= TOPIC 2 ============= -->
+  <section class="topic" id="topic2">
+    <div class="topic-title">Mechanisms <span class="topic-badge">10 questions</span></div>
+
+    <div class="guide">
+      <h3>Study Guide</h3>
+      <p><strong>Levers</strong> — classified by the position of the fulcrum (F), load (L) and effort (E):</p>
+      <table>
+        <tr><th>Class</th><th>Order</th><th>Example</th></tr>
+        <tr><td>Class 1</td><td>Fulcrum is between the load and the effort.</td><td>See-saw, scissors, crowbar.</td></tr>
+        <tr><td>Class 2</td><td>Load is between the fulcrum and the effort.</td><td>Wheelbarrow, nutcracker, bottle opener.</td></tr>
+        <tr><td>Class 3</td><td>Effort is between the fulcrum and the load.</td><td>Fishing rod, tweezers, human forearm.</td></tr>
+      </table>
+      <p><strong>Linkages</strong> — systems of connected levers that transmit or transform motion:</p>
+      <table>
+        <tr><th>Linkage Type</th><th>Function</th><th>Example</th></tr>
+        <tr><td>Bell crank</td><td>Changes direction of motion 90°, can change magnitude.</td><td>Bicycle brakes; pedal mechanisms.</td></tr>
+        <tr><td>Reverse motion</td><td>Reverses the direction of the input motion.</td><td>Scissors; pliers.</td></tr>
+        <tr><td>Parallel motion</td><td>Keeps a component moving parallel to itself.</td><td>Vehicle suspension; folding rulers.</td></tr>
+        <tr><td>Crank and slider</td><td>Converts rotary ↔ reciprocating motion.</td><td>Car engine pistons.</td></tr>
+        <tr><td>Bell crank / wiper linkage</td><td>Converts reciprocating → oscillating motion.</td><td>Car windscreen wipers.</td></tr>
+      </table>
+      <p><strong>Cams and Followers</strong> — a cam converts rotary motion into reciprocating or oscillating motion:</p>
+      <table>
+        <tr><th>Cam Type</th><th>Motion produced</th></tr>
+        <tr><td>Eccentric</td><td>Smooth, gradual rise and fall.</td></tr>
+        <tr><td>Pear-shaped</td><td>Rise, a dwell period, then a fall.</td></tr>
+        <tr><td>Snail (drop)</td><td>Gradual constant rise, then a sudden drop.</td></tr>
+        <tr><td>Heart-shaped</td><td>Constant velocity rise and fall.</td></tr>
+      </table>
+      <p>Follower types: <strong>knife-edge</strong> (precise, wears fast), <strong>roller</strong> (reduces friction), <strong>flat/plate</strong> (durable), <strong>point</strong> (fine tracing).</p>
+    </div>
+
+    <div id="q-container-2"></div>
+  </section>
+
+  <!-- ============= TOPIC 3 ============= -->
+  <section class="topic" id="topic3">
+    <div class="topic-title">Gears <span class="topic-badge">10 questions</span></div>
+
+    <div class="guide">
+      <h3>Study Guide</h3>
+      <p><strong>Velocity Ratio (VR):</strong></p>
+      <div class="formula">VR = teeth on DRIVEN gear ÷ teeth on DRIVER gear</div>
+      <p><strong>Output speed (W2):</strong></p>
+      <div class="formula">W2 = W1 ÷ VR &nbsp; (W1 = input/driver speed)</div>
+      <p><strong>Compound gear trains</strong> (two or more stages):</p>
+      <div class="formula">Overall VR = VR(stage 1) × VR(stage 2) × ...</div>
+      <p><strong>Torque (ideal system, no losses)</strong> — power is conserved, so torque × speed stays constant across the train:</p>
+      <div class="formula">T1 × W1 = T2 × W2 &nbsp;→&nbsp; T2 = T1 × (W1 ÷ W2) = T1 × VR</div>
+      <p>In other words: whatever factor the VR <em>reduces speed</em> by, it <em>increases torque</em> by the same factor (ideal case). For a multi-stage train, use the <strong>overall VR</strong> in this formula.</p>
+      <p><strong>Worked example:</strong> Driver = 15 teeth, driven = 45 teeth, input speed = 120 rpm, input torque = 2 Nm.<br>
+      VR = 45 ÷ 15 = 3 &nbsp;|&nbsp; W2 = 120 ÷ 3 = 40 rpm &nbsp;|&nbsp; T2 = 2 × 3 = 6 Nm</p>
+    </div>
+
+    <div id="q-container-3"></div>
+  </section>
+
+</main>
+
+<div class="results-bar">
+  <span class="progress-text" id="progressText">0 / 30 answered</span>
+  <button onclick="showResults()">Show My Results</button>
+</div>
+
+<div id="resultsModal">
+  <div class="modal-box">
+    <h2>Your Results</h2>
+    <div id="scoreBreakdown"></div>
+    <div class="recommendation" id="recommendationBox"></div>
+    <button class="modal-close" onclick="closeResults()">Close</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// QUESTION DATA
+// ============================================================
+const questionData = {
+  1: [ // Types of Motion
+    {
+      q: "A wheel spinning on its own axis shows which type of motion?",
+      opts: [
+        {t:"Rotary", c:true, fb:"Correct — rotary motion is movement in a full circle around a fixed centre point."},
+        {t:"Linear", c:false, fb:"Not quite — linear motion is straight-line movement in one direction. A spinning wheel moves in a circle, not a straight line."},
+        {t:"Reciprocating", c:false, fb:"Not quite — reciprocating motion is straight-line back-and-forth movement, like a piston."},
+        {t:"Oscillating", c:false, fb:"Not quite — oscillating motion swings through an arc around a pivot, like a pendulum. A spinning wheel completes full circles."}
+      ]
+    },
+    {
+      q: "A pendulum swinging back and forth around a fixed pivot shows which type of motion?",
+      opts: [
+        {t:"Oscillating", c:true, fb:"Correct — the pendulum swings through an arc around a fixed pivot point."},
+        {t:"Reciprocating", c:false, fb:"Not quite — reciprocating motion travels in a straight line. The pendulum's tip travels along a curved arc."},
+        {t:"Rotary", c:false, fb:"Not quite — rotary motion completes full circles. A pendulum only swings partway, back and forth."},
+        {t:"Linear", c:false, fb:"Not quite — linear motion is a straight line in one direction only."}
+      ]
+    },
+    {
+      q: "A piston moving straight up and down repeatedly inside an engine cylinder shows which type of motion?",
+      opts: [
+        {t:"Reciprocating", c:true, fb:"Correct — the piston repeats a straight-line back-and-forth path."},
+        {t:"Oscillating", c:false, fb:"Not quite — oscillating motion swings through an arc around a pivot. The piston moves in a straight line, not an arc."},
+        {t:"Rotary", c:false, fb:"Not quite — the piston does not travel in a circle."},
+        {t:"Linear", c:false, fb:"Close, but linear motion means one direction only. The piston repeats back and forth, which makes it reciprocating."}
+      ]
+    },
+    {
+      q: "A drawer sliding open in a single straight-line direction shows which type of motion?",
+      opts: [
+        {t:"Linear", c:true, fb:"Correct — straight-line movement in one direction is linear motion."},
+        {t:"Reciprocating", c:false, fb:"Not quite — reciprocating motion repeats back and forth. A drawer opening once, in one direction, is linear."},
+        {t:"Rotary", c:false, fb:"Not quite — rotary motion is circular, not straight-line."},
+        {t:"Oscillating", c:false, fb:"Not quite — oscillating motion swings through an arc around a pivot."}
+      ]
+    },
+    {
+      q: "What is the key difference between reciprocating and oscillating motion?",
+      opts: [
+        {t:"Reciprocating moves in a straight line; oscillating swings through an arc around a pivot", c:true, fb:"Correct — both are repetitive, but the path they follow is different: straight line vs. arc."},
+        {t:"Reciprocating swings through an arc; oscillating moves in a straight line", c:false, fb:"This is reversed — reciprocating is the straight-line one, oscillating is the arc/pivot one."},
+        {t:"They are the same motion type with different names", c:false, fb:"Not quite — they follow different paths (straight line vs. arc), so they are distinct motion types."},
+        {t:"Reciprocating is always faster than oscillating", c:false, fb:"Speed isn't the distinguishing factor — the shape of the path (straight line vs. arc) is what matters."}
+      ]
+    },
+    {
+      q: "Which mechanism converts rotary motion into reciprocating or oscillating motion using a specially shaped rotating component?",
+      opts: [
+        {t:"Cam and follower", c:true, fb:"Correct — the cam's changing profile pushes the follower to rise and fall (or oscillate) as the cam rotates."},
+        {t:"Gear train", c:false, fb:"Not quite — a gear train produces rotary-to-rotary motion (changing speed, torque or direction), not reciprocating/oscillating."},
+        {t:"Belt and pulley", c:false, fb:"Not quite — belts and pulleys transmit rotary motion between shafts, they don't convert it to reciprocating/oscillating."},
+        {t:"Bevel gear", c:false, fb:"Not quite — bevel gears change the axis of rotary motion, they don't produce reciprocating/oscillating output."}
+      ]
+    },
+    {
+      q: "Which mechanism converts continuous rotary motion into reciprocating linear motion, as in a car engine piston?",
+      opts: [
+        {t:"Crank and slider", c:true, fb:"Correct — the crank's rotary motion drives the slider back and forth in a straight line."},
+        {t:"Bell crank linkage", c:false, fb:"Not quite — a bell crank changes direction/magnitude of motion but doesn't convert rotary to reciprocating on its own."},
+        {t:"Worm gear", c:false, fb:"Not quite — a worm gear is a rotary-to-rotary speed reduction mechanism."},
+        {t:"Cam only (no follower)", c:false, fb:"A cam needs a follower to produce reciprocating motion — but the standard mechanism named for this job is the crank and slider."}
+      ]
+    },
+    {
+      q: "A car's windscreen wiper motor produces reciprocating motion, but the wiper blade moves in an oscillating arc. Which type of mechanism achieves this conversion?",
+      opts: [
+        {t:"Bell crank / wiper linkage", c:true, fb:"Correct — this linkage converts reciprocating motion into oscillating motion, while also changing direction."},
+        {t:"Crank and slider", c:false, fb:"Not quite — a crank and slider converts rotary to reciprocating, not reciprocating to oscillating."},
+        {t:"Compound gear train", c:false, fb:"Not quite — gear trains only handle rotary-to-rotary motion."},
+        {t:"Cam and knife-edge follower", c:false, fb:"Not quite — this converts rotary motion into reciprocating/oscillating, not reciprocating into oscillating."}
+      ]
+    },
+    {
+      q: "Two meshing gears transmit motion between two shafts. What type of motion do both gears have?",
+      opts: [
+        {t:"Rotary", c:true, fb:"Correct — gears always turn in full circles; they change speed, torque or direction, but the motion type stays rotary on both shafts."},
+        {t:"Reciprocating", c:false, fb:"Not quite — gears rotate continuously in circles, they don't move back and forth in a straight line."},
+        {t:"Oscillating", c:false, fb:"Not quite — gears complete full rotations, unlike oscillating motion which only swings partway."},
+        {t:"Linear", c:false, fb:"Not quite — nothing about meshing gears moves in a straight line."}
+      ]
+    },
+    {
+      q: "A sewing machine needle moves up and down in a straight line, repeatedly, driven by a rotating motor shaft. What type of motion does the needle have, and which mechanism could produce it from rotary input?",
+      opts: [
+        {t:"Reciprocating motion; produced by a crank and slider or a cam and follower", c:true, fb:"Correct — the needle's straight-line back-and-forth path is reciprocating, and both mechanisms can convert rotary input into this motion."},
+        {t:"Oscillating motion; produced by a bell crank linkage", c:false, fb:"Not quite — the needle moves in a straight line, not an arc, so this is reciprocating, not oscillating."},
+        {t:"Rotary motion; produced by a gear train", c:false, fb:"Not quite — a gear train keeps the motion rotary; it wouldn't make the needle move up and down."},
+        {t:"Linear motion; produced by a belt drive", c:false, fb:"Not quite — the needle repeats the same path back and forth, which makes it reciprocating (not one-directional linear), and a belt drive alone stays rotary."}
+      ]
+    }
+  ],
+
+  2: [ // Mechanisms
+    {
+      q: "Which lever class has the fulcrum located between the load and the effort?",
+      opts: [
+        {t:"Class 1", c:true, fb:"Correct — e.g. a see-saw or scissors, where the pivot sits between the load and the effort."},
+        {t:"Class 2", c:false, fb:"Not quite — in Class 2, it's the LOAD that sits between the fulcrum and the effort (e.g. wheelbarrow)."},
+        {t:"Class 3", c:false, fb:"Not quite — in Class 3, it's the EFFORT that sits between the fulcrum and the load (e.g. fishing rod)."},
+        {t:"Class 4", c:false, fb:"There is no Class 4 lever — only Classes 1, 2 and 3 exist."}
+      ]
+    },
+    {
+      q: "Which lever class has the load located between the fulcrum and the effort?",
+      opts: [
+        {t:"Class 2", c:true, fb:"Correct — e.g. a wheelbarrow, where the load sits between the fulcrum (wheel) and the effort (handles)."},
+        {t:"Class 1", c:false, fb:"Not quite — in Class 1, the FULCRUM sits between the load and the effort (e.g. see-saw)."},
+        {t:"Class 3", c:false, fb:"Not quite — in Class 3, the EFFORT sits between the fulcrum and the load (e.g. fishing rod)."},
+        {t:"Class 4", c:false, fb:"There is no Class 4 lever — only Classes 1, 2 and 3 exist."}
+      ]
+    },
+    {
+      q: "Which lever class has the effort located between the fulcrum and the load?",
+      opts: [
+        {t:"Class 3", c:true, fb:"Correct — e.g. a fishing rod or the human forearm, where the effort is applied between the pivot and the load."},
+        {t:"Class 1", c:false, fb:"Not quite — in Class 1, the fulcrum is between the load and the effort."},
+        {t:"Class 2", c:false, fb:"Not quite — in Class 2, the load is between the fulcrum and the effort."},
+        {t:"Class 4", c:false, fb:"There is no Class 4 lever — only Classes 1, 2 and 3 exist."}
+      ]
+    },
+    {
+      q: "A wheelbarrow is an example of which class of lever?",
+      opts: [
+        {t:"Class 2", c:true, fb:"Correct — the load sits between the fulcrum (wheel) and the effort (handles), which is the definition of Class 2."},
+        {t:"Class 1", c:false, fb:"Not quite — Class 1 needs the fulcrum in the middle, but in a wheelbarrow the wheel (fulcrum) is at one end."},
+        {t:"Class 3", c:false, fb:"Not quite — Class 3 needs the effort in the middle, but in a wheelbarrow the effort (handles) is at the far end."},
+        {t:"Class 4", c:false, fb:"There is no Class 4 lever."}
+      ]
+    },
+    {
+      q: "Which type of linkage changes the direction of motion through 90° and can also change its magnitude?",
+      opts: [
+        {t:"Bell crank linkage", c:true, fb:"Correct — a bell crank redirects motion through roughly 90° and can scale its size, depending on arm lengths."},
+        {t:"Reverse motion linkage", c:false, fb:"Not quite — this type reverses direction (input and output move opposite ways), but doesn't necessarily turn the motion 90°."},
+        {t:"Parallel motion linkage", c:false, fb:"Not quite — this keeps a component moving parallel to itself, it doesn't redirect motion by 90°."},
+        {t:"Crank and slider", c:false, fb:"Not quite — this converts rotary to reciprocating motion, it isn't primarily about redirecting by 90°."}
+      ]
+    },
+    {
+      q: "Which linkage reverses the direction of the input motion, as seen in scissors or pliers?",
+      opts: [
+        {t:"Reverse motion linkage", c:true, fb:"Correct — the input and output move in opposite directions, as when squeezing scissors' handles together opens the blades apart."},
+        {t:"Bell crank linkage", c:false, fb:"Not quite — a bell crank changes direction by about 90°, it doesn't specifically reverse the motion."},
+        {t:"Parallel motion linkage", c:false, fb:"Not quite — this keeps motion parallel, it doesn't reverse direction."},
+        {t:"Crank and slider", c:false, fb:"Not quite — this converts rotary motion into reciprocating motion; it's not the mechanism behind scissors/pliers."}
+      ]
+    },
+    {
+      q: "Which mechanism converts rotary motion into reciprocating motion, as used in a car engine piston?",
+      opts: [
+        {t:"Crank and slider", c:true, fb:"Correct — the rotating crank drives the slider (piston) back and forth in a straight line."},
+        {t:"Bell crank linkage", c:false, fb:"Not quite — a bell crank redirects motion by about 90°; it's not the standard rotary-to-reciprocating mechanism in an engine."},
+        {t:"Worm gear", c:false, fb:"Not quite — a worm gear is a rotary-to-rotary speed-reduction mechanism."},
+        {t:"Reverse motion linkage", c:false, fb:"Not quite — this reverses direction of motion, it doesn't convert rotary to reciprocating."}
+      ]
+    },
+    {
+      q: "A pear-shaped cam produces which follower motion sequence?",
+      opts: [
+        {t:"Rise, dwell, then fall", c:true, fb:"Correct — the pear shape holds the follower still (dwell) for part of the rotation before it falls, useful for holding an engine valve open."},
+        {t:"Smooth constant rise and fall with no dwell", c:false, fb:"That describes an eccentric cam, not a pear-shaped cam."},
+        {t:"Sudden rise then gradual fall", c:false, fb:"Not quite — a snail (drop) cam gives a gradual constant rise then a SUDDEN fall, which is the opposite pattern."},
+        {t:"Constant velocity rise and fall only", c:false, fb:"That describes a heart-shaped cam, not a pear-shaped cam."}
+      ]
+    },
+    {
+      q: "Which type of cam follower uses a wheel to reduce friction and wear against the cam surface?",
+      opts: [
+        {t:"Roller follower", c:true, fb:"Correct — the roller reduces friction and wear by rolling against the cam instead of sliding."},
+        {t:"Knife-edge follower", c:false, fb:"Not quite — a knife-edge follower is precise but wears quickly due to a sharp point in sliding contact."},
+        {t:"Flat (plate) follower", c:false, fb:"Not quite — this is simple and durable, but it slides across the cam rather than rolling."},
+        {t:"Point follower", c:false, fb:"Not quite — a point follower is used for tracing fine detailed profiles, not for reducing friction."}
+      ]
+    },
+    {
+      q: "What motion transformation does a cam and follower mechanism perform, and give one real example?",
+      opts: [
+        {t:"Converts rotary motion into reciprocating or oscillating motion; example: a car's camshaft opening and closing engine valves", c:true, fb:"Correct — the rotating cam profile pushes the follower to rise and fall (or swing), exactly what happens in an engine's valve train."},
+        {t:"Converts linear motion into rotary motion; example: a bicycle pedal", c:false, fb:"Not quite — a bicycle pedal/crank converts rotary input into forward motion via the chain drive, not via a cam."},
+        {t:"Converts oscillating motion into rotary motion; example: a pendulum clock", c:false, fb:"Not quite — that's the reverse direction of what a cam/follower typically does, and a pendulum clock isn't a cam mechanism."},
+        {t:"Converts reciprocating motion into linear motion; example: a drawer slide", c:false, fb:"Not quite — a drawer slide is just linear motion; a cam and follower's defining job is converting ROTARY input into reciprocating/oscillating output."}
+      ]
+    }
+  ],
+
+  3: [ // Gears
+    {
+      q: "A driver gear has 15 teeth and meshes with a driven gear of 45 teeth. Calculate the velocity ratio (VR).",
+      opts: [
+        {t:"3", c:true, fb:"Correct — VR = driven teeth ÷ driver teeth = 45 ÷ 15 = 3."},
+        {t:"0.33", c:false, fb:"This comes from dividing the wrong way round (15 ÷ 45). Remember: VR = DRIVEN ÷ DRIVER."},
+        {t:"30", c:false, fb:"This comes from subtracting the teeth counts (45 − 15) instead of dividing them."},
+        {t:"60", c:false, fb:"This comes from adding the teeth counts (45 + 15) instead of dividing them."}
+      ]
+    },
+    {
+      q: "With VR = 3 and an input speed of 120 rpm, calculate the output speed. (Output speed = Input speed ÷ VR)",
+      opts: [
+        {t:"40 rpm", c:true, fb:"Correct — Output speed = 120 ÷ 3 = 40 rpm."},
+        {t:"360 rpm", c:false, fb:"This comes from multiplying instead of dividing (120 × 3). Speed is REDUCED by the VR, so you must divide."},
+        {t:"123 rpm", c:false, fb:"This comes from adding instead of dividing (120 + 3)."},
+        {t:"117 rpm", c:false, fb:"This comes from subtracting instead of dividing (120 − 3)."}
+      ]
+    },
+    {
+      q: "A driver gear has 20 teeth, a driven gear has 60 teeth, and the input speed is 300 rpm. Calculate the output speed.",
+      opts: [
+        {t:"100 rpm", c:true, fb:"Correct — VR = 60 ÷ 20 = 3, then Output speed = 300 ÷ 3 = 100 rpm."},
+        {t:"900 rpm", c:false, fb:"You likely multiplied instead of dividing (300 × 3). Since the driven gear has more teeth, the output must be SLOWER, not faster."},
+        {t:"300 rpm", c:false, fb:"This is just the input speed unchanged — remember to actually apply the VR by dividing."},
+        {t:"7.5 rpm", c:false, fb:"This comes from using the teeth DIFFERENCE (60 − 20 = 40) as if it were the VR, instead of the teeth RATIO (60 ÷ 20 = 3)."}
+      ]
+    },
+    {
+      q: "If the driven gear has more teeth than the driver gear, the output speed will be:",
+      opts: [
+        {t:"Slower than the input speed", c:true, fb:"Correct — more teeth on the driven gear means VR > 1, and Output speed = Input speed ÷ VR, so the output slows down."},
+        {t:"Faster than the input speed", c:false, fb:"Not quite — this would only happen if the driven gear had FEWER teeth than the driver (VR < 1)."},
+        {t:"Exactly the same as the input speed", c:false, fb:"Not quite — the speeds only stay equal if both gears have the same number of teeth (VR = 1)."},
+        {t:"Impossible to determine without an RPM value", c:false, fb:"Not quite — the direction of the speed change (faster/slower) only depends on the VR, not on the actual RPM number."}
+      ]
+    },
+    {
+      q: "A compound gear train has Stage 1 VR = 2 and Stage 2 VR = 4. Calculate the overall VR.",
+      opts: [
+        {t:"8", c:true, fb:"Correct — for a compound train, overall VR = VR1 × VR2 = 2 × 4 = 8."},
+        {t:"6", c:false, fb:"This comes from adding the stage VRs (2 + 4) instead of multiplying them."},
+        {t:"3", c:false, fb:"This comes from averaging the stage VRs ((2+4) ÷ 2) instead of multiplying them."},
+        {t:"2", c:false, fb:"This comes from dividing the stage VRs (4 ÷ 2) instead of multiplying them."}
+      ]
+    },
+    {
+      q: "With an overall VR of 8 and an input speed of 800 rpm, calculate the final output speed.",
+      opts: [
+        {t:"100 rpm", c:true, fb:"Correct — Output speed = 800 ÷ 8 = 100 rpm."},
+        {t:"6400 rpm", c:false, fb:"This comes from multiplying instead of dividing (800 × 8)."},
+        {t:"400 rpm", c:false, fb:"This comes from dividing by the number of stages (2) instead of the overall VR (8)."},
+        {t:"792 rpm", c:false, fb:"This comes from subtracting instead of dividing (800 − 8)."}
+      ]
+    },
+    {
+      q: "Using power conservation (T1 × W1 = T2 × W2): input torque T1 = 5 Nm, input speed W1 = 600 rpm, output speed W2 = 200 rpm. Calculate the output torque T2.",
+      opts: [
+        {t:"15 Nm", c:true, fb:"Correct — T2 = T1 × (W1 ÷ W2) = 5 × (600 ÷ 200) = 5 × 3 = 15 Nm."},
+        {t:"1.67 Nm", c:false, fb:"This comes from inverting the speed ratio (using W2 ÷ W1 instead of W1 ÷ W2)."},
+        {t:"5 Nm", c:false, fb:"This just repeats the input torque — remember the speed ratio must be applied to find T2."},
+        {t:"600000 Nm", c:false, fb:"This comes from multiplying all three given numbers together (5 × 600 × 200) instead of using the correct formula T2 = T1 × (W1 ÷ W2)."}
+      ]
+    },
+    {
+      q: "An input torque of 4 Nm passes through a gear train with VR = 5 (ideal, no losses). Calculate the output torque T2. (T2 = T1 × VR)",
+      opts: [
+        {t:"20 Nm", c:true, fb:"Correct — T2 = T1 × VR = 4 × 5 = 20 Nm. Torque increases by the same factor that speed decreases."},
+        {t:"0.8 Nm", c:false, fb:"This comes from dividing instead of multiplying (4 ÷ 5). Remember: torque INCREASES with VR, it doesn't decrease."},
+        {t:"9 Nm", c:false, fb:"This comes from adding instead of multiplying (4 + 5)."},
+        {t:"1 Nm", c:false, fb:"This comes from subtracting instead of multiplying (5 − 4)."}
+      ]
+    },
+    {
+      q: "A two-stage gear train has VR1 = 3 and VR2 = 2 (ideal, no losses). The input torque is 6 Nm. Calculate the final output torque.",
+      opts: [
+        {t:"36 Nm", c:true, fb:"Correct — overall VR = 3 × 2 = 6, so T2 = 6 × 6 = 36 Nm."},
+        {t:"18 Nm", c:false, fb:"This only uses VR1 (6 × 3 = 18) and forgets to include the second stage."},
+        {t:"30 Nm", c:false, fb:"This comes from adding the VRs (3 + 2 = 5) instead of multiplying them, giving 6 × 5 = 30."},
+        {t:"1 Nm", c:false, fb:"This comes from dividing the input torque by the overall VR (6 ÷ 6) instead of multiplying — that's the rule for SPEED, not torque."}
+      ]
+    },
+    {
+      q: "A driver gear with 12 teeth drives a gear with 36 teeth (VR = 3), rotating at 900 rpm, with an input torque of 3 Nm (ideal, no losses). Calculate the output torque.",
+      opts: [
+        {t:"9 Nm", c:true, fb:"Correct — T2 = T1 × VR = 3 × 3 = 9 Nm."},
+        {t:"1 Nm", c:false, fb:"This comes from dividing instead of multiplying (3 ÷ 3). Torque increases with VR, it doesn't decrease."},
+        {t:"300 Nm", c:false, fb:"This mixes up the SPEED calculation (900 ÷ 3 = 300 rpm) with the torque question — 300 is an rpm value, not a torque value."},
+        {t:"3 Nm", c:false, fb:"This just repeats the input torque unchanged — remember to multiply by the VR to find the output torque."}
+      ]
+    }
+  ]
+};
+
+// ============================================================
+// STATE
+// ============================================================
+const answered = {}; // key: "topic-index" -> true/false correct
+
+function renderQuestions(){
+  for (const topic in questionData){
+    const container = document.getElementById('q-container-' + topic);
+    questionData[topic].forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'qcard';
+      const qid = topic + '-' + idx;
+
+      const numEl = document.createElement('div');
+      numEl.className = 'qnum';
+      numEl.textContent = 'Question ' + (idx + 1);
+      card.appendChild(numEl);
+
+      const qEl = document.createElement('div');
+      qEl.className = 'qtext';
+      qEl.textContent = item.q;
+      card.appendChild(qEl);
+
+      const optWrap = document.createElement('div');
+      optWrap.className = 'options';
+
+      const fbEl = document.createElement('div');
+      fbEl.className = 'feedback';
+
+      item.opts.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.textContent = opt.t;
+        btn.addEventListener('click', () => {
+          if (btn.classList.contains('locked-round')) return;
+          // reset all buttons in this card for a fresh attempt
+          Array.from(optWrap.children).forEach(b => {
+            b.classList.remove('correct','incorrect');
+          });
+          if (opt.c){
+            btn.classList.add('correct');
+            fbEl.className = 'feedback show correct-fb';
+          } else {
+            btn.classList.add('incorrect');
+            fbEl.className = 'feedback show incorrect-fb';
+          }
+          fbEl.textContent = opt.fb;
+          answered[qid] = opt.c;
+          updateProgress();
+        });
+        optWrap.appendChild(btn);
+      });
+
+      card.appendChild(optWrap);
+      card.appendChild(fbEl);
+      container.appendChild(card);
+    });
+  }
+}
+
+function totalQuestions(){
+  let n = 0;
+  for (const t in questionData) n += questionData[t].length;
+  return n;
+}
+
+function updateProgress(){
+  const answeredCount = Object.keys(answered).length;
+  document.getElementById('progressText').textContent = answeredCount + ' / ' + totalQuestions() + ' answered';
+}
+
+const topicNames = {
+  1: "Types of Motion",
+  2: "Mechanisms (Levers, Linkages, Cams & Followers)",
+  3: "Gears"
+};
+
+function showResults(){
+  const scoreBox = document.getElementById('scoreBreakdown');
+  scoreBox.innerHTML = '';
+  const scores = {};
+
+  for (const topic in questionData){
+    const total = questionData[topic].length;
+    let correct = 0;
+    questionData[topic].forEach((item, idx) => {
+      const qid = topic + '-' + idx;
+      if (answered[qid] === true) correct++;
+    });
+    const pct = Math.round((correct/total)*100);
+    scores[topic] = {correct, total, pct};
+
+    const row = document.createElement('div');
+    row.className = 'score-row';
+    const barColor = pct >= 70 ? '#3EC878' : '#D64545';
+    row.innerHTML = `
+      <div style="flex:1;">
+        <div style="font-weight:700; color:#1B2A4A; font-size:0.92rem;">${topicNames[topic]}</div>
+        <div style="font-size:0.8rem; color:#666;">${correct} / ${total} correct</div>
+      </div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:${pct}%; background:${barColor};"></div></div>
+      <div style="width:44px; text-align:right; font-weight:800; color:#1B2A4A;">${pct}%</div>
+    `;
+    scoreBox.appendChild(row);
+  }
+
+  // Recommendation logic
+  const topicsArr = Object.keys(scores).map(t => ({topic: t, ...scores[t]}));
+  topicsArr.sort((a,b) => a.pct - b.pct);
+  const weak = topicsArr.filter(t => t.pct < 70);
+
+  const recBox = document.getElementById('recommendationBox');
+  if (weak.length === 0){
+    recBox.className = 'recommendation';
+    recBox.innerHTML = `<strong>Great work!</strong> You're scoring 70% or above on every topic. You're ready for the test — just do a quick review of anything you're still unsure about.`;
+  } else if (weak.length === 1){
+    recBox.className = 'recommendation warn';
+    recBox.innerHTML = `<strong>You should study: ${topicNames[weak[0].topic]}.</strong> Your score there is ${weak[0].pct}%, below the 70% target. Re-read that section's guide above and retry its questions.`;
+  } else {
+    const a = weak[0], b = weak[1];
+    recBox.className = 'recommendation warn';
+    recBox.innerHTML = `<strong>You should study: ${topicNames[a.topic]} and ${topicNames[b.topic]}.</strong> These are your lowest-scoring topics (${a.pct}% and ${b.pct}%). Re-read their guides above and retry the questions before moving on.`;
+  }
+
+  document.getElementById('resultsModal').classList.add('show');
+}
+
+function closeResults(){
+  document.getElementById('resultsModal').classList.remove('show');
+}
+
+renderQuestions();
+updateProgress();
+</script>
+
+</body>
+</html>
