@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&T Industrial Revolution Project Platform</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --light-bg: #f8f9fa;
+            --border-color: #e9ecef;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #7f8c8d;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--light-bg);
+        }
+
+        .badge-yes {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .badge-adaptable {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* Checklist Styles */
+        .checklist-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            user-select: none;
+        }
+
+        .checklist-item.completed {
+            background-color: #2ecc71;
+            color: #ffffff;
+            border-color: #27ae60;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            cursor: pointer;
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .alert-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="openTab('inventions')">1. Inventions List</button>
+        <button class="tab-btn" onclick="openTab('checklist')">2. Activity Checklist</button>
+    </div>
+
+    <!-- TAB 1: INVENTIONS TABLE -->
+    <div id="inventions" class="tab-content active">
+        <h2>Industrial Revolution Inventions</h2>
+        <p>Explore the list below to understand movement transformations and hydraulic feasibility before choosing your options.</p>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Invention / Machine</th>
+                        <th>Main Mechanism</th>
+                        <th>Hydraulic Feasibility (Syringes)</th>
+                        <th>Movement Transformation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Water Wheel</td><td>Wheel + shaft</td><td><span class="badge-adaptable">Adaptable</span></td><td>Force &rarr; Rotary</td></tr>
+                    <tr><td>2</td><td>Newcomen Steam Engine</td><td>Beam + piston + linkage</td><td><span class="badge-yes">Yes</span></td><td>Linear &harr; Oscillating</td></tr>
+                    <tr><td>3</td><td>Flying Shuttle</td><td>Shuttle + lever</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Alternating Linear</td></tr>
+                    <tr><td>4</td><td>Spinning Jenny</td><td>Wheel + spindle + gears</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>5</td><td>Water Frame</td><td>Water wheel + shafts + gears</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>6</td><td>Watt Steam Engine</td><td>Piston + connecting rod + crank</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Rotary</td></tr>
+                    <tr><td>7</td><td>Spinning Mule</td><td>Crank + carriage + spindle</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Reciprocating / Linear</td></tr>
+                    <tr><td>8</td><td>Power Loom</td><td>Cams + gears + linkages</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Reciprocating</td></tr>
+                    <tr><td>9</td><td>Cotton Gin</td><td>Rotating cylinder + gears</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>10</td><td>Threshing Machine</td><td>Drum + shaft + pulley</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>11</td><td>Steam Locomotive</td><td>Piston + connecting rod + crank</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Rotary</td></tr>
+                    <tr><td>12</td><td>Steam Hammer</td><td>Piston + ram</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Reciprocating Linear</td></tr>
+                    <tr><td>13</td><td>Machine Lathe</td><td>Spindle + gears + lead screw</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Linear</td></tr>
+                    <tr><td>14</td><td>Sewing Machine</td><td>Crank + cam + linkage</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Reciprocating</td></tr>
+                    <tr><td>15</td><td>Bicycle</td><td>Pedal + crank + chain + sprocket</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>16</td><td>Belt Drive System</td><td>Pulley + belt + shaft</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>17</td><td>Circular Saw</td><td>Shaft + pulley + blade</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>18</td><td>Mechanical Press</td><td>Screw / crank / linkage</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Linear</td></tr>
+                    <tr><td>19</td><td>Punching Machine</td><td>Crank + ram</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Linear / Reciprocating</td></tr>
+                    <tr><td>20</td><td>Steam Pump</td><td>Piston + valve + linkage</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Reciprocating</td></tr>
+                    <tr><td>21</td><td>Power Hammer</td><td>Cam / crank + ram</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Linear</td></tr>
+                    <tr><td>22</td><td>Printing Press</td><td>Lever + platen / cylinder</td><td><span class="badge-yes">Yes</span></td><td>Linear &harr; Rotary</td></tr>
+                    <tr><td>23</td><td>Paper-making Machine</td><td>Rollers + belts + gears</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>24</td><td>Flour Mill</td><td>Gears + shafts + millstones</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>25</td><td>Textile Carding Machine</td><td>Rollers + gears</td><td><span class="badge-adaptable">Adaptable</span></td><td>Rotary &rarr; Rotary</td></tr>
+                    <tr><td>26</td><td>Stocking Frame / Knitting Machine</td><td>Levers + cams + needles</td><td><span class="badge-yes">Yes</span></td><td>Rotary &rarr; Reciprocating</td></tr>
+                    <tr><td>27</td><td>Cornish Steam Engine</td><td>Beam + piston + linkage</td><td><span class="badge-yes">Yes</span></td><td>Linear &harr; Oscillating</td></tr>
+                    <tr><td>28</td><td>Steam-powered Boat</td><td>Piston + crank + paddle wheel</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Rotary</td></tr>
+                    <tr><td>29</td><td>Steam Fire Engine</td><td>Steam piston + pump</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Reciprocating</td></tr>
+                    <tr><td>30</td><td>Railway Signal Mechanism</td><td>Lever + linkage</td><td><span class="badge-yes">Yes</span></td><td>Linear &rarr; Angular</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 2: CHECKLIST -->
+    <div id="checklist" class="tab-content">
+        <h2>Activity Checklist</h2>
+        <p>Complete each step and check off the items below as you finish them.</p>
+
+        <div class="checklist-container">
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>1. Access the web page via Phidias and review the Inventions list.</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>2. Open and review the 30+ inventions table with mechanism details.</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>3. Review interesting options (3 options per student, unique from teammates).</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>4. Select exactly 1 invention per student.</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>5. Create a team Canva presentation containing exactly 5 slides.</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>6. Verify slides 1–4 include: title, student's name, machine description, and motivation.</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>7. On slide 5, propose 1 recommended machine as a team (to be assigned by Valentina & Felipe next class).</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>8. Research and write in your notebook: Piston, Pascal's Law, and Safety Factor (NO AI allowed).</label>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox" onclick="event.stopPropagation(); updateChecklist();">
+                <label>9. Submit all final information via Phidias under the task titled "GA2" in the Homework section.</label>
+            </div>
+        </div>
+
+        <div id="status-message" class="alert-box alert-warning">
+            ⚠️ <strong>Important Notice:</strong> If all steps are not completed and submitted on time, Valentina and Felipe will select the machine project you will have to construct.
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTab(tabName) {
+        const contents = document.querySelectorAll('.tab-content');
+        const buttons = document.querySelectorAll('.tab-btn');
+
+        contents.forEach(content => content.classList.remove('active'));
+        buttons.forEach(button => button.classList.remove('active'));
+
+        document.getElementById(tabName).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function toggleCheck(container) {
+        const checkbox = container.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        updateChecklist();
+    }
+
+    function updateChecklist() {
+        const items = document.querySelectorAll('.checklist-item');
+        let allChecked = true;
+
+        items.forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                item.classList.add('completed');
+            } else {
+                item.classList.remove('completed');
+                allChecked = false;
+            }
+        });
+
+        const statusMessage = document.getElementById('status-message');
+        if (allChecked) {
+            statusMessage.className = "alert-box alert-success";
+            statusMessage.innerHTML = "🎉 <strong>Great Job!</strong> This activity will be officially taken into account as part of your <strong>10% Classwork grade</strong>.";
+        } else {
+            statusMessage.className = "alert-box alert-warning";
+            statusMessage.innerHTML = "⚠️ <strong>Important Notice:</strong> If all steps are not completed and submitted on time, Valentina and Felipe will select the machine project you will have to construct.";
+        }
+    }
+</script>
+
+</body>
+</html>
