@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Build an Industrial Revolution Machine</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{--bg:#eef1f0;--card:#fff;--ink:#1e2a32;--mute:#55656e;--line:#c9d2d4;--brass:#a97a1f;--teal:#2b6b6f;--warn:#fbeed0;--warnink:#5b4110;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141b20;--card:#1c262d;--ink:#e8eeef;--mute:#9fb0b6;--line:#33434b;--brass:#d9a441;--teal:#6cc0c4;--warn:#3a2f16;--warnink:#f0dcae}}
+:root[data-theme="dark"]{--bg:#141b20;--card:#1c262d;--ink:#e8eeef;--mute:#9fb0b6;--line:#33434b;--brass:#d9a441;--teal:#6cc0c4;--warn:#3a2f16;--warnink:#f0dcae}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 "Source Sans 3",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1,h2{font-family:"Roboto Slab",Georgia,serif;line-height:1.2}
+header{display:flex;gap:18px;align-items:center;padding:20px 0 8px}
+h1{font-size:clamp(1.6rem,5vw,2.3rem);margin:0 0 6px}
+header p{margin:0;color:var(--mute)}
+#gear{flex:none;width:96px;height:96px}
+#gear g{transition:transform .6s ease;transform-origin:50px 50px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 0;z-index:2;border-bottom:1px solid var(--line)}
+.track{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+#fill{height:100%;width:0;background:var(--teal);transition:width .4s}
+.count{display:flex;justify-content:space-between;font-weight:600;margin-top:6px}
+.count button{font:inherit;background:none;border:0;color:var(--mute);text-decoration:underline;cursor:pointer}
+h2{font-size:1.3rem;margin:32px 0 10px;color:var(--brass)}
+.note{background:var(--warn);color:var(--warnink);border-left:5px solid var(--brass);padding:12px 14px;border-radius:4px;margin:18px 0}
+ul.list{list-style:none;margin:0;padding:0}
+.item{background:var(--card);border:1px solid var(--line);border-radius:6px;margin-bottom:8px}
+.item label{display:flex;gap:12px;padding:14px;cursor:pointer}
+.item input{flex:none;width:24px;height:24px;margin-top:2px;accent-color:var(--teal)}
+.item .n{color:var(--mute);font-weight:600;margin-right:4px}
+.item b{font-weight:600}
+.item .t{display:block}
+.item small{display:block;color:var(--mute);font-size:.95rem;margin-top:2px}
+.item.done{opacity:.6}
+.item.done b{text-decoration:line-through}
+.item ul{margin:8px 0 0;padding-left:20px;font-size:.95rem;color:var(--mute)}
+.tag{display:inline-block;font-size:.8rem;border:1px solid var(--brass);color:var(--brass);border-radius:10px;padding:0 8px;margin-left:6px}
+details{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600}
+.scroll{overflow-x:auto;margin-top:10px}
+table{border-collapse:collapse;min-width:620px;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:8px;vertical-align:top;text-align:left}
+th{background:var(--bg)}
+:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<svg id="gear" viewBox="0 0 100 100" aria-hidden="true"><g id="gg"></g></svg>
+<div><h1>Build an Industrial Revolution Machine</h1><p>Follow the steps. Tick each one when your team finishes it.</p></div>
+</header>
+
+<div class="bar">
+<div class="track"><div id="fill"></div></div>
+<div class="count"><span id="cnt">0 of 20 steps done</span><button id="reset" type="button">Clear all</button></div>
+</div>
+
+<div class="note"><b>Important:</b> Roles are only a way to organize the team. Everyone must help with the whole project. If we see that you did not work because "it is not my role", your grade will go down.</div>
+
+<div id="steps"></div>
+
+<h2>Grading rubrics</h2>
+<p>Your personal grade is 30% of the project. Levels go from 4 (best) to 1.</p>
+<div id="rubrics"></div>
+</main>
+
+<script>
+var PH=[
+["Phase 1: Get organized",[
+["Create your machine diary","This is your project notebook. Write ideas, sketches, measurements, tests, and mistakes in it."],
+["Make the first slide","Write the name of your fictional company and add a logo that shows who you are."],
+["Make the second slide: team and roles","Add each member and her role. Roles help us give each person an individual grade (30%).",["Simulation and math: builds the MotionGen model, checks the numbers, and makes sure the mechanism works.","Construction: leads the making of prototypes and the final machine, and uses tools safely.","Team and communication: organizes the team, checks the diary, and talks to the teacher."]]]],
+["Phase 2: Research and design",[
+["Research and explain","Find out how your machine works, what it was used for, and how it changed work in that time. Do not copy and paste. It only works if your team really understands how the machine works. Explain it in your own words."],
+["Find the key mechanism","Decide which movement you need (turning, back and forth, up and down). Then choose the mechanism that makes it, for example a crank, a cam, or gears."],
+["Watch the MotionGen examples","Watch the examples your teacher Felipe gave you."],
+["Draw your mechanism","Make a clear drawing of the mechanism you designed."],
+["Take the measurements","Use the cota (dimension) tool in MotionGen to get the measurements."],
+["Test it in the simulation","Check that the mechanism makes the movement you want, using your measurements. Fix problems now, before you build.","new"],
+["Check your materials","Make a list of the materials and tools you really have.","new"],
+["Plan how to use the materials","With your team, decide how to use your materials to make the mechanism you designed."],
+["Checkpoint with the teacher","Show your design, measurements, and material plan. Wait for the teacher's OK before you build.","new"]]],
+["Phase 3: Build",[
+["Write in the diary every class","Each person writes what she did in each class. This step never stops until the end of the project."],
+["Start building","Begin the construction of your machine."],
+["Check how it works in real life","Make sure you understand how to make the mechanism in the real world. Use YouTube, Instructables, and similar sites to help you."],
+["Make simple, quick prototypes","Build small and easy models to check that your design works. Do not wait for the final piece."],
+["Build the final piece and test it","Make the final mechanism and check that it works well."],
+["Add the look of the real machine","Add details so your model looks like the real machine from that time."]]],
+["Phase 4: Present",[
+["Practice your presentation","Ask each other questions, also about roles that are not yours.","new"],
+["Get ready to present","The teacher will ask questions about your role and your machine. Every team member must be able to answer any question about how the machine and the mechanism work."]]]
+];
+var R1=["Rubric 1: Personal work (individual, 30%)",["Criteria","4 - Excellent","3 - Good","2 - Developing","1 - Beginning"],[
+["Personal work and diary","Writes in the diary every class. Notes are clear, with dates, sketches, and photos. Shows what she did herself.","Writes in the diary most classes. Notes are clear but sometimes short.","Writes only sometimes. Notes are unclear or missing details.","Diary is almost empty or not updated."],
+["Role flexibility","Does her role very well and helps with other roles without being asked.","Does her role well and helps with other roles when asked.","Does her role but rarely helps with other tasks.","Refuses tasks because \"it is not my role\"."],
+["General knowledge","Explains how the machine and mechanism work in her own words. Answers questions from any role.","Explains most of the machine and mechanism. Answers most questions, with small mistakes.","Explains only her own part. Needs help to answer questions.","Cannot explain the machine or mechanism. Repeats copied text."],
+["Problem solving and use of feedback","Finds problems early, tests different solutions, and uses feedback to improve.","Solves most problems and uses feedback when it is given.","Solves problems with a lot of help. Uses feedback slowly.","Does not try to solve problems. Ignores feedback."]]];
+var R2=["Rubric 2: The machine (team grade)",["Criteria","4 - Excellent","3 - Good","2 - Developing","1 - Beginning"],[
+["Similarity to the designed mechanism","Matches the MotionGen design almost exactly (shape, measurements, movement).","Close to the design, with small differences.","Has some parts of the design, but many things changed.","Very different from the design."],
+["Functionality","Works smoothly and repeats the movement many times without help.","Works, but needs small adjustments or sometimes gets stuck.","Moves only a little or works only with a lot of help.","Does not work."],
+["Similarity to the real machine of the period","Clearly looks like the real machine. Shape, materials, and details show the time period. The team explains its choices.","Looks like the real machine. Some details are missing.","Has only a few features of the real machine.","Does not look like the real machine."],
+["Craftsmanship","Neat, strong, and carefully finished. Parts fit well.","Neat and strong, with a few rough areas.","Untidy or weak in some parts.","Very untidy, weak, or unfinished."]]];
+var KEY="ir-machine-checklist",saved={};
+try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){saved={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
+var box=document.getElementById("steps"),n=0,inputs=[];
+PH.forEach(function(p){
+ var h=document.createElement("h2");h.textContent=p[0];box.appendChild(h);
+ var ul=document.createElement("ul");ul.className="list";
+ p[1].forEach(function(s){
+  n++;var id=n,li=document.createElement("li");li.className="item";
+  var sub=Array.isArray(s[2])?"<ul>"+s[2].map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul>":"";
+  var tag=s[2]==="new"?"":"";
+  li.innerHTML='<label><input type="checkbox"><span class="t"><span class="n">'+id+'.</span><b>'+s[0]+'</b><small>'+s[1]+'</small>'+sub+'</span></label>';
+  var c=li.querySelector("input");c.checked=!!saved[id];
+  c.addEventListener("change",function(){saved[id]=c.checked;save();update()});
+  inputs.push([c,li]);ul.appendChild(li);
+ });
+ box.appendChild(ul);
+});
+var gg=document.getElementById("gg"),NS="http://www.w3.org/2000/svg";
+var ring=document.createElementNS(NS,"circle");
+ring.setAttribute("cx",50);ring.setAttribute("cy",50);ring.setAttribute("r",30);ring.setAttribute("fill","var(--brass)");gg.appendChild(ring);
+for(var i=0;i<12;i++){var t=document.createElementNS(NS,"rect");t.setAttribute("x",45);t.setAttribute("y",8);t.setAttribute("width",10);t.setAttribute("height",14);t.setAttribute("fill","var(--brass)");t.setAttribute("transform","rotate("+i*30+" 50 50)");gg.appendChild(t)}
+var hole=document.createElementNS(NS,"circle");hole.setAttribute("cx",50);hole.setAttribute("cy",50);hole.setAttribute("r",12);hole.setAttribute("fill","var(--bg)");gg.appendChild(hole);
+function update(){
+ var d=0;inputs.forEach(function(p){p[1].classList.toggle("done",p[0].checked);if(p[0].checked)d++});
+ document.getElementById("fill").style.width=(d/inputs.length*100)+"%";
+ document.getElementById("cnt").textContent=d+" of "+inputs.length+" steps done"+(d===inputs.length?" - great work!":"");
+ gg.style.transform="rotate("+(d*36)+"deg)";
+}
+document.getElementById("reset").addEventListener("click",function(){
+ if(!confirm("Clear all ticks?"))return;
+ saved={};save();inputs.forEach(function(p){p[0].checked=false});update();
+});
+var rb=document.getElementById("rubrics");
+[R1,R2].forEach(function(r){
+ var dt=document.createElement("details"),h="<summary>"+r[0]+"</summary><div class='scroll'><table><tr>"+r[1].map(function(x){return"<th>"+x+"</th>"}).join("")+"</tr>";
+ r[2].forEach(function(row){h+="<tr>"+row.map(function(x,i){return i?"<td>"+x+"</td>":"<th>"+x+"</th>"}).join("")+"</tr>"});
+ dt.innerHTML=h+"</table></div>";rb.appendChild(dt);
+});
+update();
+</script>
+</body>
+</html>
