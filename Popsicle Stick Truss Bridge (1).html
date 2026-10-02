@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Popsicle Stick Truss Bridge</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#EEF3F6;--card:#FFFFFF;--ink:#12263A;--muted:#4A6073;--line:#C5D3DE;--blue:#2F6690;--wood:#D9B26F;--wood-ink:#5A4217;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1E2B;--card:#16293A;--ink:#E6EEF4;--muted:#9FB4C5;--line:#2C4559;--blue:#7DB4DE;--wood:#D9B26F;--wood-ink:#F0DDB5}}
+:root[data-theme="dark"]{--bg:#0F1E2B;--card:#16293A;--ink:#E6EEF4;--muted:#9FB4C5;--line:#2C4559;--blue:#7DB4DE;--wood:#D9B26F;--wood-ink:#F0DDB5}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Georgia,sans-serif;line-height:1.1;margin:0}
+main{max-width:760px;margin:0 auto;padding:0 20px 64px}
+header{padding:40px 0 8px}
+h1{font-size:clamp(2.2rem,7vw,3.6rem);font-weight:800}
+.lead{color:var(--muted);max-width:60ch}
+.truss{width:100%;height:auto;margin:20px 0 4px;color:var(--wood)}
+.truss line{stroke:currentColor;stroke-width:7;stroke-linecap:round}
+.truss circle{fill:var(--bg);stroke:var(--ink);stroke-width:3}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:24px 0;padding:0;list-style:none}
+.rules li{border:2px solid var(--blue);border-radius:6px;padding:12px 14px;background:var(--card)}
+.rules b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:1.5rem}
+.diary{background:var(--wood);color:#2A1E08;border-radius:6px;padding:16px 18px;margin:8px 0 28px}
+.diary h2{font-size:1.3rem;margin-bottom:6px}
+.diary ul{margin:8px 0 0;padding-left:20px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);z-index:2;font-size:.95rem;color:var(--muted)}
+.bar progress{width:100%;height:8px;accent-color:var(--blue)}
+ol{list-style:none;margin:20px 0 0;padding:0}
+.step{display:grid;grid-template-columns:48px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:14px}
+.n{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2rem;color:var(--blue);line-height:1}
+.step h3{font-size:1.35rem;margin-bottom:6px}
+.step ul{margin:6px 0 10px;padding-left:20px}
+.note{font-size:.95rem;border-left:4px solid var(--wood);padding:4px 10px;background:color-mix(in srgb,var(--wood) 18%,transparent);color:var(--ink)}
+label{display:flex;gap:8px;align-items:center;margin-top:10px;font-weight:700;cursor:pointer}
+input[type=checkbox]{width:22px;height:22px;accent-color:var(--blue)}
+a{color:var(--blue);font-weight:700}
+a:focus-visible,input:focus-visible{outline:3px solid var(--wood);outline-offset:2px}
+@media (max-width:480px){.step{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Popsicle Stick Truss Bridge</h1>
+<p class="lead">Work in a team. Design, test and build a strong bridge. Use as few sticks as you can.</p>
+<svg class="truss" viewBox="0 0 600 140" role="img" aria-label="A Warren truss bridge drawn with sticks">
+<g><line x1="20" y1="110" x2="580" y2="110"/><line x1="90" y1="30" x2="510" y2="30"/>
+<line x1="20" y1="110" x2="90" y2="30"/><line x1="90" y1="30" x2="160" y2="110"/><line x1="160" y1="110" x2="230" y2="30"/><line x1="230" y1="30" x2="300" y2="110"/><line x1="300" y1="110" x2="370" y2="30"/><line x1="370" y1="30" x2="440" y2="110"/><line x1="440" y1="110" x2="510" y2="30"/><line x1="510" y1="30" x2="580" y2="110"/></g>
+<g><circle cx="20" cy="110" r="7"/><circle cx="160" cy="110" r="7"/><circle cx="300" cy="110" r="7"/><circle cx="440" cy="110" r="7"/><circle cx="580" cy="110" r="7"/><circle cx="90" cy="30" r="7"/><circle cx="230" cy="30" r="7"/><circle cx="370" cy="30" r="7"/><circle cx="510" cy="30" r="7"/></g>
+</svg>
+<p class="lead">Truss types you can use: Warren, Pratt, Howe, Camelback, or similar.</p>
+</header>
+
+<ul class="rules" aria-label="Bridge rules">
+<li><b>5 kg</b>Minimum weight your bridge must hold</li>
+<li><b>24–26 cm</b>Length of the bridge</li>
+<li><b>0.5 kg</b>Maximum weight of the bridge</li>
+</ul>
+
+<section class="diary">
+<h2>Every class: write a diary entry</h2>
+<p style="margin:0">No diary entry means the class is not finished. Write these things:</p>
+<ul>
+<li>Date and class number</li>
+<li>What we did</li>
+<li>How we did it</li>
+<li>Where we got stuck</li>
+<li>What was difficult for us</li>
+<li>Plan for the next class</li>
+</ul>
+</section>
+
+<div class="bar"><span id="count">0 of 13 steps done</span><progress id="prog" max="13" value="0"></progress></div>
+<ol id="steps"></ol>
+</main>
+<script>
+var steps=[
+["Read the challenge",["Read the rules at the top of this page. Write them in your own words.","The goal: use the fewest sticks that still hold the load.","Your bridge must not be heavier than 0.5 kg."]],
+["Choose your roles",["<b>Math &amp; Simulator Director:</b> does the calculations, runs the simulation, counts sticks and weight.","<b>Construction Director:</b> plans the building, cuts and glues, checks quality.","Everyone helps and everyone writes in the diary. Write who has each role."]],
+["Learn about truss types",["Look at pictures of Warren, Pratt, Howe and Camelback trusses.","Find which sticks are pulled (tension) and which are pushed (compression).","Choose two designs you like."]],
+["Sketch on paper",["Draw your two designs. Use a length between 24 and 26 cm.","Label the joints and the sticks.","Count how many sticks each design needs."]],
+["Simulate in Truzme",["Open <a href='https://www.truzme.com/' target='_blank' rel='noopener'>Truzme</a> and build your designs.","Add a load and look at which parts take the most force.","Save your results in a table: design, load, number of sticks, result."]],
+["Choose your final design",["Compare your results. Choose the design with the fewest sticks that is still strong.","5 kg is only the minimum. Decide what load your team will design for. It is your team's decision.","Estimate the weight: weigh 10 sticks, then multiply. Add some glue. Stay under 0.5 kg."]],
+["Test a glue joint and make a build plan",["Glue two sticks together. Let them dry. Pull and bend them to see how strong they are.","Decide how long the glue must dry and how much the sticks overlap.","Make a cut list and a gluing order. Make a template so both sides of the bridge are the same."]],
+["Build",["Build the two sides of the truss first. Then connect them with cross sticks.","Let the glue dry well before you move the pieces.","Keep your table clean. Ask your teacher before using any cutting tool."]],
+["Check before the test",["Measure the length: 24–26 cm.","Weigh the bridge: 0.5 kg or less.","Look at every joint. Take photos."]],
+["Test",["Add the load slowly. Never rush.","Watch where the bridge bends or cracks.","Write down the load it held and where it failed. Take photos or a video."]],
+["Repair or rebuild",["Find the weak point. Repair it or rebuild that part.","Change your Truzme simulation to match the real result.","Test again."]],
+["Reflect",["What worked well? What did not work?","What would you change next time?","Write your answers in your diary."]],
+["Competition",["Bring your bridge and your diary.","Your teacher will explain how the competition is scored.","Good luck, engineers!"]]
+];
+var saved={};try{saved=JSON.parse(localStorage.getItem("trussSteps")||"{}")}catch(e){}
+var ol=document.getElementById("steps");
+steps.forEach(function(s,i){
+var li=document.createElement("li");li.className="step";
+li.innerHTML='<div class="n">'+(i+1)+'</div><div><h3>'+s[0]+'</h3><ul>'+s[1].map(function(t){return"<li>"+t+"</li>"}).join("")+'</ul><div class="note">Diary: write what you did in this step.</div><label><input type="checkbox" data-i="'+i+'"'+(saved[i]?" checked":"")+'> Step done</label></div>';
+ol.appendChild(li)});
+function update(){var c=ol.querySelectorAll("input:checked").length;document.getElementById("count").textContent=c+" of 13 steps done";document.getElementById("prog").value=c}
+ol.addEventListener("change",function(e){saved[e.target.dataset.i]=e.target.checked;try{localStorage.setItem("trussSteps",JSON.stringify(saved))}catch(x){}update()});
+update();
+</script>
+</body>
+</html>
