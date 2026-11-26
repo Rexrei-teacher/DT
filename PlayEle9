@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electricity – Flipped Classroom Playlist</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1f2933;
+    --muted: #616e7c;
+    --accent: #2563eb;
+    --done: #16a34a;
+    --border: #d9e2ec;
+    --warn-bg: #fff4e5;
+    --warn-border: #f59e0b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121820;
+      --card: #1c2530;
+      --text: #e4e9f0;
+      --muted: #9aa5b1;
+      --accent: #60a5fa;
+      --done: #4ade80;
+      --border: #2e3b4a;
+      --warn-bg: #3a2a12;
+      --warn-border: #f59e0b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121820;
+    --card: #1c2530;
+    --text: #e4e9f0;
+    --muted: #9aa5b1;
+    --accent: #60a5fa;
+    --done: #4ade80;
+    --border: #2e3b4a;
+    --warn-bg: #3a2a12;
+    --warn-border: #f59e0b;
+  }
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .subtitle { color: var(--muted); margin: 0 0 20px; }
+  .progress-wrap {
+    background: var(--border);
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--done);
+    transition: width 0.3s ease;
+  }
+  .progress-text { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, opacity 0.2s;
+  }
+  .step:hover { border-color: var(--accent); }
+  .step input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--done);
+    cursor: pointer;
+  }
+  .step-content { flex: 1; min-width: 0; }
+  .step-title { font-weight: 600; }
+  .step-title .num { color: var(--accent); }
+  .step-detail { color: var(--muted); font-size: 0.95rem; margin-top: 4px; overflow-wrap: anywhere; }
+  .step-detail a { color: var(--accent); }
+  .step.done { opacity: 0.6; }
+  .step.done .step-title { text-decoration: line-through; }
+  .note {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 20px;
+  }
+  .note strong { display: block; margin-bottom: 4px; }
+  .reset {
+    margin-top: 20px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font: inherit;
+    cursor: pointer;
+  }
+  .reset:hover { color: var(--text); border-color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Electricity – Flipped Classroom Playlist</h1>
+  <p class="subtitle">Complete each step in order and check it off as you go.</p>
+
+  <div class="progress-wrap"><div class="progress-bar" id="bar"></div></div>
+  <div class="progress-text" id="progress-text">0 of 8 steps completed</div>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 1:</span> Log in to Phidias.</div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 2:</span> Open the assignment "Classwork 1.", it is in TAREAS (second term)</div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 3:</span> Read this guide to the end.</div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 4:</span> Download and review the presentation "Tablero periodo 2 - Electricity.pptx."</div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 5:</span> Go to Mammoth Memory and read the full article.</div>
+      <div class="step-detail"><a href="https://mammothmemory.net/physics/electricity/what-is-electricity/what-is-electricity.html" target="_blank" rel="noopener">https://mammothmemory.net/physics/electricity/what-is-electricity/what-is-electricity.html</a></div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 6:</span> Watch this video explaining the math.</div>
+      <div class="step-detail"><a href="https://www.youtube.com/watch?v=1V3IgB5yfIY" target="_blank" rel="noopener">https://www.youtube.com/watch?v=1V3IgB5yfIY</a></div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 7:</span> Take the test.</div>
+      <div class="step-detail"><a href="https://rexrei-teacher.github.io/DT/ELETEST.html" target="_blank" rel="noopener">https://rexrei-teacher.github.io/DT/ELETEST.html</a></div>
+    </div>
+  </label>
+
+  <label class="step">
+    <input type="checkbox">
+    <div class="step-content">
+      <div class="step-title"><span class="num">Step 8:</span> Take a screenshot of your test score and upload it to Phidias under "Classwork 1."</div>
+    </div>
+  </label>
+
+  <div class="note">
+    <strong>Note</strong>
+    If you lose focus more than 2 times during the test, your Classwork grade will be 1.
+  </div>
+
+  <button class="reset" id="reset">Reset checklist</button>
+</div>
+
+<script>
+  const boxes = Array.from(document.querySelectorAll('.step input[type="checkbox"]'));
+  const bar = document.getElementById('bar');
+  const text = document.getElementById('progress-text');
+
+  function update() {
+    let done = 0;
+    boxes.forEach(b => {
+      b.closest('.step').classList.toggle('done', b.checked);
+      if (b.checked) done++;
+    });
+    bar.style.width = (done / boxes.length * 100) + '%';
+    text.textContent = done + ' of ' + boxes.length + ' steps completed';
+  }
+
+  boxes.forEach(b => b.addEventListener('change', update));
+  document.getElementById('reset').addEventListener('click', () => {
+    boxes.forEach(b => b.checked = false);
+    update();
+  });
+  update();
+</script>
+</body>
+</html>
