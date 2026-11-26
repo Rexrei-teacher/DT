@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Electricity Test</title>
+<style>
+  :root { --ink:#1d2433; --muted:#5b6475; --line:#d9dee8; --accent:#2563eb; --ok:#15803d; --bad:#b91c1c; --bg:#f6f7fb; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--ink); line-height:1.5; user-select: none; -webkit-user-select: none; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+  h1 { margin: 0 0 4px; font-size: 1.8rem; }
+  .sub { color: var(--muted); margin: 0 0 16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+  .qhead { display:flex; justify-content:space-between; gap:12px; align-items:baseline; }
+  .qtext { font-weight:600; margin:6px 0 10px; }
+  .pts { font-size:.8rem; background:#eef2ff; color:var(--accent); border-radius:999px; padding:2px 10px; white-space:nowrap; }
+  label.opt { display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border:1px solid var(--line); border-radius:8px; margin:6px 0; cursor:pointer; }
+  label.opt:hover { border-color: var(--accent); }
+  label.opt input { margin-top:4px; }
+  label.locked { cursor: default; opacity: .75; }
+  .note { font-size:.9rem; color:var(--muted); }
+  input[type="text"] { width:100%; padding:10px 12px; font-size:1rem; border:1px solid var(--line); border-radius:8px; margin-top:6px; }
+  button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:12px 22px; font-size:1rem; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:default; }
+  .err { color: var(--bad); margin-top: 10px; display:none; }
+  #monitor { position: sticky; top: 0; z-index: 10; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px 14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; font-size:.95rem; }
+  #monitor .count { font-weight:700; }
+  #monitor .count.warn { color: var(--bad); }
+  #result { display:none; }
+  .big { font-size: 2.2rem; font-weight: 700; margin: 4px 0; }
+  .pass { color: var(--ok); } .fail { color: var(--bad); }
+  table { width:100%; border-collapse: collapse; margin-top: 8px; font-size:.95rem; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+  tr.current td { background:#eef2ff; font-weight:600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Electricity Test</h1>
+  <p class="sub">Answer all 10 questions. Show your working for the 4-point questions on paper.</p>
+
+  <div id="monitor">
+    <span>Times you left this tab: <span class="count" id="focusCount">0</span></span>
+    <span class="note">Stay on this page until you submit.</span>
+  </div>
+
+  <div class="card">
+    <label for="studentName"><strong>Student name</strong></label>
+    <input type="text" id="studentName" placeholder="Write your full name" autocomplete="off">
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="card">
+    <button id="submit" disabled>Submit test</button>
+    <p class="err" id="err">Write your name and answer every question before submitting.</p>
+  </div>
+
+  <div class="card" id="result">
+    <div class="note">Student</div>
+    <div id="rName" style="font-weight:600;font-size:1.1rem"></div>
+    <div class="note" style="margin-top:12px">Your score</div>
+    <div class="big" id="pct"></div>
+    <div id="detail" class="note"></div>
+    <div id="status" style="font-weight:600;margin-top:6px"></div>
+    <div class="note" style="margin-top:10px">Times you left this tab: <strong id="rFocus">0</strong></div>
+    <div style="margin-top:16px;color:#b91c1c;font-weight:700">IT IS MANDATORY that you send this screenshot to the <u>Classwork 1</u> assignment in the <u>Tareas</u> section of Phidias. If it is not submitted, you will receive a <u>1</u> in Classwork.</div>
+  </div>
+
+  <div class="card">
+    <strong>Grade scale</strong>
+    <table>
+      <thead><tr><th>Score (%)</th><th>Grade</th></tr></thead>
+      <tbody id="scale"></tbody>
+    </table>
+    <p class="note">Pass mark: 60%.</p>
+  </div>
+</main>
+
+<script>
+const QUESTIONS = [
+  { pts:1, q:"Which statement about electron flow in a wire is correct?",
+    opts:["Electrons flow from the positive terminal to the negative terminal of the source",
+           "The battery creates new electrons that flow to the positive terminal",
+           "Electrons drift from the negative terminal toward the positive terminal",
+           "Electrons only flow in AC circuits",
+           "Electrons are used up by the bulb"], ans:2 },
+  { pts:1, q:"The switch in a torch is opened. What happens?",
+    opts:["The bulb still glows, but more dimly",
+           "The loop is broken, so charge stops flowing and the bulb goes off",
+           "The battery produces extra electrons to keep the bulb on",
+           "Current flows only through the switch",
+           "The bulb stays on, but the battery drains faster"], ans:1 },
+  { pts:1, q:"Which unit is used for resistance?",
+    opts:["Volt (V)","Ampere (A)","Ohm (Ω)","Watt (W)","Coulomb (C)"], ans:2 },
+  { pts:4, q:"A 24 V supply is connected to a 4 Ω resistor and an 8 Ω resistor in series. What is the current I?",
+    opts:["0.5 A","2 A","4 A","6 A","9 A"], ans:1 },
+  { pts:4, q:"A 10 V supply drives a current through a 5 Ω resistor. A second 5 Ω resistor is then added in series. The supply stays at 10 V. What is the new current?",
+    opts:["0.5 A","2 A","4 A","1 A","10 A"], ans:3 },
+  { pts:4, q:"A bulb has a voltage of 6 V and a current of 0.5 A. What is its resistance R?",
+    opts:["3 Ω","6 Ω","0.08 Ω","12 Ω","18 Ω"], ans:3 },
+  { pts:4, q:"A 12 V supply drives 3 A through a resistor. A 6 Ω resistor is then added in series with it. The supply stays at 12 V. What is the new current?",
+    opts:["0.6 A","1.5 A","2.4 A","3.0 A","1.2 A"], ans:4 },
+  { pts:1, q:"Which of these is a closed-loop system?",
+    opts:["A thermostat that switches a heater on and off based on room temperature",
+           "A toaster that runs for a fixed timer",
+           "An electric kettle that heats for a fixed time",
+           "A torch with the switch open",
+           "A fan set to one fixed speed"], ans:0 },
+  { pts:1, q:"A night light uses an LDR and an LED. Which option correctly gives the input, process and output?",
+    opts:["Input: LED. Process: LDR. Output: darkness.",
+           "Input: the battery. Process: the switch. Output: a sound.",
+           "Input: the LED. Process: current. Output: resistance.",
+           "Input: light level (LDR). Process: the LDR's resistance changes and the circuit controls the current. Output: the LED lights.",
+           "Input: electricity. Process: the LED. Output: the LDR."], ans:3 },
+  { pts:4, q:"Resistors of 2 Ω, 3 Ω and 5 Ω are connected in series across a 20 V supply. What is the voltage across the 5 Ω resistor?",
+    opts:["4 V","5 V","10 V","20 V","2 V"], ans:2 }
+];
+
+// Grade scale: lower bound of each band (%) -> grade. Pass mark is 60%.
+const SCALE = [
+  [0, 1], [20, 1.3], [40, 1.7], [60, 2], [65.83, 2.3], [71.67, 2.7],
+  [77.5, 3], [83.33, 3.3], [89.17, 3.7], [95, 4]
+];
+const TOTAL = QUESTIONS.reduce((s, q) => s + q.pts, 0); // 25
+const LETTERS = ["A","B","C","D","E"];
+
+function gradeFor(pct) {
+  let g = SCALE[0][1];
+  for (const [min, grade] of SCALE) if (pct + 1e-9 >= min) g = grade;
+  return g;
+}
+
+// Build the quiz
+const quiz = document.getElementById("quiz");
+QUESTIONS.forEach((item, i) => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="qhead"><div class="qtext">${i + 1}. ${item.q}</div>
+    <span class="pts">${item.pts} pt${item.pts > 1 ? "s" : ""}</span></div>
+    ${item.opts.map((o, j) => `
+      <label class="opt" data-q="${i}" data-o="${j}">
+        <input type="radio" name="q${i}" value="${j}">
+        <span><strong>${LETTERS[j]}.</strong> ${o}</span>
+      </label>`).join("")}`;
+  quiz.appendChild(card);
+});
+
+// Grade table
+const scaleBody = document.getElementById("scale");
+SCALE.forEach(([min, grade], k) => {
+  const max = k < SCALE.length - 1 ? (SCALE[k + 1][0] - 0.01).toFixed(2).replace(/\.?0+$/, "") : "100";
+  const row = document.createElement("tr");
+  row.dataset.grade = grade;
+  row.innerHTML = `<td>${min}% – ${max}%</td><td>${grade}</td>`;
+  scaleBody.appendChild(row);
+});
+
+// Focus-loss monitor: counts each time the student leaves the tab or window
+let focusLosses = 0;
+let submitted = false;
+let away = false;
+const countEl = document.getElementById("focusCount");
+function leave() {
+  if (submitted || away) return;
+  away = true;
+  focusLosses++;
+  countEl.textContent = focusLosses;
+  countEl.classList.toggle("warn", focusLosses > 0);
+}
+function back() {
+  away = false;
+}
+window.addEventListener("blur", leave);
+window.addEventListener("focus", back);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) leave(); else back();
+});
+
+// Disable right-click menu and common copy/inspect shortcuts
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+  const k = e.key.toLowerCase();
+  if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["i","j","c"].includes(k)) || (e.ctrlKey && ["u","s"].includes(k))) {
+    e.preventDefault();
+  }
+});
+
+// Submit only when name is written and every question is answered
+const submitBtn = document.getElementById("submit");
+const nameInput = document.getElementById("studentName");
+function answeredCount() {
+  return QUESTIONS.reduce((n, _, i) =>
+    n + (document.querySelector(`input[name="q${i}"]:checked`) ? 1 : 0), 0);
+}
+function refreshSubmit() {
+  submitBtn.disabled = submitted || answeredCount() < QUESTIONS.length || nameInput.value.trim() === "";
+}
+quiz.addEventListener("change", refreshSubmit);
+nameInput.addEventListener("input", refreshSubmit);
+
+submitBtn.addEventListener("click", () => {
+  if (answeredCount() < QUESTIONS.length || nameInput.value.trim() === "") {
+    document.getElementById("err").style.display = "block";
+    return;
+  }
+  document.getElementById("err").style.display = "none";
+  submitted = true;
+
+  let earned = 0;
+  QUESTIONS.forEach((item, i) => {
+    const chosen = Number(document.querySelector(`input[name="q${i}"]:checked`).value);
+    if (chosen === item.ans) earned += item.pts;
+    document.querySelectorAll(`label.opt[data-q="${i}"]`).forEach(l => {
+      l.querySelector("input").disabled = true;
+      l.classList.add("locked");
+    });
+  });
+  submitBtn.disabled = true;
+  nameInput.disabled = true;
+
+  const pct = (earned / TOTAL) * 100;
+  const grade = gradeFor(pct);
+  const pass = pct + 1e-9 >= 60;
+
+  document.getElementById("rName").textContent = nameInput.value.trim();
+  document.getElementById("pct").textContent = pct.toFixed(1) + "%";
+  document.getElementById("detail").textContent =
+    `${earned} of ${TOTAL} points · Grade: ${grade}`;
+  const status = document.getElementById("status");
+  status.textContent = pass ? "PASS (60% or higher)" : "Below the 60% pass mark";
+  status.className = pass ? "pass" : "fail";
+  document.getElementById("rFocus").textContent = focusLosses;
+
+  document.querySelectorAll("#scale tr").forEach(r =>
+    r.classList.toggle("current", Number(r.dataset.grade) === grade));
+
+  const res = document.getElementById("result");
+  res.style.display = "block";
+  res.scrollIntoView({ behavior: "smooth" });
+});
+</script>
+</body>
+</html>
